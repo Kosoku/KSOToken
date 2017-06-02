@@ -1,6 +1,6 @@
 //
-//  ViewController.m
-//  Demo
+//  KSOTokenTextAttachment.h
+//  KSOToken
 //
 //  Created by William Towe on 6/2/17.
 //  Copyright © 2017 Kosoku Interactive, LLC. All rights reserved.
@@ -13,31 +13,32 @@
 //
 //  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-#import "ViewController.h"
+#import <Foundation/Foundation.h>
 
-#import <KSOToken/KSOToken.h>
+NS_ASSUME_NONNULL_BEGIN
 
-@interface ViewController () <KSOTokenTextViewDelegate>
-@property (strong,nonatomic) KSOTokenTextView *textView;
+@class KSOTokenTextView;
+
+@protocol KSOTokenTextAttachment <NSObject>
+@required
+/**
+ Get the BBTokenTextView that owns the receiver.
+ */
+@property (readonly,weak,nonatomic) KSOTokenTextView *tokenTextView;
+/**
+ Get the represented object represented by the receiver.
+ */
+@property (readonly,strong,nonatomic) id representedObject;
+
+/**
+ Designated initializer.
+ 
+ @param The represented object represented by the receiver
+ @param text The text drawn by the receiver
+ @param tokenTextView The token text view that owns the receiver
+ @return An initialized instance of the receiver
+ */
+- (instancetype)initWithRepresentedObject:(id)representedObject text:(NSString *)text tokenTextView:(KSOTokenTextView *)tokenTextView;
 @end
 
-@implementation ViewController
-
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    
-    [self setTextView:[[KSOTokenTextView alloc] initWithFrame:CGRectZero]];
-    [self.textView setTranslatesAutoresizingMaskIntoConstraints:NO];
-    [self.textView setDelegate:self];
-    [self.view addSubview:self.textView];
-    
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-[view]-|" options:0 metrics:nil views:@{@"view": self.textView}]];
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[top]-[view]-|" options:0 metrics:nil views:@{@"view": self.textView, @"top": self.topLayoutGuide}]];
-}
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
-    
-    [self.textView becomeFirstResponder];
-}
-
-@end
+NS_ASSUME_NONNULL_END

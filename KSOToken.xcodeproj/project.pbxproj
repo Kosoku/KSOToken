@@ -27,6 +27,9 @@
 		070EC1E91EE1D51700118FCC /* Stanley.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 070EC1E81EE1D51700118FCC /* Stanley.framework */; };
 		070EC1EC1EE1D55200118FCC /* KSOTokenTextView.h in Headers */ = {isa = PBXBuildFile; fileRef = 070EC1EA1EE1D55200118FCC /* KSOTokenTextView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		070EC1ED1EE1D55200118FCC /* KSOTokenTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 070EC1EB1EE1D55200118FCC /* KSOTokenTextView.m */; };
+		07C37A281EE1F4FE0046AE13 /* KSOTokenTextAttachment.h in Headers */ = {isa = PBXBuildFile; fileRef = 07C37A271EE1F4FE0046AE13 /* KSOTokenTextAttachment.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		07C37A2B1EE1F5F80046AE13 /* KSOTokenDefaultTextAttachment.h in Headers */ = {isa = PBXBuildFile; fileRef = 07C37A291EE1F5F80046AE13 /* KSOTokenDefaultTextAttachment.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		07C37A2C1EE1F5F80046AE13 /* KSOTokenDefaultTextAttachment.m in Sources */ = {isa = PBXBuildFile; fileRef = 07C37A2A1EE1F5F80046AE13 /* KSOTokenDefaultTextAttachment.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -78,6 +81,9 @@
 		070EC1E81EE1D51700118FCC /* Stanley.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Stanley.framework; path = "Vendor/Stanley/build/Debug-iphoneos/Stanley.framework"; sourceTree = "<group>"; };
 		070EC1EA1EE1D55200118FCC /* KSOTokenTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSOTokenTextView.h; sourceTree = "<group>"; };
 		070EC1EB1EE1D55200118FCC /* KSOTokenTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSOTokenTextView.m; sourceTree = "<group>"; };
+		07C37A271EE1F4FE0046AE13 /* KSOTokenTextAttachment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSOTokenTextAttachment.h; sourceTree = "<group>"; };
+		07C37A291EE1F5F80046AE13 /* KSOTokenDefaultTextAttachment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSOTokenDefaultTextAttachment.h; sourceTree = "<group>"; };
+		07C37A2A1EE1F5F80046AE13 /* KSOTokenDefaultTextAttachment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSOTokenDefaultTextAttachment.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -147,6 +153,9 @@
 			children = (
 				070EC1EA1EE1D55200118FCC /* KSOTokenTextView.h */,
 				070EC1EB1EE1D55200118FCC /* KSOTokenTextView.m */,
+				07C37A271EE1F4FE0046AE13 /* KSOTokenTextAttachment.h */,
+				07C37A291EE1F5F80046AE13 /* KSOTokenDefaultTextAttachment.h */,
+				07C37A2A1EE1F5F80046AE13 /* KSOTokenDefaultTextAttachment.m */,
 			);
 			name = Source;
 			sourceTree = "<group>";
@@ -195,7 +204,9 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				07C37A281EE1F4FE0046AE13 /* KSOTokenTextAttachment.h in Headers */,
 				070EC1EC1EE1D55200118FCC /* KSOTokenTextView.h in Headers */,
+				07C37A2B1EE1F5F80046AE13 /* KSOTokenDefaultTextAttachment.h in Headers */,
 				070EC1B21EE1D2FE00118FCC /* KSOToken.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -304,6 +315,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				070EC1ED1EE1D55200118FCC /* KSOTokenTextView.m in Sources */,
+				07C37A2C1EE1F5F80046AE13 /* KSOTokenDefaultTextAttachment.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -543,6 +555,7 @@
 				070EC1D31EE1D4D400118FCC /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

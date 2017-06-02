@@ -1,6 +1,6 @@
 //
-//  ViewController.m
-//  Demo
+//  KSOTokenDefaultTextAttachment.h
+//  KSOToken
 //
 //  Created by William Towe on 6/2/17.
 //  Copyright © 2017 Kosoku Interactive, LLC. All rights reserved.
@@ -13,31 +13,46 @@
 //
 //  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-#import "ViewController.h"
+#import <UIKit/UIKit.h>
+#import <KSOToken/KSOTokenTextAttachment.h>
 
-#import <KSOToken/KSOToken.h>
+@interface KSOTokenDefaultTextAttachment : NSTextAttachment <KSOTokenTextAttachment>
 
-@interface ViewController () <KSOTokenTextViewDelegate>
-@property (strong,nonatomic) KSOTokenTextView *textView;
-@end
-
-@implementation ViewController
-
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    
-    [self setTextView:[[KSOTokenTextView alloc] initWithFrame:CGRectZero]];
-    [self.textView setTranslatesAutoresizingMaskIntoConstraints:NO];
-    [self.textView setDelegate:self];
-    [self.view addSubview:self.textView];
-    
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-[view]-|" options:0 metrics:nil views:@{@"view": self.textView}]];
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[top]-[view]-|" options:0 metrics:nil views:@{@"view": self.textView, @"top": self.topLayoutGuide}]];
-}
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
-    
-    [self.textView becomeFirstResponder];
-}
+/**
+ Set and get the font used to draw tokens.
+ 
+ The default is self.tokenTextView.typingFont.
+ */
+@property (strong,nonatomic) UIFont *tokenFont;
+/**
+ Set and get the text color used to draw tokens.
+ 
+ The default is self.tokenTextView.tintColor.
+ */
+@property (strong,nonatomic) UIColor *tokenTextColor;
+/**
+ Set and get the background color used to draw tokens.
+ 
+ The default is [UIColor clearColor].
+ */
+@property (strong,nonatomic) UIColor *tokenBackgroundColor;
+/**
+ Set and get the text color used to draw highlighted tokens.
+ 
+ The default is [UIColor whiteColor].
+ */
+@property (strong,nonatomic) UIColor *tokenHighlightedTextColor;
+/**
+ Set and get the background color used to draw highlighted tokens.
+ 
+ The default is self.tokenTextView.tintColor.
+ */
+@property (strong,nonatomic) UIColor *tokenHighlightedBackgroundColor;
+/**
+ Set and get the corner radius used to draw tokens.
+ 
+ The default is 3.0.
+ */
+@property (assign,nonatomic) CGFloat tokenCornerRadius;
 
 @end
