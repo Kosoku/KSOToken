@@ -34,10 +34,13 @@
 @property (strong,nonatomic) KSOTokenTextViewInternalDelegate *internalDelegate;
 
 - (void)_KSOTokenTextViewInit;
++ (NSCharacterSet *)_defaultTokenizingCharacterSet;
++ (NSTimeInterval)_defaultCompletionDelay;
 @end
 
 @implementation KSOTokenTextView
-
+#pragma mark *** Subclass Overrides ***
+#pragma mark Properties
 @dynamic delegate;
 // the internal delegate tracks the external delegate that is set on the receiver
 - (void)setDelegate:(id<KSOTokenTextViewDelegate>)delegate {
@@ -45,10 +48,28 @@
     
     [super setDelegate:self.internalDelegate];
 }
-
+#pragma mark *** Public Methods ***
+#pragma mark Properties
+- (void)setTokenizingCharacterSet:(NSCharacterSet *)tokenizingCharacterSet {
+    _tokenizingCharacterSet = [tokenizingCharacterSet copy] ?: [self.class _defaultTokenizingCharacterSet];
+}
+- (void)setCompletionDelay:(NSTimeInterval)completionDelay {
+    _completionDelay = completionDelay < 0.0 ? [self.class _defaultCompletionDelay] : completionDelay;
+}
+#pragma mark *** Private Methods ***
 - (void)_KSOTokenTextViewInit; {
+    _tokenizingCharacterSet = [self.class _defaultTokenizingCharacterSet];
+    _completionDelay = [self.class _defaultCompletionDelay];
+    
     _internalDelegate = [[KSOTokenTextViewInternalDelegate alloc] init];
     [self setDelegate:nil];
+}
+
++ (NSCharacterSet *)_defaultTokenizingCharacterSet; {
+    return [NSCharacterSet characterSetWithCharactersInString:@","];
+}
++ (NSTimeInterval)_defaultCompletionDelay; {
+    return 0.0;
 }
 
 @end

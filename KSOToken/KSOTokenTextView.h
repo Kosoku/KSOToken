@@ -23,6 +23,26 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (weak,nonatomic,nullable) id<KSOTokenTextViewDelegate,UITextViewDelegate> delegate;
 
+/**
+ Set and get the represented objects of the receiver.
+ 
+ These can either be NSString objects or custom model objects. If custom model objects are provided, the delegate should implement `tokenTextView:representedObjectForEditingText:` and `tokenTextView:displayTextForRepresentedObject:`.
+ */
+@property (copy,nonatomic,nullable) NSArray *representedObjects;
+
+/**
+ Set and get the character set used to delimit tokens.
+ 
+ The default is [NSCharacterSet characterSetWithCharactersInString:@","].
+ */
+@property (copy,nonatomic,null_resettable) NSCharacterSet *tokenizingCharacterSet;
+/**
+ Set and get the completion delay of the receiver.
+ 
+ The default is 0.0.
+ */
+@property (assign,nonatomic) NSTimeInterval completionDelay;
+
 @end
 
 @protocol KSOTokenTextViewDelegate <UITextViewDelegate>
