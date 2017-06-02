@@ -17,7 +17,7 @@
 
 #import <KSOToken/KSOToken.h>
 
-@interface ViewController ()
+@interface ViewController () <KSOTokenTextViewDelegate>
 @property (strong,nonatomic) KSOTokenTextView *textView;
 @end
 
@@ -26,6 +26,13 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    [self setTextView:[[KSOTokenTextView alloc] initWithFrame:CGRectZero]];
+    [self.textView setTranslatesAutoresizingMaskIntoConstraints:NO];
+    [self.textView setDelegate:self];
+    [self.view addSubview:self.textView];
+    
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[view]|" options:0 metrics:nil views:@{@"view": self.textView}]];
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[view]|" options:0 metrics:nil views:@{@"view": self.textView}]];
 }
 
 @end
