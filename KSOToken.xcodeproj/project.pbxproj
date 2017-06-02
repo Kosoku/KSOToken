@@ -8,12 +8,76 @@
 
 /* Begin PBXBuildFile section */
 		070EC1B21EE1D2FE00118FCC /* KSOToken.h in Headers */ = {isa = PBXBuildFile; fileRef = 070EC1B01EE1D2FE00118FCC /* KSOToken.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		070EC1C21EE1D4D400118FCC /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 070EC1C11EE1D4D400118FCC /* main.m */; };
+		070EC1C51EE1D4D400118FCC /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 070EC1C41EE1D4D400118FCC /* AppDelegate.m */; };
+		070EC1C81EE1D4D400118FCC /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 070EC1C71EE1D4D400118FCC /* ViewController.m */; };
+		070EC1CB1EE1D4D400118FCC /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 070EC1C91EE1D4D400118FCC /* Main.storyboard */; };
+		070EC1CD1EE1D4D400118FCC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 070EC1CC1EE1D4D400118FCC /* Assets.xcassets */; };
+		070EC1D01EE1D4D400118FCC /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 070EC1CE1EE1D4D400118FCC /* LaunchScreen.storyboard */; };
+		070EC1D61EE1D4EA00118FCC /* Stanley.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 070EC1D51EE1D4EA00118FCC /* Stanley.framework */; };
+		070EC1D71EE1D4EA00118FCC /* Stanley.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 070EC1D51EE1D4EA00118FCC /* Stanley.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		070EC1DA1EE1D4EE00118FCC /* Loki.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 070EC1D91EE1D4EE00118FCC /* Loki.framework */; };
+		070EC1DB1EE1D4EE00118FCC /* Loki.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 070EC1D91EE1D4EE00118FCC /* Loki.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		070EC1DD1EE1D4F400118FCC /* Ditko.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 070EC1DC1EE1D4F400118FCC /* Ditko.framework */; };
+		070EC1DE1EE1D4F400118FCC /* Ditko.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 070EC1DC1EE1D4F400118FCC /* Ditko.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		070EC1DF1EE1D4FD00118FCC /* KSOToken.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 070EC1AD1EE1D2FE00118FCC /* KSOToken.framework */; };
+		070EC1E01EE1D4FD00118FCC /* KSOToken.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 070EC1AD1EE1D2FE00118FCC /* KSOToken.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		070EC1E51EE1D50D00118FCC /* Ditko.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 070EC1E41EE1D50D00118FCC /* Ditko.framework */; };
+		070EC1E71EE1D51300118FCC /* Loki.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 070EC1E61EE1D51300118FCC /* Loki.framework */; };
+		070EC1E91EE1D51700118FCC /* Stanley.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 070EC1E81EE1D51700118FCC /* Stanley.framework */; };
+		070EC1EC1EE1D55200118FCC /* KSOTokenTextView.h in Headers */ = {isa = PBXBuildFile; fileRef = 070EC1EA1EE1D55200118FCC /* KSOTokenTextView.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		070EC1ED1EE1D55200118FCC /* KSOTokenTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 070EC1EB1EE1D55200118FCC /* KSOTokenTextView.m */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		070EC1E11EE1D4FD00118FCC /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 070EC1A41EE1D2FE00118FCC /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 070EC1AC1EE1D2FE00118FCC;
+			remoteInfo = KSOToken;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		070EC1D81EE1D4EA00118FCC /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				070EC1E01EE1D4FD00118FCC /* KSOToken.framework in Embed Frameworks */,
+				070EC1D71EE1D4EA00118FCC /* Stanley.framework in Embed Frameworks */,
+				070EC1DB1EE1D4EE00118FCC /* Loki.framework in Embed Frameworks */,
+				070EC1DE1EE1D4F400118FCC /* Ditko.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		070EC1AD1EE1D2FE00118FCC /* KSOToken.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = KSOToken.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		070EC1B01EE1D2FE00118FCC /* KSOToken.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KSOToken.h; sourceTree = "<group>"; };
 		070EC1B11EE1D2FE00118FCC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		070EC1BE1EE1D4D400118FCC /* Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Demo.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		070EC1C11EE1D4D400118FCC /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		070EC1C31EE1D4D400118FCC /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		070EC1C41EE1D4D400118FCC /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		070EC1C61EE1D4D400118FCC /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		070EC1C71EE1D4D400118FCC /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		070EC1CA1EE1D4D400118FCC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		070EC1CC1EE1D4D400118FCC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		070EC1CF1EE1D4D400118FCC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		070EC1D11EE1D4D400118FCC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		070EC1D51EE1D4EA00118FCC /* Stanley.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Stanley.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		070EC1D91EE1D4EE00118FCC /* Loki.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Loki.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		070EC1DC1EE1D4F400118FCC /* Ditko.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Ditko.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		070EC1E41EE1D50D00118FCC /* Ditko.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Ditko.framework; path = "Vendor/Ditko/build/Debug-iphoneos/Ditko.framework"; sourceTree = "<group>"; };
+		070EC1E61EE1D51300118FCC /* Loki.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Loki.framework; path = "Vendor/Loki/build/Debug-iphoneos/Loki.framework"; sourceTree = "<group>"; };
+		070EC1E81EE1D51700118FCC /* Stanley.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Stanley.framework; path = "Vendor/Stanley/build/Debug-iphoneos/Stanley.framework"; sourceTree = "<group>"; };
+		070EC1EA1EE1D55200118FCC /* KSOTokenTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSOTokenTextView.h; sourceTree = "<group>"; };
+		070EC1EB1EE1D55200118FCC /* KSOTokenTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSOTokenTextView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -21,6 +85,20 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				070EC1E91EE1D51700118FCC /* Stanley.framework in Frameworks */,
+				070EC1E71EE1D51300118FCC /* Loki.framework in Frameworks */,
+				070EC1E51EE1D50D00118FCC /* Ditko.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		070EC1BB1EE1D4D400118FCC /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				070EC1DF1EE1D4FD00118FCC /* KSOToken.framework in Frameworks */,
+				070EC1D61EE1D4EA00118FCC /* Stanley.framework in Frameworks */,
+				070EC1DA1EE1D4EE00118FCC /* Loki.framework in Frameworks */,
+				070EC1DD1EE1D4F400118FCC /* Ditko.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -31,7 +109,9 @@
 			isa = PBXGroup;
 			children = (
 				070EC1AF1EE1D2FE00118FCC /* KSOToken */,
+				070EC1BF1EE1D4D400118FCC /* Demo */,
 				070EC1AE1EE1D2FE00118FCC /* Products */,
+				070EC1E31EE1D50D00118FCC /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -39,6 +119,7 @@
 			isa = PBXGroup;
 			children = (
 				070EC1AD1EE1D2FE00118FCC /* KSOToken.framework */,
+				070EC1BE1EE1D4D400118FCC /* Demo.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -47,9 +128,64 @@
 			isa = PBXGroup;
 			children = (
 				070EC1B01EE1D2FE00118FCC /* KSOToken.h */,
-				070EC1B11EE1D2FE00118FCC /* Info.plist */,
+				070EC1B91EE1D31A00118FCC /* Source */,
+				070EC1B81EE1D31100118FCC /* Supporting Files */,
 			);
 			path = KSOToken;
+			sourceTree = "<group>";
+		};
+		070EC1B81EE1D31100118FCC /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				070EC1B11EE1D2FE00118FCC /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		070EC1B91EE1D31A00118FCC /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				070EC1EA1EE1D55200118FCC /* KSOTokenTextView.h */,
+				070EC1EB1EE1D55200118FCC /* KSOTokenTextView.m */,
+			);
+			name = Source;
+			sourceTree = "<group>";
+		};
+		070EC1BF1EE1D4D400118FCC /* Demo */ = {
+			isa = PBXGroup;
+			children = (
+				070EC1C31EE1D4D400118FCC /* AppDelegate.h */,
+				070EC1C41EE1D4D400118FCC /* AppDelegate.m */,
+				070EC1C61EE1D4D400118FCC /* ViewController.h */,
+				070EC1C71EE1D4D400118FCC /* ViewController.m */,
+				070EC1C91EE1D4D400118FCC /* Main.storyboard */,
+				070EC1CC1EE1D4D400118FCC /* Assets.xcassets */,
+				070EC1CE1EE1D4D400118FCC /* LaunchScreen.storyboard */,
+				070EC1D11EE1D4D400118FCC /* Info.plist */,
+				070EC1C01EE1D4D400118FCC /* Supporting Files */,
+			);
+			path = Demo;
+			sourceTree = "<group>";
+		};
+		070EC1C01EE1D4D400118FCC /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				070EC1C11EE1D4D400118FCC /* main.m */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		070EC1E31EE1D50D00118FCC /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				070EC1DC1EE1D4F400118FCC /* Ditko.framework */,
+				070EC1D91EE1D4EE00118FCC /* Loki.framework */,
+				070EC1D51EE1D4EA00118FCC /* Stanley.framework */,
+				070EC1E81EE1D51700118FCC /* Stanley.framework */,
+				070EC1E61EE1D51300118FCC /* Loki.framework */,
+				070EC1E41EE1D50D00118FCC /* Ditko.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -59,6 +195,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				070EC1EC1EE1D55200118FCC /* KSOTokenTextView.h in Headers */,
 				070EC1B21EE1D2FE00118FCC /* KSOToken.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -84,6 +221,25 @@
 			productReference = 070EC1AD1EE1D2FE00118FCC /* KSOToken.framework */;
 			productType = "com.apple.product-type.framework";
 		};
+		070EC1BD1EE1D4D400118FCC /* Demo */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 070EC1D41EE1D4D400118FCC /* Build configuration list for PBXNativeTarget "Demo" */;
+			buildPhases = (
+				070EC1BA1EE1D4D400118FCC /* Sources */,
+				070EC1BB1EE1D4D400118FCC /* Frameworks */,
+				070EC1BC1EE1D4D400118FCC /* Resources */,
+				070EC1D81EE1D4EA00118FCC /* Embed Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				070EC1E21EE1D4FD00118FCC /* PBXTargetDependency */,
+			);
+			name = Demo;
+			productName = Demo;
+			productReference = 070EC1BE1EE1D4D400118FCC /* Demo.app */;
+			productType = "com.apple.product-type.application";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -97,6 +253,10 @@
 						CreatedOnToolsVersion = 8.3.2;
 						ProvisioningStyle = Automatic;
 					};
+					070EC1BD1EE1D4D400118FCC = {
+						CreatedOnToolsVersion = 8.3.2;
+						ProvisioningStyle = Automatic;
+					};
 				};
 			};
 			buildConfigurationList = 070EC1A71EE1D2FE00118FCC /* Build configuration list for PBXProject "KSOToken" */;
@@ -105,6 +265,7 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				Base,
 			);
 			mainGroup = 070EC1A31EE1D2FE00118FCC;
 			productRefGroup = 070EC1AE1EE1D2FE00118FCC /* Products */;
@@ -112,6 +273,7 @@
 			projectRoot = "";
 			targets = (
 				070EC1AC1EE1D2FE00118FCC /* KSOToken */,
+				070EC1BD1EE1D4D400118FCC /* Demo */,
 			);
 		};
 /* End PBXProject section */
@@ -124,6 +286,16 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		070EC1BC1EE1D4D400118FCC /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				070EC1D01EE1D4D400118FCC /* LaunchScreen.storyboard in Resources */,
+				070EC1CD1EE1D4D400118FCC /* Assets.xcassets in Resources */,
+				070EC1CB1EE1D4D400118FCC /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -131,10 +303,48 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				070EC1ED1EE1D55200118FCC /* KSOTokenTextView.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		070EC1BA1EE1D4D400118FCC /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				070EC1C81EE1D4D400118FCC /* ViewController.m in Sources */,
+				070EC1C51EE1D4D400118FCC /* AppDelegate.m in Sources */,
+				070EC1C21EE1D4D400118FCC /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		070EC1E21EE1D4FD00118FCC /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 070EC1AC1EE1D2FE00118FCC /* KSOToken */;
+			targetProxy = 070EC1E11EE1D4FD00118FCC /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		070EC1C91EE1D4D400118FCC /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				070EC1CA1EE1D4D400118FCC /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		070EC1CE1EE1D4D400118FCC /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				070EC1CF1EE1D4D400118FCC /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		070EC1B31EE1D2FE00118FCC /* Debug */ = {
@@ -243,11 +453,18 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Vendor/Ditko/build/Debug-iphoneos",
+					"$(PROJECT_DIR)/Vendor/Loki/build/Debug-iphoneos",
+					"$(PROJECT_DIR)/Vendor/Stanley/build/Debug-iphoneos",
+				);
 				INFOPLIST_FILE = KSOToken/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.kosoku.KSOToken;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.kosoku.ksotoken;
+				PRODUCT_NAME = KSOToken;
 				SKIP_INSTALL = YES;
 			};
 			name = Debug;
@@ -260,12 +477,41 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Vendor/Ditko/build/Debug-iphoneos",
+					"$(PROJECT_DIR)/Vendor/Loki/build/Debug-iphoneos",
+					"$(PROJECT_DIR)/Vendor/Stanley/build/Debug-iphoneos",
+				);
 				INFOPLIST_FILE = KSOToken/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.kosoku.KSOToken;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.kosoku.ksotoken;
+				PRODUCT_NAME = KSOToken;
 				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		070EC1D21EE1D4D400118FCC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = Demo/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.kosoku.Demo;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		070EC1D31EE1D4D400118FCC /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = Demo/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.kosoku.Demo;
+				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
 		};
@@ -286,6 +532,15 @@
 			buildConfigurations = (
 				070EC1B61EE1D2FE00118FCC /* Debug */,
 				070EC1B71EE1D2FE00118FCC /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		070EC1D41EE1D4D400118FCC /* Build configuration list for PBXNativeTarget "Demo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				070EC1D21EE1D4D400118FCC /* Debug */,
+				070EC1D31EE1D4D400118FCC /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 		};

@@ -4,7 +4,12 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
-		<key>KSOToken.xcscheme</key>
+		<key>Demo.xcscheme_^#shared#^_</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>1</integer>
+		</dict>
+		<key>KSOToken.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>0</integer>
@@ -13,6 +18,11 @@
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
 		<key>070EC1AC1EE1D2FE00118FCC</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>070EC1BD1EE1D4D400118FCC</key>
 		<dict>
 			<key>primary</key>
 			<true/>
