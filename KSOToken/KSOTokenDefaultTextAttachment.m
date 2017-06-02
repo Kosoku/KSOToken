@@ -1,4 +1,4 @@
-l//
+//
 //  KSOTokenDefaultTextAttachment.m
 //  KSOToken
 //
@@ -70,7 +70,7 @@ l//
     CGSize size = [self.text sizeWithAttributes:@{NSFontAttributeName: self.tokenFont}];
     
     CGRect rect = CGRectIntegral(CGRectMake(0, 0, size.width, size.height));
-    CGFloat delta = 4.0;
+    CGFloat delta = 6.0;
     
     rect.size.width += delta;
     
@@ -83,7 +83,7 @@ l//
     [highlighted ? self.tokenHighlightedBackgroundColor : self.tokenBackgroundColor setFill];
     [[UIBezierPath bezierPathWithRoundedRect:CGRectInset(rect, 2.0, 1.0) cornerRadius:self.tokenCornerRadius] fill];
     
-    UIFont *drawFont = [UIFont fontWithName:self.tokenFont.fontName size:self.tokenFont.pointSize];
+    UIFont *drawFont = [UIFont fontWithName:self.tokenFont.fontName size:self.tokenFont.pointSize - 1.0];
     CGSize drawSize = [self.text sizeWithAttributes:@{NSFontAttributeName: drawFont}];
     
     if (drawSize.width > CGRectGetWidth(rect)) {

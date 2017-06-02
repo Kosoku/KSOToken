@@ -40,6 +40,20 @@
     
     return retval;
 }
+- (void)textViewDidChangeSelection:(UITextView *)textView {
+    [(id<UITextViewDelegate>)textView textViewDidChangeSelection:textView];
+    
+    if ([self.delegate respondsToSelector:_cmd]) {
+        [self.delegate textViewDidChangeSelection:textView];
+    }
+}
+- (void)textViewDidChange:(UITextView *)textView {
+    [(id<UITextViewDelegate>)textView textViewDidChange:textView];
+    
+    if ([self.delegate respondsToSelector:_cmd]) {
+        [self.delegate textViewDidChange:textView];
+    }
+}
 
 @end
 
