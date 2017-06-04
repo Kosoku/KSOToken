@@ -294,30 +294,34 @@
         NSInteger index = [self.layoutManager characterIndexForPoint:location inTextContainer:self.textContainer fractionOfDistanceBetweenInsertionPoints:NULL];
         
         // if the index is within our text
-        if (index < self.text.length) {
-            // get the effective range for the token at index
-            NSRange range;
-            id value = [self.textStorage attribute:NSAttachmentAttributeName atIndex:index effectiveRange:&range];
-            
-            // if there is a token
-            if (value) {
-                // if our selection is zero length or a different token is selected, select the entire range of the token
-                if (self.selectedRange.length == 0) {
-                    [self setSelectedRange:range];
-                }
-                // if the user tapped on a token that was already selected, move the caret immediately after the token
-                else if (NSEqualRanges(range, self.selectedRange)) {
-                    [self setSelectedRange:NSMakeRange(NSMaxRange(range), 0)];
-                }
-                // otherwise select the different token
-                else {
-                    [self setSelectedRange:range];
-                }
-                
-                if (!self.isFirstResponder) {
-                    [self becomeFirstResponder];
-                }
-            }
+        if (index >= self.text.length) {
+            return;
+        }
+        
+        // get the effective range for the token at index
+        NSRange range;
+        id value = [self.textStorage attribute:NSAttachmentAttributeName atIndex:index effectiveRange:&range];
+        
+        // if there is a token
+        if (value == nil) {
+            return;
+        }
+        
+        // if our selection is zero length or a different token is selected, select the entire range of the token
+        if (self.selectedRange.length == 0) {
+            [self setSelectedRange:range];
+        }
+        // if the user tapped on a token that was already selected, move the caret immediately after the token
+        else if (NSEqualRanges(range, self.selectedRange)) {
+            [self setSelectedRange:NSMakeRange(NSMaxRange(range), 0)];
+        }
+        // otherwise select the different token
+        else {
+            [self setSelectedRange:range];
+        }
+        
+        if (!self.isFirstResponder) {
+            [self becomeFirstResponder];
         }
     }];
     
