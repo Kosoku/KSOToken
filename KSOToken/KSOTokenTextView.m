@@ -168,7 +168,7 @@
             NSMutableArray *representedObjects = [[NSMutableArray alloc] init];
             
             // enumerate text attachments in the range to be deleted and add their represented object to the array
-            [self.textStorage enumerateAttribute:NSAttachmentAttributeName inRange:range options:NSAttributedStringEnumerationLongestEffectiveRangeNotRequired usingBlock:^(KSOTokenDefaultTextAttachment *value, NSRange range, BOOL *stop) {
+            [self.textStorage enumerateAttribute:NSAttachmentAttributeName inRange:range options:NSAttributedStringEnumerationLongestEffectiveRangeNotRequired usingBlock:^(id<KSOTokenTextAttachment> value, NSRange range, BOOL *stop) {
                 if (value) {
                     [representedObjects addObject:value.representedObject];
                 }
@@ -243,6 +243,37 @@
 }
 #pragma mark *** Public Methods ***
 #pragma mark Properties
+@dynamic representedObjects;
+- (NSArray *)representedObjects {
+    NSMutableArray *retval = [[NSMutableArray alloc] init];
+    
+    [self.textStorage enumerateAttribute:NSAttachmentAttributeName inRange:NSMakeRange(0, self.textStorage.length) options:NSAttributedStringEnumerationLongestEffectiveRangeNotRequired usingBlock:^(id<KSOTokenTextAttachment> value, NSRange range, BOOL *stop) {
+        if (value) {
+            [retval addObject:value.representedObject];
+        }
+    }];
+    
+    return retval;
+}
+- (void)setRepresentedObjects:(NSArray *)representedObjects {
+    NSMutableAttributedString *temp = [[NSMutableAttributedString alloc] initWithString:@"" attributes:@{NSFontAttributeName: self.typingFont, NSForegroundColorAttributeName: self.typingTextColor}];
+    
+    for (id representedObject in representedObjects) {
+        NSString *text = [representedObject description];
+        
+        if ([self.delegate respondsToSelector:@selector(tokenTextView:displayTextForRepresentedObject:)]) {
+            text = [self.delegate tokenTextView:self displayTextForRepresentedObject:representedObject];
+        }
+        
+        [temp appendAttributedString:[NSAttributedString attributedStringWithAttachment:[[NSClassFromString(self.tokenTextAttachmentClassName) alloc] initWithRepresentedObject:representedObject text:text tokenTextView:self]]];
+    }
+    
+    [self.textStorage replaceCharactersInRange:NSMakeRange(0, self.textStorage.length) withAttributedString:temp];
+    
+    if (self.selectedRange.length == 0) {
+        [self setSelectedRange:NSMakeRange(self.text.length, 0)];
+    }
+}
 - (void)setTokenizingCharacterSet:(NSCharacterSet *)tokenizingCharacterSet {
     _tokenizingCharacterSet = [tokenizingCharacterSet copy] ?: [self.class _defaultTokenizingCharacterSet];
 }
@@ -368,7 +399,7 @@
 }
 - (NSUInteger)_indexOfTokenTextAttachmentInRange:(NSRange)range textAttachment:(id<KSOTokenTextAttachment> *)textAttachment; {
     // if we don't have any text, the attachment is nil, otherwise search for an attachment clamped to the passed in range.location and the end of our text - 1
-    KSOTokenDefaultTextAttachment *attachment = self.text.length == 0 ? nil : [self.attributedText attribute:NSAttachmentAttributeName atIndex:MIN(range.location, self.attributedText.length - 1) effectiveRange:NULL];
+    id<KSOTokenTextAttachment> attachment = self.text.length == 0 ? nil : [self.attributedText attribute:NSAttachmentAttributeName atIndex:MIN(range.location, self.attributedText.length - 1) effectiveRange:NULL];
     NSArray *representedObjects = self.representedObjects;
     NSUInteger retval = [representedObjects indexOfObject:attachment.representedObject];
     
