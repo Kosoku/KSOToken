@@ -16,6 +16,8 @@
 #import "KSOTokenTextView.h"
 #import "KSOTokenDefaultTextAttachment.h"
 
+#import <Ditko/UIGestureRecognizer+KDIExtensions.h>
+
 @interface KSOTokenTextViewInternalDelegate : NSObject <KSOTokenTextViewDelegate>
 @property (weak,nonatomic) id<KSOTokenTextViewDelegate> delegate;
 @end
@@ -57,10 +59,11 @@
 
 @end
 
-@interface KSOTokenTextView () <UITextViewDelegate,NSTextStorageDelegate>
+@interface KSOTokenTextView () <UITextViewDelegate,NSTextStorageDelegate,UIGestureRecognizerDelegate>
 @property (strong,nonatomic) KSOTokenTextViewInternalDelegate *internalDelegate;
 
 @property (copy,nonatomic) NSIndexSet *selectedTextAttachmentRanges;
+@property (strong,nonatomic) UITapGestureRecognizer *tapGestureRecognizer;
 
 - (void)_KSOTokenTextViewInit;
 - (NSRange)_tokenRangeForRange:(NSRange)range;
@@ -89,6 +92,13 @@
     [self _KSOTokenTextViewInit];
     
     return self;
+}
+#pragma mark UIGestureRecognizerDelegate
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRequireFailureOfGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
+    return [gestureRecognizer isEqual:self.tapGestureRecognizer] && [otherGestureRecognizer isKindOfClass:[UILongPressGestureRecognizer class]];
+}
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
+    return [gestureRecognizer isEqual:self.tapGestureRecognizer];
 }
 #pragma mark NSTextStorageDelegate
 - (void)textStorage:(NSTextStorage *)textStorage didProcessEditing:(NSTextStorageEditActions)editedMask range:(NSRange)editedRange changeInLength:(NSInteger)delta {
@@ -264,6 +274,54 @@
     
     _internalDelegate = [[KSOTokenTextViewInternalDelegate alloc] init];
     [self setDelegate:nil];
+    
+    _tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:nil action:NULL];
+    [_tapGestureRecognizer setNumberOfTapsRequired:1];
+    [_tapGestureRecognizer setNumberOfTouchesRequired:1];
+    [_tapGestureRecognizer setDelegate:self];
+    [_tapGestureRecognizer KDI_addBlock:^(__kindof UIGestureRecognizer * _Nonnull gestureRecognizer) {
+        if (self.text.length == 0) {
+            return;
+        }
+        
+        CGPoint location = [self.tapGestureRecognizer locationInView:self];
+        
+        // adjust the location by the text container insets
+        location.x -= self.textContainerInset.left;
+        location.y -= self.textContainerInset.top;
+        
+        // ask the layout manager for character index corresponding to the tapped location
+        NSInteger index = [self.layoutManager characterIndexForPoint:location inTextContainer:self.textContainer fractionOfDistanceBetweenInsertionPoints:NULL];
+        
+        // if the index is within our text
+        if (index < self.text.length) {
+            // get the effective range for the token at index
+            NSRange range;
+            id value = [self.textStorage attribute:NSAttachmentAttributeName atIndex:index effectiveRange:&range];
+            
+            // if there is a token
+            if (value) {
+                // if our selection is zero length or a different token is selected, select the entire range of the token
+                if (self.selectedRange.length == 0) {
+                    [self setSelectedRange:range];
+                }
+                // if the user tapped on a token that was already selected, move the caret immediately after the token
+                else if (NSEqualRanges(range, self.selectedRange)) {
+                    [self setSelectedRange:NSMakeRange(NSMaxRange(range), 0)];
+                }
+                // otherwise select the different token
+                else {
+                    [self setSelectedRange:range];
+                }
+                
+                if (!self.isFirstResponder) {
+                    [self becomeFirstResponder];
+                }
+            }
+        }
+    }];
+    
+    [self addGestureRecognizer:_tapGestureRecognizer];
 }
 
 - (NSRange)_tokenRangeForRange:(NSRange)range; {
