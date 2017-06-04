@@ -33,7 +33,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Designated initializer.
  
- @param The represented object represented by the receiver
+ @param representedObject The object represented by the receiver
  @param text The text drawn by the receiver
  @param tokenTextView The token text view that owns the receiver
  @return An initialized instance of the receiver

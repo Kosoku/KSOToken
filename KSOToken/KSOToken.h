@@ -24,3 +24,4 @@ FOUNDATION_EXPORT const unsigned char KSOTokenVersionString[];
 // In this header, you should import all the public headers of your framework using statements like #import <KSOToken/PublicHeader.h>
 
 #import <KSOToken/KSOTokenTextView.h>
+#import <KSOToken/KSOTokenDefaultTextAttachment.h>

@@ -44,17 +44,17 @@
     if (!(self = [super initWithData:nil ofType:nil]))
         return nil;
     
-    NSParameterAssert(representedObject);
-    NSParameterAssert(tokenTextView);
+    NSParameterAssert(representedObject != nil);
+    NSParameterAssert(tokenTextView != nil);
     
-    [self setRepresentedObject:representedObject];
-    [self setTokenTextView:tokenTextView];
-    [self setText:text];
+    _representedObject = representedObject;
+    _tokenTextView = tokenTextView;
+    _text = [text copy];
     
     _tokenFont = _tokenTextView.typingFont;
     _tokenTextColor = _tokenTextView.tintColor;
-    _tokenBackgroundColor = [UIColor clearColor];
-    _tokenHighlightedTextColor = [UIColor whiteColor];
+    _tokenBackgroundColor = UIColor.clearColor;
+    _tokenHighlightedTextColor = UIColor.whiteColor;
     _tokenHighlightedBackgroundColor = _tokenTextView.tintColor;
     _tokenCornerRadius = 3.0;
     

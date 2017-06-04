@@ -19,8 +19,16 @@ NS_ASSUME_NONNULL_BEGIN
 
 @protocol KSOTokenTextViewDelegate;
 
+/**
+ KSOTokenTextView mirrors the functionality provided by NSTokenField on macOS.
+ */
 @interface KSOTokenTextView : KDITextView
 
+/**
+ Set and get the delegate of the receiver.
+ 
+ @see KSOTokenTextViewDelegate
+ */
 @property (weak,nonatomic,nullable) id<KSOTokenTextViewDelegate,UITextViewDelegate> delegate;
 
 /**
@@ -33,13 +41,13 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Set and get the character set used to delimit tokens.
  
- The default is [NSCharacterSet characterSetWithCharactersInString:@",\n"].
+ The default is [NSCharacterSet characterSetWithCharactersInString:@","] unioned with [NSCharacterSet newlineCharacterSet].
  */
 @property (copy,nonatomic,null_resettable) NSCharacterSet *tokenizingCharacterSet;
 /**
- Set and get the NSTextAttachment class used to draw tokens.
+ Set and get the NSTextAttachment class name used to draw tokens.
  
- The default is BBTokenTextAttachment.
+ The default is @"KSOTokenDefaultTextAttachment".
  */
 @property (copy,nonatomic,null_resettable) NSString *tokenTextAttachmentClassName UI_APPEARANCE_SELECTOR;
 /**
@@ -58,7 +66,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Set and get the typing text color of the receiver. Set this instead of the text color of the receiver.
  
- The default is [UIColor blackColor].
+ The default is UIColor.blackColor.
  */
 @property (strong,nonatomic,null_resettable) UIColor *typingTextColor UI_APPEARANCE_SELECTOR;
 
