@@ -214,12 +214,8 @@
         NSMutableAttributedString *temp = [[NSMutableAttributedString alloc] initWithString:@"" attributes:@{NSFontAttributeName: self.typingFont, NSForegroundColorAttributeName: self.typingTextColor}];
         
         // loop through each represented object and ask the delegate for the display text for each one
-        for (id obj in representedObjects) {
-            NSString *displayText = [obj description];
-            
-            if ([self.delegate respondsToSelector:@selector(tokenTextView:displayTextForRepresentedObject:)]) {
-                displayText = [self.delegate tokenTextView:self displayTextForRepresentedObject:obj];
-            }
+        for (id<KSOTokenRepresentedObject> obj in representedObjects) {
+            NSString *displayText = obj.tokenRepresentedObjectDisplayName;
             
             [temp appendAttributedString:[NSAttributedString attributedStringWithAttachment:[[NSClassFromString(self.tokenTextAttachmentClassName) alloc] initWithRepresentedObject:obj text:displayText tokenTextView:self]]];
         }
@@ -292,12 +288,8 @@
                 NSMutableAttributedString *temp = [[NSMutableAttributedString alloc] initWithString:@"" attributes:@{NSFontAttributeName: self.typingFont, NSForegroundColorAttributeName: self.typingTextColor}];
                 
                 // loop through each represented object and ask the delegate for the display text for each one
-                for (id obj in representedObjects) {
-                    NSString *displayText = [obj description];
-                    
-                    if ([self.delegate respondsToSelector:@selector(tokenTextView:displayTextForRepresentedObject:)]) {
-                        displayText = [self.delegate tokenTextView:self displayTextForRepresentedObject:obj];
-                    }
+                for (id<KSOTokenRepresentedObject> obj in representedObjects) {
+                    NSString *displayText = obj.tokenRepresentedObjectDisplayName;
                     
                     [temp appendAttributedString:[NSAttributedString attributedStringWithAttachment:[[NSClassFromString(self.tokenTextAttachmentClassName) alloc] initWithRepresentedObject:obj text:displayText tokenTextView:self]]];
                 }
@@ -416,12 +408,8 @@
 - (void)setRepresentedObjects:(NSArray *)representedObjects {
     NSMutableAttributedString *temp = [[NSMutableAttributedString alloc] initWithString:@"" attributes:@{NSFontAttributeName: self.typingFont, NSForegroundColorAttributeName: self.typingTextColor}];
     
-    for (id representedObject in representedObjects) {
-        NSString *text = [representedObject description];
-        
-        if ([self.delegate respondsToSelector:@selector(tokenTextView:displayTextForRepresentedObject:)]) {
-            text = [self.delegate tokenTextView:self displayTextForRepresentedObject:representedObject];
-        }
+    for (id<KSOTokenRepresentedObject> representedObject in representedObjects) {
+        NSString *text = representedObject.tokenRepresentedObjectDisplayName;
         
         [temp appendAttributedString:[NSAttributedString attributedStringWithAttachment:[[NSClassFromString(self.tokenTextAttachmentClassName) alloc] initWithRepresentedObject:representedObject text:text tokenTextView:self]]];
     }
@@ -607,13 +595,8 @@
         if (!retval) {
             NSMutableArray *strings = [[NSMutableArray alloc] init];
             
-            for (id representedObject in representedObjects) {
-                if ([self.delegate respondsToSelector:@selector(tokenTextView:displayTextForRepresentedObject:)]) {
-                    [strings addObject:[self.delegate tokenTextView:self displayTextForRepresentedObject:representedObject]];
-                }
-                else {
-                    [strings addObject:[representedObject description]];
-                }
+            for (id<KSOTokenRepresentedObject> representedObject in representedObjects) {
+                [strings addObject:representedObject.tokenRepresentedObjectDisplayName];
             }
             
             [pasteboard setStrings:strings];

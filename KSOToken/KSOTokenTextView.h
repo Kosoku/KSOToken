@@ -14,6 +14,7 @@
 //  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #import <Ditko/KDITextView.h>
+#import <KSOToken/KSOTokenRepresentedObject.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -34,9 +35,9 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Set and get the represented objects of the receiver.
  
- These can either be NSString objects or custom model objects. If custom model objects are provided, the delegate should implement `tokenTextView:representedObjectForEditingText:` and `tokenTextView:displayTextForRepresentedObject:`.
+ These can either be NSString objects or custom model objects. If custom model objects are provided, the delegate should implement `tokenTextView:representedObjectForEditingText:`.
  */
-@property (copy,nonatomic,nullable) NSArray *representedObjects;
+@property (copy,nonatomic,nullable) NSArray<id<KSOTokenRepresentedObject> > *representedObjects;
 
 /**
  Set and get the character set used to delimit tokens.
@@ -81,15 +82,7 @@ NS_ASSUME_NONNULL_BEGIN
  @param editingText The current editing text
  @return The represented object for editing text
  */
-- (nullable id)tokenTextView:(KSOTokenTextView *)tokenTextView representedObjectForEditingText:(NSString *)editingText;
-/**
- Return the display text for the provided represented object. If this method is not implemented or returns nil, the return value of the represented object's description method is used.
- 
- @param tokenTextView The token text view that sent the message
- @param representedObject The represented object
- @return The display text for the represented object
- */
-- (nullable NSString *)tokenTextView:(KSOTokenTextView *)tokenTextView displayTextForRepresentedObject:(id)representedObject;
+- (nullable id<KSOTokenRepresentedObject>)tokenTextView:(KSOTokenTextView *)tokenTextView representedObjectForEditingText:(NSString *)editingText;
 
 /**
  Return the filtered array of represented objects from the array of provided represented objects that should be added to the token text view.
@@ -99,7 +92,7 @@ NS_ASSUME_NONNULL_BEGIN
  @param index The index in the receiver's represented objects array that the new represented objects will be inserted
  @return The filtered array of represented objects, return an empty array to prevent adding represented objects
  */
-- (NSArray *)tokenTextView:(KSOTokenTextView *)tokenTextView shouldAddRepresentedObjects:(NSArray *)representedObjects atIndex:(NSInteger)index;
+- (NSArray<id<KSOTokenRepresentedObject> > *)tokenTextView:(KSOTokenTextView *)tokenTextView shouldAddRepresentedObjects:(NSArray<id<KSOTokenRepresentedObject> > *)representedObjects atIndex:(NSInteger)index;
 /**
  Called when an array of represented objects are added to the receiver at the provided index.
  
@@ -107,7 +100,7 @@ NS_ASSUME_NONNULL_BEGIN
  @param representedObjects The array of represented objects that were added
  @param index The first index of the represented objects that were added
  */
-- (void)tokenTextView:(KSOTokenTextView *)tokenTextView didAddRepresentedObjects:(NSArray *)representedObjects atIndex:(NSInteger)index;
+- (void)tokenTextView:(KSOTokenTextView *)tokenTextView didAddRepresentedObjects:(NSArray<id<KSOTokenRepresentedObject> > *)representedObjects atIndex:(NSInteger)index;
 
 /**
  Called when an array of represented objects are removed from the receiver at the provided index.
@@ -116,7 +109,7 @@ NS_ASSUME_NONNULL_BEGIN
  @param representedObjects The array of represented objects that were removed
  @param index The first index of the represented objects that were removed
  */
-- (BOOL)tokenTextView:(KSOTokenTextView *)tokenTextView shouldRemoveRepresentedObjects:(NSArray *)representedObjects atIndex:(NSInteger)index;
+- (BOOL)tokenTextView:(KSOTokenTextView *)tokenTextView shouldRemoveRepresentedObjects:(NSArray<id<KSOTokenRepresentedObject> > *)representedObjects atIndex:(NSInteger)index;
 /**
  Called when an array of represented objects are removed from the receiver at the provided index.
  
@@ -124,7 +117,7 @@ NS_ASSUME_NONNULL_BEGIN
  @param representedObjects The array of represented objects that were removed
  @param index The first index of the represented objects that were removed
  */
-- (void)tokenTextView:(KSOTokenTextView *)tokenTextView didRemoveRepresentedObjects:(NSArray *)representedObjects atIndex:(NSInteger)index;
+- (void)tokenTextView:(KSOTokenTextView *)tokenTextView didRemoveRepresentedObjects:(NSArray<id<KSOTokenRepresentedObject> > *)representedObjects atIndex:(NSInteger)index;
 
 /**
  Called to determine which editing commands should be displayed by the receiver. The action parameter represents the relevant command (e.g. cut:, copy:, paste:).
@@ -144,7 +137,7 @@ NS_ASSUME_NONNULL_BEGIN
  @param pasteboard The pasteboard to write to
  @return YES if the delegate handled writing to the pasteboard, NO otherwise
  */
-- (BOOL)tokenTextView:(KSOTokenTextView *)tokenTextView writeRepresentedObjects:(NSArray *)representedObjects pasteboard:(UIPasteboard *)pasteboard;
+- (BOOL)tokenTextView:(KSOTokenTextView *)tokenTextView writeRepresentedObjects:(NSArray<id<KSOTokenRepresentedObject> > *)representedObjects pasteboard:(UIPasteboard *)pasteboard;
 /**
  Called when the paste: command is chosen from the context menu. The delegate should return an array of represented objects created by reading data from pasteboard. If this method is not implemented, the token text view will read the array of strings stored on the pasteboard and create represented objects from them.
  
@@ -152,7 +145,7 @@ NS_ASSUME_NONNULL_BEGIN
  @param pasteboard The pasteboard to read from
  @return An array of represented objects created by reading from pasteboard
  */
-- (nullable NSArray *)tokenTextView:(KSOTokenTextView *)tokenTextView readFromPasteboard:(UIPasteboard *)pasteboard;
+- (nullable NSArray<id<KSOTokenRepresentedObject> > *)tokenTextView:(KSOTokenTextView *)tokenTextView readFromPasteboard:(UIPasteboard *)pasteboard;
 
 @end
 
