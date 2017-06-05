@@ -370,6 +370,9 @@
     return YES;
 }
 - (void)textViewDidChangeSelection:(UITextView *)textView {
+    [self setTypingAttributes:@{NSFontAttributeName: self.typingFont,
+                                NSForegroundColorAttributeName: self.typingTextColor}];
+    
     if (self.selectedRange.length == 0) {
         [self setSelectedTextAttachmentRanges:nil];
     }

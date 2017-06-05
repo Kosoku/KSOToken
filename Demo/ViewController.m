@@ -28,6 +28,7 @@
     
     [self setTextView:[[KSOTokenTextView alloc] initWithFrame:CGRectZero]];
     [self.textView setTranslatesAutoresizingMaskIntoConstraints:NO];
+    [self.textView setPlaceholder:@"Type words with spaces and press comma or the return key to tokenize them"];
     [self.textView setDelegate:self];
     [self.view addSubview:self.textView];
     
