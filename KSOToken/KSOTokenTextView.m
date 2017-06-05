@@ -18,6 +18,40 @@
 
 #import <Ditko/UIGestureRecognizer+KDIExtensions.h>
 
+@interface KSOTokenTextViewGestureRecognizerDelegate : NSObject <UIGestureRecognizerDelegate>
+@property (copy,nonatomic) NSArray *gestureRecognizers;
+@property (weak,nonatomic) UITextView *textView;
+
+- (instancetype)initWithGestureRecognizers:(NSArray *)gestureRecognizers textView:(UITextView *)textView;
+@end
+
+@implementation KSOTokenTextViewGestureRecognizerDelegate
+#pragma mark UIGestureRecognizerDelegate
+- (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer {
+    return [self.gestureRecognizers containsObject:gestureRecognizer] && self.textView.text.length > 0;
+}
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRequireFailureOfGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
+    return [self.gestureRecognizers containsObject:gestureRecognizer] && [otherGestureRecognizer isKindOfClass:[UILongPressGestureRecognizer class]];
+}
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
+    return [self.gestureRecognizers containsObject:gestureRecognizer];
+}
+#pragma mark *** Public Methods ***
+- (instancetype)initWithGestureRecognizers:(NSArray *)gestureRecognizers textView:(UITextView *)textView; {
+    if (!(self = [super init]))
+        return nil;
+    
+    _gestureRecognizers = [gestureRecognizers copy];
+    _textView = textView;
+    
+    for (UIGestureRecognizer *gr in _gestureRecognizers) {
+        [gr setDelegate:self];
+    }
+    
+    return self;
+}
+@end
+
 @interface KSOTokenTextViewInternalDelegate : NSObject <KSOTokenTextViewDelegate>
 @property (weak,nonatomic) id<KSOTokenTextViewDelegate> delegate;
 @end
@@ -61,9 +95,9 @@
 
 @interface KSOTokenTextView () <UITextViewDelegate,NSTextStorageDelegate,UIGestureRecognizerDelegate>
 @property (strong,nonatomic) KSOTokenTextViewInternalDelegate *internalDelegate;
+@property (strong,nonatomic) KSOTokenTextViewGestureRecognizerDelegate *gestureRecognizerDelegate;
 
 @property (copy,nonatomic) NSIndexSet *selectedTextAttachmentRanges;
-@property (strong,nonatomic) UITapGestureRecognizer *tapGestureRecognizer;
 
 - (void)_KSOTokenTextViewInit;
 - (NSRange)_tokenRangeForRange:(NSRange)range;
@@ -220,16 +254,6 @@
             }
         }
     }
-}
-#pragma mark UIGestureRecognizerDelegate
-- (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer {
-    return ([gestureRecognizer isEqual:self.tapGestureRecognizer] && self.text.length > 0) || [super gestureRecognizerShouldBegin:gestureRecognizer];
-}
-- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRequireFailureOfGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
-    return [gestureRecognizer isEqual:self.tapGestureRecognizer] && [otherGestureRecognizer isKindOfClass:[UILongPressGestureRecognizer class]];
-}
-- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
-    return [gestureRecognizer isEqual:self.tapGestureRecognizer];
 }
 #pragma mark NSTextStorageDelegate
 - (void)textStorage:(NSTextStorage *)textStorage didProcessEditing:(NSTextStorageEditActions)editedMask range:(NSRange)editedRange changeInLength:(NSInteger)delta {
@@ -437,16 +461,16 @@
     _internalDelegate = [[KSOTokenTextViewInternalDelegate alloc] init];
     [self setDelegate:nil];
     
-    _tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:nil action:NULL];
-    [_tapGestureRecognizer setNumberOfTapsRequired:1];
-    [_tapGestureRecognizer setNumberOfTouchesRequired:1];
-    [_tapGestureRecognizer setDelegate:self];
-    [_tapGestureRecognizer KDI_addBlock:^(__kindof UIGestureRecognizer * _Nonnull gestureRecognizer) {
+    UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:nil action:NULL];
+    
+    [tapGestureRecognizer setNumberOfTapsRequired:1];
+    [tapGestureRecognizer setNumberOfTouchesRequired:1];
+    [tapGestureRecognizer KDI_addBlock:^(__kindof UIGestureRecognizer * _Nonnull gestureRecognizer) {
         if (self.text.length == 0) {
             return;
         }
         
-        CGPoint location = [self.tapGestureRecognizer locationInView:self];
+        CGPoint location = [tapGestureRecognizer locationInView:self];
         
         // adjust the location by the text container insets
         location.x -= self.textContainerInset.left;
@@ -487,7 +511,9 @@
         }
     }];
     
-    [self addGestureRecognizer:_tapGestureRecognizer];
+    [self addGestureRecognizer:tapGestureRecognizer];
+    
+    _gestureRecognizerDelegate = [[KSOTokenTextViewGestureRecognizerDelegate alloc] initWithGestureRecognizers:@[tapGestureRecognizer] textView:self];
 }
 
 - (NSRange)_tokenRangeForRange:(NSRange)range; {
