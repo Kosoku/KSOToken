@@ -90,9 +90,9 @@ NS_ASSUME_NONNULL_BEGIN
  @param tokenTextView The token text view that sent the message
  @param representedObjects The representedObjects that will be added to the token text view
  @param index The index in the receiver's represented objects array that the new represented objects will be inserted
- @return The filtered array of represented objects, return an empty array to prevent adding represented objects
+ @return The filtered array of represented objects, return nil or an empty array to prevent adding represented objects
  */
-- (NSArray<id<KSOTokenRepresentedObject> > *)tokenTextView:(KSOTokenTextView *)tokenTextView shouldAddRepresentedObjects:(NSArray<id<KSOTokenRepresentedObject> > *)representedObjects atIndex:(NSInteger)index;
+- (nullable NSArray<id<KSOTokenRepresentedObject> > *)tokenTextView:(KSOTokenTextView *)tokenTextView shouldAddRepresentedObjects:(NSArray<id<KSOTokenRepresentedObject> > *)representedObjects atIndex:(NSInteger)index;
 /**
  Called when an array of represented objects are added to the receiver at the provided index.
  
