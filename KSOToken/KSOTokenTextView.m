@@ -15,6 +15,7 @@
 
 #import "KSOTokenTextView.h"
 #import "KSOTokenDefaultTextAttachment.h"
+#import "KSOTokenCompletionDefaultTableViewCell.h"
 
 #import <Ditko/UIGestureRecognizer+KDIExtensions.h>
 
@@ -93,19 +94,28 @@
 
 @end
 
-@interface KSOTokenTextView () <UITextViewDelegate,NSTextStorageDelegate,UIGestureRecognizerDelegate>
+@interface KSOTokenTextView () <UITextViewDelegate,NSTextStorageDelegate,UIGestureRecognizerDelegate,UITableViewDataSource,UITableViewDelegate>
 @property (strong,nonatomic) KSOTokenTextViewInternalDelegate *internalDelegate;
 @property (strong,nonatomic) KSOTokenTextViewGestureRecognizerDelegate *gestureRecognizerDelegate;
 
 @property (copy,nonatomic) NSIndexSet *selectedTextAttachmentRanges;
 
+@property (strong,nonatomic) UITableView *tableView;
+@property (copy,nonatomic) NSArray<id<KSOTokenCompletionModel> > *completionModels;
+
 - (void)_KSOTokenTextViewInit;
+
 - (NSRange)_tokenRangeForRange:(NSRange)range;
 - (NSUInteger)_indexOfTokenTextAttachmentInRange:(NSRange)range textAttachment:(id<KSOTokenTextAttachment> *)textAttachment;
 - (NSArray *)_copyTokenTextAttachmentsInRange:(NSRange)range;
+
+- (void)_showCompletionsTableView;
+- (void)_hideCompletionsTableViewAndSelectCompletionModel:(id<KSOTokenCompletionModel>)completionModel;
+
 + (NSCharacterSet *)_defaultTokenizingCharacterSet;
 + (NSString *)_defaultTokenTextAttachmentClassName;
 + (NSTimeInterval)_defaultCompletionDelay;
++ (NSString *)_defaultCompletionTableViewCellClassName;
 + (UIFont *)_defaultTypingFont;
 + (UIColor *)_defaultTypingTextColor;
 @end
@@ -383,6 +393,26 @@
 - (void)textViewDidChange:(UITextView *)textView {
     
 }
+#pragma mark UITableViewDataSource
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    return self.completionModels.count;
+}
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    UITableViewCell<KSOTokenCompletionTableViewCell> *cell = [tableView dequeueReusableCellWithIdentifier:self.completionTableViewCellClassName];
+    
+    if (cell == nil) {
+        cell = [[NSClassFromString(self.completionTableViewCellClassName) alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:self.completionTableViewCellClassName];
+    }
+    
+    [cell setCompletionModel:self.completionModels[indexPath.row]];
+    
+    return cell;
+}
+#pragma mark UITableViewDelegate
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    // hide the completions table view and insert the selected completion
+    [self _hideCompletionsTableViewAndSelectCompletionModel:self.completionModels[indexPath.row]];
+}
 #pragma mark Properties
 @dynamic delegate;
 // the internal delegate tracks the external delegate that is set on the receiver
@@ -429,6 +459,9 @@
 - (void)setCompletionDelay:(NSTimeInterval)completionDelay {
     _completionDelay = completionDelay < 0.0 ? [self.class _defaultCompletionDelay] : completionDelay;
 }
+- (void)setCompletionTableViewCellClassName:(NSString *)completionTableViewCellClassName {
+    _completionTableViewCellClassName = completionTableViewCellClassName ?: [self.class _defaultCompletionTableViewCellClassName];
+}
 - (void)setTypingFont:(UIFont *)typingFont {
     _typingFont = typingFont ?: [self.class _defaultTypingFont];
 }
@@ -440,6 +473,7 @@
     _tokenizingCharacterSet = [self.class _defaultTokenizingCharacterSet];
     _tokenTextAttachmentClassName = [self.class _defaultTokenTextAttachmentClassName];
     _completionDelay = [self.class _defaultCompletionDelay];
+    _completionTableViewCellClassName = [self.class _defaultCompletionTableViewCellClassName];
     _typingFont = [self.class _defaultTypingFont];
     _typingTextColor = [self.class _defaultTypingTextColor];
     
@@ -606,6 +640,84 @@
     return representedObjects;
 }
 
+- (void)_showCompletionsTableView; {
+    // if the completion range is zero length, hide the completions table view
+    if ([self _tokenRangeForRange:self.selectedRange].length == 0) {
+        [self _hideCompletionsTableViewAndSelectCompletionModel:nil];
+        return;
+    }
+    
+    // if our completion table view doesn't exist, create it and ask the delegate to display it
+    if (self.tableView == nil) {
+        [self setTableView:[[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain]];
+        [self.tableView setEstimatedRowHeight:44.0];
+        [self.tableView setRowHeight:UITableViewAutomaticDimension];
+        [self.tableView setDataSource:self];
+        [self.tableView setDelegate:self];
+    }
+    
+    if ([self.delegate respondsToSelector:@selector(tokenTextView:showCompletionsTableView:)]) {
+        [self.delegate tokenTextView:self showCompletionsTableView:self.tableView];
+    }
+    
+    // if the delegate responds to either of the completion returning methods, continue
+    if ([self.delegate respondsToSelector:@selector(tokenTextView:completionModelsForSubstring:indexOfRepresentedObject:)]) {
+        
+        NSInteger index = [self _indexOfTokenTextAttachmentInRange:self.selectedRange textAttachment:NULL];
+        NSRange range = [self _tokenRangeForRange:self.selectedRange];
+        
+        [self setCompletionModels:[self.delegate tokenTextView:self completionModelsForSubstring:[self.text substringWithRange:range] indexOfRepresentedObject:index]];
+    }
+}
+- (void)_hideCompletionsTableViewAndSelectCompletionModel:(id<KSOTokenCompletionModel>)completionModel; {
+    // if the delegate responds, ask it to hide the completions table view
+    if ([self.delegate respondsToSelector:@selector(tokenTextView:hideCompletionsTableView:)]) {
+        // if we were given a completion to insert, do it
+        if (completionModel != nil) {
+            NSArray *representedObjects;
+            
+            if ([self.delegate respondsToSelector:@selector(tokenTextView:representedObjectsForCompletionModel:)]) {
+                representedObjects = [self.delegate tokenTextView:self representedObjectsForCompletionModel:completionModel];
+            }
+            else {
+                representedObjects = @[[self.delegate tokenTextView:self representedObjectForEditingText:[completionModel tokenCompletionModelTitle]]];
+            }
+            
+            NSInteger index = [self _indexOfTokenTextAttachmentInRange:self.selectedRange textAttachment:NULL];
+            
+            // if the delegate responds to tokenTextView:shouldAddRepresentedObjects:atIndex use its return value for the represented objects to insert
+            if ([self.delegate respondsToSelector:@selector(tokenTextView:shouldAddRepresentedObjects:atIndex:)]) {
+                representedObjects = [self.delegate tokenTextView:self shouldAddRepresentedObjects:representedObjects atIndex:index];
+            }
+            
+            if (representedObjects.count > 0) {
+                NSMutableAttributedString *temp = [[NSMutableAttributedString alloc] initWithString:@"" attributes:@{NSFontAttributeName: self.typingFont, NSForegroundColorAttributeName: self.typingTextColor}];
+                
+                for (id<KSOTokenRepresentedObject> representedObject in representedObjects) {
+                    NSString *displayText = representedObject.tokenRepresentedObjectDisplayName;
+                    
+                    [temp appendAttributedString:[NSAttributedString attributedStringWithAttachment:[[NSClassFromString(self.tokenTextAttachmentClassName) alloc] initWithRepresentedObject:representedObject text:displayText tokenTextView:self]]];
+                }
+                
+                if (![self.delegate respondsToSelector:@selector(tokenTextView:shouldAddRepresentedObjects:atIndex:)] ||
+                    ([self.delegate respondsToSelector:@selector(tokenTextView:shouldAddRepresentedObjects:atIndex:)] &&
+                     [self.delegate tokenTextView:self shouldAddRepresentedObjects:representedObjects atIndex:index])) {
+                    
+                        [self.textStorage replaceCharactersInRange:[self _tokenRangeForRange:self.selectedRange] withAttributedString:temp];
+                        
+                        if ([self.delegate respondsToSelector:@selector(tokenTextView:didAddRepresentedObjects:atIndex:)]) {
+                            [self.delegate tokenTextView:self didAddRepresentedObjects:representedObjects atIndex:index];
+                        }
+                }
+            }
+        }
+        
+        [self.delegate tokenTextView:self hideCompletionsTableView:self.tableView];
+        
+        [self setCompletionModels:nil];
+    }
+}
+
 + (NSCharacterSet *)_defaultTokenizingCharacterSet; {
     NSMutableCharacterSet *retval = [[NSCharacterSet newlineCharacterSet] mutableCopy];
     
@@ -618,6 +730,9 @@
 }
 + (NSTimeInterval)_defaultCompletionDelay; {
     return 0.0;
+}
++ (NSString *)_defaultCompletionTableViewCellClassName; {
+    return NSStringFromClass([KSOTokenCompletionDefaultTableViewCell class]);
 }
 + (UIFont *)_defaultTypingFont; {
     return [UIFont systemFontOfSize:17.0];

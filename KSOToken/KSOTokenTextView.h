@@ -15,6 +15,7 @@
 
 #import <Ditko/KDITextView.h>
 #import <KSOToken/KSOTokenRepresentedObject.h>
+#import <KSOToken/KSOTokenCompletionModel.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -57,6 +58,12 @@ NS_ASSUME_NONNULL_BEGIN
  The default is 0.0.
  */
 @property (assign,nonatomic) NSTimeInterval completionDelay;
+/**
+ Set and get the completion table view cell class of the receiver. This must be the class of an object conforming to BBTokenCompletionTableViewCell.
+ 
+ The default is BBTokenCompletionDefaultTableViewCell.
+ */
+@property (copy,nonatomic,null_resettable) NSString *completionTableViewCellClassName UI_APPEARANCE_SELECTOR;
 
 /**
  Set and get the typing font of the receiver. Set this instead of the font of the receiver.
@@ -146,6 +153,42 @@ NS_ASSUME_NONNULL_BEGIN
  @return An array of represented objects created by reading from pasteboard
  */
 - (nullable NSArray<id<KSOTokenRepresentedObject> > *)tokenTextView:(KSOTokenTextView *)tokenTextView readFromPasteboard:(UIPasteboard *)pasteboard;
+
+/**
+ Called when the receiver's delegate should display the completions table view.
+ 
+ The provided table view should be inserted into the view hierarchy and its frame set accordingly.
+ 
+ @param tokenTextView The token text view that sent the message
+ @param tableView The completions table view
+ */
+- (void)tokenTextView:(KSOTokenTextView *)tokenTextView showCompletionsTableView:(UITableView *)tableView;
+/**
+ Called when the receiver's delegate should hide the completions table view.
+ 
+ The provided table view should be removed from the view hierarchy.
+ 
+ @param tokenTextView The token text view that sent the message
+ @param tableView The completions table view
+ */
+- (void)tokenTextView:(KSOTokenTextView *)tokenTextView hideCompletionsTableView:(UITableView *)tableView;
+/**
+ Return the possible completions, which should be an array of objects conforming to BBTokenCompletion, for the provided substring and index.
+ 
+ @param tokenTextView The token text view that sent the message
+ @param substring The substring to provide completions for
+ @param index The index of the represented object where the completion would be inserted
+ @return An array of objects conforming to BBTokenCompletion
+ */
+- (nullable NSArray<id<KSOTokenCompletionModel> > *)tokenTextView:(KSOTokenTextView *)tokenTextView completionModelsForSubstring:(NSString *)substring indexOfRepresentedObject:(NSInteger)index;
+/**
+ Called when the user selects a row in the completions table view. This method should return the corresponding represented object for the selected completion object.
+ 
+ @param tokenTextView The token text view that sent the message
+ @param completionModel The completion model that was selected
+ @return The represented object for the selected completion
+ */
+- (NSArray<id<KSOTokenRepresentedObject> > *)tokenTextView:(KSOTokenTextView *)tokenTextView representedObjectsForCompletionModel:(id<KSOTokenCompletionModel>)completionModel;
 
 @end
 
