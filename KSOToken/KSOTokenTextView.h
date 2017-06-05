@@ -173,7 +173,7 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)tokenTextView:(KSOTokenTextView *)tokenTextView hideCompletionsTableView:(UITableView *)tableView;
 /**
- Return the possible completions, which should be an array of objects conforming to BBTokenCompletion, for the provided substring and index.
+ Return the possible completions, which should be an array of objects conforming to KSOTokenCompletionModel, for the provided substring and index.
  
  @param tokenTextView The token text view that sent the message
  @param substring The substring to provide completions for
@@ -181,6 +181,15 @@ NS_ASSUME_NONNULL_BEGIN
  @return An array of objects conforming to BBTokenCompletion
  */
 - (nullable NSArray<id<KSOTokenCompletionModel> > *)tokenTextView:(KSOTokenTextView *)tokenTextView completionModelsForSubstring:(NSString *)substring indexOfRepresentedObject:(NSInteger)index;
+/**
+ Determine the possible completions, which should be an array of objects conforming to BBTokenCompletion, for the provided substring and index and invoke the completion block. If this method is implemented, it is preferred over tokenTextView:completionModelsForSubstring:indexOfRepresentedObject:.
+ 
+ @param tokenTextView The token text view that sent the message
+ @param substring The substring to provide completions for
+ @param index The index of the represented object where the completion would be inserted
+ @param completion The completion block to invoke with the array of completion model objects
+ */
+- (void)tokenTextView:(KSOTokenTextView *)tokenTextView completionModelsForSubstring:(NSString *)substring indexOfRepresentedObject:(NSInteger)index completion:(void(^)(NSArray<id<KSOTokenCompletionModel> > * _Nullable completionModels))completion;
 /**
  Called when the user selects a row in the completions table view. This method should return the corresponding represented object for the selected completion object.
  

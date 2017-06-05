@@ -18,6 +18,7 @@
 #import "KSOTokenCompletionDefaultTableViewCell.h"
 
 #import <Ditko/UIGestureRecognizer+KDIExtensions.h>
+#import <Stanley/KSTFunctions.h>
 
 @interface KSOTokenTextViewGestureRecognizerDelegate : NSObject <UIGestureRecognizerDelegate>
 @property (copy,nonatomic) NSArray *gestureRecognizers;
@@ -248,7 +249,7 @@
         [self setSelectedRange:newSelectedRange];
         
         // hide the completion table view if it was visible
-//        [self _hideCompletionsTableViewAndSelectCompletion:nil];
+        [self _hideCompletionsTableViewAndSelectCompletionModel:nil];
         
         if ([self.delegate respondsToSelector:@selector(tokenTextView:didAddRepresentedObjects:atIndex:)]) {
             [self.delegate tokenTextView:self didAddRepresentedObjects:representedObjects atIndex:index];
@@ -310,7 +311,7 @@
                 [self setSelectedRange:NSMakeRange(tokenRange.location + 1, 0)];
                 
                 // hide the completion table view if it was visible
-//                [self _hideCompletionsTableViewAndSelectCompletion:nil];
+                [self _hideCompletionsTableViewAndSelectCompletionModel:nil];
                 
                 if ([self.delegate respondsToSelector:@selector(tokenTextView:didAddRepresentedObjects:atIndex:)]) {
                     [self.delegate tokenTextView:self didAddRepresentedObjects:representedObjects atIndex:index];
@@ -661,7 +662,17 @@
     }
     
     // if the delegate responds to either of the completion returning methods, continue
-    if ([self.delegate respondsToSelector:@selector(tokenTextView:completionModelsForSubstring:indexOfRepresentedObject:)]) {
+    if ([self.delegate respondsToSelector:@selector(tokenTextView:completionModelsForSubstring:indexOfRepresentedObject:completion:)]) {
+        NSInteger index = [self _indexOfTokenTextAttachmentInRange:self.selectedRange textAttachment:NULL];
+        NSRange range = [self _tokenRangeForRange:self.selectedRange];
+        
+        [self.delegate tokenTextView:self completionModelsForSubstring:[self.text substringWithRange:range] indexOfRepresentedObject:index completion:^(NSArray<id<KSOTokenCompletionModel>> * _Nullable completionModels) {
+            KSTDispatchMainSync(^{
+                [self setCompletionModels:completionModels];
+            });
+        }];
+    }
+    else if ([self.delegate respondsToSelector:@selector(tokenTextView:completionModelsForSubstring:indexOfRepresentedObject:)]) {
         
         NSInteger index = [self _indexOfTokenTextAttachmentInRange:self.selectedRange textAttachment:NULL];
         NSRange range = [self _tokenRangeForRange:self.selectedRange];
@@ -753,6 +764,31 @@
     [_selectedTextAttachmentRanges enumerateRangesUsingBlock:^(NSRange range, BOOL *stop) {
         [self.layoutManager invalidateDisplayForCharacterRange:range];
     }];
+}
+
+- (void)setTableView:(UITableView *)tableView {
+    _tableView = tableView;
+    
+    if (_tableView == nil) {
+        [self setCompletionModels:nil];
+    }
+}
+- (void)setCompletionModels:(NSArray<id<KSOTokenCompletionModel>> *)completionModels {
+    _completionModels = completionModels;
+    
+    if (_completionModels.count == 0 &&
+        self.tableView.window != nil) {
+        
+        [self.tableView setHidden:YES];
+    }
+    
+    [self.tableView reloadData];
+    
+    if (_completionModels.count > 0 &&
+        self.tableView.window != nil) {
+        
+        [self.tableView setHidden:NO];
+    }
 }
 
 @end
