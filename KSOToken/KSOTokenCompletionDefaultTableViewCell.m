@@ -15,15 +15,35 @@
 
 #import "KSOTokenCompletionDefaultTableViewCell.h"
 
+#import <Stanley/KSTScopeMacros.h>
+
+static void *kObservingContext = &kObservingContext;
+
 @interface KSOTokenCompletionDefaultTableViewCell ()
 @property (strong,nonatomic) UILabel *titleLabel;
+
+- (void)_updateTitleLabel;
+
++ (UIFont *)_defaultTitleFont;
++ (UIColor *)_defaultTitleTextColor;
++ (UIColor *)_defaultHighlightedBackgroundColor;
 @end
 
 @implementation KSOTokenCompletionDefaultTableViewCell
 
+- (void)dealloc {
+    [self removeObserver:self forKeyPath:@kstKeypath(self,titleFont) context:kObservingContext];
+    [self removeObserver:self forKeyPath:@kstKeypath(self,titleTextColor) context:kObservingContext];
+    [self removeObserver:self forKeyPath:@kstKeypath(self,highlightBackgroundColor) context:kObservingContext];
+}
+
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     if (!(self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]))
         return nil;
+    
+    _titleFont = [self.class _defaultTitleFont];
+    _titleTextColor = [self.class _defaultTitleTextColor];
+    _highlightBackgroundColor = [self.class _defaultHighlightedBackgroundColor];
     
     _titleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
     [_titleLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
@@ -32,25 +52,66 @@
     [self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-[view]-|" options:0 metrics:nil views:@{@"view": _titleLabel}]];
     [self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-[view]-|" options:0 metrics:nil views:@{@"view": _titleLabel}]];
     
+    [self addObserver:self forKeyPath:@kstKeypath(self,titleFont) options:0 context:kObservingContext];
+    [self addObserver:self forKeyPath:@kstKeypath(self,titleTextColor) options:0 context:kObservingContext];
+    [self addObserver:self forKeyPath:@kstKeypath(self,highlightBackgroundColor) options:0 context:kObservingContext];
+    
     return self;
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context {
+    if (context == kObservingContext) {
+        [self _updateTitleLabel];
+    }
+    else {
+        [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
+    }
 }
 
 @synthesize completionModel=_completionModel;
 - (void)setCompletionModel:(id<KSOTokenCompletionModel>)completionModel {
     _completionModel = completionModel;
     
-    NSMutableAttributedString *temp = [[NSMutableAttributedString alloc] initWithString:_completionModel.tokenCompletionModelTitle attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:17.0], NSForegroundColorAttributeName: UIColor.blackColor}];
+    [self _updateTitleLabel];
+}
+
+- (void)setTitleFont:(UIFont *)titleFont {
+    _titleFont = titleFont ?: [self.class _defaultTitleFont];
+}
+- (void)setTitleTextColor:(UIColor *)titleTextColor {
+    _titleTextColor = titleTextColor ?: [self.class _defaultTitleTextColor];
+}
+- (void)setHighlightBackgroundColor:(UIColor *)highlightBackgroundColor {
+    _highlightBackgroundColor = highlightBackgroundColor ?: [self.class _defaultHighlightedBackgroundColor];
+}
+
+- (void)_updateTitleLabel; {
+    if (self.completionModel == nil) {
+        return;
+    }
     
-    if ([_completionModel respondsToSelector:@selector(tokenCompletionModelIndexes)]) {
-        [_completionModel.tokenCompletionModelIndexes enumerateRangesUsingBlock:^(NSRange range, BOOL * _Nonnull stop) {
-            [temp addAttributes:@{NSBackgroundColorAttributeName: UIColor.yellowColor} range:range];
+    NSMutableAttributedString *temp = [[NSMutableAttributedString alloc] initWithString:self.completionModel.tokenCompletionModelTitle attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:17.0], NSForegroundColorAttributeName: self.titleTextColor}];
+    
+    if ([self.completionModel respondsToSelector:@selector(tokenCompletionModelIndexes)]) {
+        [self.completionModel.tokenCompletionModelIndexes enumerateRangesUsingBlock:^(NSRange range, BOOL * _Nonnull stop) {
+            [temp addAttributes:@{NSBackgroundColorAttributeName: self.highlightBackgroundColor} range:range];
         }];
     }
-    else if ([_completionModel respondsToSelector:@selector(tokenCompletionModelRange)]) {
-        [temp addAttributes:@{NSBackgroundColorAttributeName: UIColor.yellowColor} range:_completionModel.tokenCompletionModelRange];
+    else if ([self.completionModel respondsToSelector:@selector(tokenCompletionModelRange)]) {
+        [temp addAttributes:@{NSBackgroundColorAttributeName: self.highlightBackgroundColor} range:self.completionModel.tokenCompletionModelRange];
     }
     
     [self.titleLabel setAttributedText:temp];
+}
+
++ (UIFont *)_defaultTitleFont; {
+    return [UIFont systemFontOfSize:17.0];
+}
++ (UIColor *)_defaultTitleTextColor; {
+    return UIColor.blackColor;
+}
++ (UIColor *)_defaultHighlightedBackgroundColor; {
+    return UIColor.yellowColor;
 }
 
 @end

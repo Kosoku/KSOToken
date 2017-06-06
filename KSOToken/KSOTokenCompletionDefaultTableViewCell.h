@@ -23,6 +23,25 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @interface KSOTokenCompletionDefaultTableViewCell : UITableViewCell <KSOTokenCompletionTableViewCell>
 
+/**
+ Set and get the title font.
+ 
+ The default is [UIFont systemFontOfSize:17.0].
+ */
+@property (strong,nonatomic,null_resettable) UIFont *titleFont;
+/**
+ Set and get the title text color.
+ 
+ The default is UIColor.blackColor.
+ */
+@property (strong,nonatomic,null_resettable) UIColor *titleTextColor;
+/**
+ Set and get the highlight background color, which is used to draw the matching range if the represented completion model implements the optional methods.
+ 
+ The default is UIColor.yellowColor.
+ */
+@property (strong,nonatomic,null_resettable) UIColor *highlightBackgroundColor;
+
 @end
 
 NS_ASSUME_NONNULL_END

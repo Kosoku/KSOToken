@@ -17,6 +17,9 @@
 #import "KSOTokenTextView.h"
 
 #import <Stanley/KSTGeometryFunctions.h>
+#import <Stanley/KSTScopeMacros.h>
+
+static void *kObservingContext = &kObservingContext;
 
 @interface KSOTokenDefaultTextAttachment ()
 @property (readwrite,weak,nonatomic) KSOTokenTextView *tokenTextView;
@@ -24,16 +27,26 @@
 @property (copy,nonatomic) NSString *text;
 @property (strong,nonatomic) UIImage *highlightedImage;
 
+- (void)_updateImages;
 - (void)_updateImage:(BOOL)highlighted maxWidth:(CGFloat)maxWidth;
 - (UIFont *)_defaultTokenFont;
 - (UIColor *)_defaultTokenTextColor;
 + (UIColor *)_defaultTokenBackgroundColor;
 + (UIColor *)_defaultTokenHighlightedTextColor;
 - (UIColor *)_defaultTokenHighlightedBackgroundColor;
-+ (CGFloat)_defaultCornerRadius;
++ (CGFloat)_defaultTokenCornerRadius;
 @end
 
 @implementation KSOTokenDefaultTextAttachment
+
+- (void)dealloc {
+    [self removeObserver:self forKeyPath:@kstKeypath(self,tokenFont) context:kObservingContext];
+    [self removeObserver:self forKeyPath:@kstKeypath(self,tokenTextColor) context:kObservingContext];
+    [self removeObserver:self forKeyPath:@kstKeypath(self,tokenBackgroundColor) context:kObservingContext];
+    [self removeObserver:self forKeyPath:@kstKeypath(self,tokenHighlightedTextColor) context:kObservingContext];
+    [self removeObserver:self forKeyPath:@kstKeypath(self,tokenHighlightedBackgroundColor) context:kObservingContext];
+    [self removeObserver:self forKeyPath:@kstKeypath(self,tokenCornerRadius) context:kObservingContext];
+}
 
 - (UIImage *)imageForBounds:(CGRect)imageBounds textContainer:(NSTextContainer *)textContainer characterIndex:(NSUInteger)charIndex {
     return NSLocationInRange(charIndex, self.tokenTextView.selectedRange) ? self.highlightedImage : self.image;
@@ -44,6 +57,15 @@
     retval.origin.y = ceil(self.tokenFont.descender);
     
     return retval;
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context {
+    if (context == kObservingContext) {
+        [self _updateImages];
+    }
+    else {
+        [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
+    }
 }
 
 - (instancetype)initWithRepresentedObject:(id<KSOTokenRepresentedObject>)representedObject text:(NSString *)text tokenTextView:(KSOTokenTextView *)tokenTextView; {
@@ -62,16 +84,26 @@
     _tokenBackgroundColor = [self.class _defaultTokenBackgroundColor];
     _tokenHighlightedTextColor = [self.class _defaultTokenHighlightedTextColor];
     _tokenHighlightedBackgroundColor = [self _defaultTokenHighlightedBackgroundColor];
-    _tokenCornerRadius = [self.class _defaultCornerRadius];
+    _tokenCornerRadius = [self.class _defaultTokenCornerRadius];
     
-    CGFloat maxWidth = CGRectGetWidth(tokenTextView.frame);
+    [self addObserver:self forKeyPath:@kstKeypath(self,tokenFont) options:0 context:kObservingContext];
+    [self addObserver:self forKeyPath:@kstKeypath(self,tokenTextColor) options:0 context:kObservingContext];
+    [self addObserver:self forKeyPath:@kstKeypath(self,tokenBackgroundColor) options:0 context:kObservingContext];
+    [self addObserver:self forKeyPath:@kstKeypath(self,tokenHighlightedTextColor) options:0 context:kObservingContext];
+    [self addObserver:self forKeyPath:@kstKeypath(self,tokenHighlightedBackgroundColor) options:0 context:kObservingContext];
+    [self addObserver:self forKeyPath:@kstKeypath(self,tokenCornerRadius) options:0 context:kObservingContext];
     
-    [self _updateImage:NO maxWidth:maxWidth];
-    [self _updateImage:YES maxWidth:maxWidth];
+    [self _updateImages];
     
     return self;
 }
 
+- (void)_updateImages {
+    CGFloat maxWidth = CGRectGetWidth(self.tokenTextView.frame);
+    
+    [self _updateImage:NO maxWidth:maxWidth];
+    [self _updateImage:YES maxWidth:maxWidth];
+}
 - (void)_updateImage:(BOOL)highlighted maxWidth:(CGFloat)maxWidth; {
     CGSize size = [self.text sizeWithAttributes:@{NSFontAttributeName: self.tokenFont}];
     
@@ -130,7 +162,7 @@
 - (UIColor *)_defaultTokenHighlightedBackgroundColor; {
     return self.tokenTextView.tintColor;
 }
-+ (CGFloat)_defaultCornerRadius; {
++ (CGFloat)_defaultTokenCornerRadius; {
     return 0.0;
 }
 

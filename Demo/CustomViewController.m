@@ -17,6 +17,53 @@
 
 #import <KSOToken/KSOToken.h>
 
+@interface TokenTextAttachment : KSOTokenDefaultTextAttachment
+
+@end
+
+@implementation TokenTextAttachment
+
+- (instancetype)initWithRepresentedObject:(id<KSOTokenRepresentedObject>)representedObject text:(NSString *)text tokenTextView:(KSOTokenTextView *)tokenTextView {
+    if (!(self = [super initWithRepresentedObject:representedObject text:text tokenTextView:tokenTextView]))
+        return nil;
+    
+    [self setTokenTextColor:tokenTextView.typingTextColor];
+    [self setTokenBackgroundColor:tokenTextView.tintColor];
+    [self setTokenHighlightedTextColor:tokenTextView.tintColor];
+    [self setTokenHighlightedBackgroundColor:tokenTextView.typingTextColor];
+    [self setTokenCornerRadius:3.0];
+    
+    return self;
+}
+
+@end
+
+@interface CompletionTableViewCell : KSOTokenCompletionDefaultTableViewCell
+
+@end
+
+@implementation CompletionTableViewCell
+
+- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
+    if (!(self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]))
+        return nil;
+    
+    [self setBackgroundColor:UIColor.blackColor];
+    [self setTitleTextColor:UIColor.whiteColor];
+    
+    return self;
+}
+
+- (void)didMoveToSuperview {
+    [super didMoveToSuperview];
+    
+    if (self.superview != nil) {
+        [self setHighlightBackgroundColor:[self.superview.tintColor colorWithAlphaComponent:0.75]];
+    }
+}
+
+@end
+
 @interface WordCompletion : NSObject <KSOTokenCompletionModel>
 @property (copy,nonatomic) NSString *word;
 @property (copy,nonatomic) NSIndexSet *indexes;
@@ -60,11 +107,15 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    [self.view setBackgroundColor:UIColor.whiteColor];
+    [self.view setBackgroundColor:UIColor.blackColor];
     
     [self setTextView:[[KSOTokenTextView alloc] initWithFrame:CGRectZero]];
     [self.textView setTranslatesAutoresizingMaskIntoConstraints:NO];
     [self.textView setScrollEnabled:NO];
+    [self.textView setBackgroundColor:UIColor.blackColor];
+    [self.textView setTypingTextColor:UIColor.whiteColor];
+    [self.textView setTokenTextAttachmentClassName:NSStringFromClass([TokenTextAttachment class])];
+    [self.textView setCompletionTableViewCellClassName:NSStringFromClass([CompletionTableViewCell class])];
     [self.textView setPlaceholder:@"Type a word then comma or return"];
     [self.textView setDelegate:self];
     [self.view addSubview:self.textView];
@@ -80,6 +131,7 @@
 
 - (void)tokenTextView:(KSOTokenTextView *)tokenTextView showCompletionsTableView:(UITableView *)tableView {
     [tableView setTranslatesAutoresizingMaskIntoConstraints:NO];
+    [tableView setSeparatorColor:UIColor.whiteColor];
     [self.view addSubview:tableView];
     
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[view]|" options:0 metrics:nil views:@{@"view": tableView}]];
