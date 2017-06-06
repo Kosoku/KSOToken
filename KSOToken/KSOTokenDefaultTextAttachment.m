@@ -20,7 +20,7 @@
 
 @interface KSOTokenDefaultTextAttachment ()
 @property (readwrite,weak,nonatomic) KSOTokenTextView *tokenTextView;
-@property (readwrite,strong,nonatomic) id representedObject;
+@property (readwrite,strong,nonatomic) id<KSOTokenRepresentedObject> representedObject;
 @property (copy,nonatomic) NSString *text;
 @property (strong,nonatomic) UIImage *highlightedImage;
 
@@ -40,7 +40,7 @@
     return retval;
 }
 
-- (instancetype)initWithRepresentedObject:(id)representedObject text:(NSString *)text tokenTextView:(KSOTokenTextView *)tokenTextView; {
+- (instancetype)initWithRepresentedObject:(id<KSOTokenRepresentedObject>)representedObject text:(NSString *)text tokenTextView:(KSOTokenTextView *)tokenTextView; {
     if (!(self = [super initWithData:nil ofType:nil]))
         return nil;
     
