@@ -5,7 +5,7 @@
 [![Platform](http://img.shields.io/cocoapods/p/KSOToken.svg)]()
 [![License](http://img.shields.io/cocoapods/l/KSOToken.svg)](https://github.com/Kosoku/KSOToken/blob/master/license.txt)
 
-*KSOToken* is an iOS framework containing classes the mirror the functionality provided by `NSTokenField` on macOS. It provides completion support and its appearance is highly customizable. It relies on the [Stanley](https://github.com/Kosoku/Stanley) and [Ditko](https://github.com/Kosoku/Ditko), and [Loki](https://github.com/Kosoku/Loki) frameworks.
+*KSOToken* is a `UITextView` subclass (along with supporting classes) that provides functionality similar to `NSTokenField` on macOS. It provides completion support and its appearance is highly customizable. The default appearance matches system apps that use similar controls (e.g. Mail). It relies on the [Stanley](https://github.com/Kosoku/Stanley) and [Ditko](https://github.com/Kosoku/Ditko), and [Loki](https://github.com/Kosoku/Loki) frameworks.
 
 ![iOS](screenshots/iOS.gif)
 
