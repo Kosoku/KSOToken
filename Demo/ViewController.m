@@ -21,21 +21,34 @@
 
 @interface CompletionModel : NSObject <KSOTokenCompletionModel>
 @property (strong,nonatomic) CNContact *contact;
+@property (assign,nonatomic) NSRange range;
 
-- (instancetype)initWithContact:(CNContact *)contact;
+- (instancetype)initWithContact:(CNContact *)contact substring:(NSString *)substring;
 @end
 
 @implementation CompletionModel
 
 - (NSString *)tokenCompletionModelTitle {
-    return [[@[self.contact.givenName,self.contact.middleName,self.contact.familyName] componentsJoinedByString:@" "] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    NSMutableArray *strs = [NSMutableArray arrayWithArray:@[self.contact.givenName,self.contact.middleName,self.contact.familyName]];
+    
+    for (NSString *s in [strs copy]) {
+        if (s.length == 0) {
+            [strs removeObject:s];
+        }
+    }
+    
+    return [[strs componentsJoinedByString:@" "] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+}
+- (NSRange)tokenCompletionModelRange {
+    return self.range;
 }
 
-- (instancetype)initWithContact:(CNContact *)contact {
+- (instancetype)initWithContact:(CNContact *)contact substring:(NSString *)substring {
     if (!(self = [super init]))
         return nil;
     
     _contact = contact;
+    _range = [self.tokenCompletionModelTitle rangeOfString:substring options:NSCaseInsensitiveSearch];
     
     return self;
 }
@@ -88,7 +101,7 @@
         NSMutableArray *completionModels = [[NSMutableArray alloc] init];
         
         for (CNContact *c in contacts) {
-            [completionModels addObject:[[CompletionModel alloc] initWithContact:c]];
+            [completionModels addObject:[[CompletionModel alloc] initWithContact:c substring:substring]];
         }
         
         completion(completionModels);
