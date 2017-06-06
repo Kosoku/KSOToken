@@ -59,9 +59,9 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property (assign,nonatomic) NSTimeInterval completionDelay;
 /**
- Set and get the completion table view cell class of the receiver. This must be the class of an object conforming to BBTokenCompletionTableViewCell.
+ Set and get the completion table view cell class of the receiver. This must be the class of an object conforming to KSOTokenCompletionTableViewCell.
  
- The default is BBTokenCompletionDefaultTableViewCell.
+ The default is KSOTokenCompletionDefaultTableViewCell.
  */
 @property (copy,nonatomic,null_resettable) NSString *completionTableViewCellClassName UI_APPEARANCE_SELECTOR;
 
@@ -178,11 +178,11 @@ NS_ASSUME_NONNULL_BEGIN
  @param tokenTextView The token text view that sent the message
  @param substring The substring to provide completions for
  @param index The index of the represented object where the completion would be inserted
- @return An array of objects conforming to BBTokenCompletion
+ @return An array of objects conforming to KSOTokenCompletionModel
  */
 - (nullable NSArray<id<KSOTokenCompletionModel> > *)tokenTextView:(KSOTokenTextView *)tokenTextView completionModelsForSubstring:(NSString *)substring indexOfRepresentedObject:(NSInteger)index;
 /**
- Determine the possible completions, which should be an array of objects conforming to BBTokenCompletion, for the provided substring and index and invoke the completion block. If this method is implemented, it is preferred over tokenTextView:completionModelsForSubstring:indexOfRepresentedObject:.
+ Determine the possible completions, which should be an array of objects conforming to KSOTokenCompletionModel, for the provided substring and index and invoke the completion block. If this method is implemented, it is preferred over tokenTextView:completionModelsForSubstring:indexOfRepresentedObject:.
  
  @param tokenTextView The token text view that sent the message
  @param substring The substring to provide completions for
