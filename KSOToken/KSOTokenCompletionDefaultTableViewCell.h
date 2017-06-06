@@ -16,6 +16,13 @@
 #import <UIKit/UIKit.h>
 #import <KSOToken/KSOTokenCompletionTableViewCell.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
+/**
+ KSOTokenCompletionDefaultTableViewCell is a UITableViewCell subclass that is used by default to display model objects conforming to KSOTokenCompletionModel in the completions table view. You can provide a custom class conforming to KSOTokenCompletionTableViewCell.
+ */
 @interface KSOTokenCompletionDefaultTableViewCell : UITableViewCell <KSOTokenCompletionTableViewCell>
 
 @end
+
+NS_ASSUME_NONNULL_END

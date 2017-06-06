@@ -18,8 +18,16 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+/**
+ Protocol for the UITableViewCell used to display objects conforming to KSOTokenCompletionModel.
+ */
 @protocol KSOTokenCompletionTableViewCell <NSObject>
 @required
+/**
+ Set and get the completion model being displayed by the receiver.
+ 
+ @see KSOTokenCompletionModel
+ */
 @property (strong,nonatomic) id<KSOTokenCompletionModel> completionModel;
 @end
 

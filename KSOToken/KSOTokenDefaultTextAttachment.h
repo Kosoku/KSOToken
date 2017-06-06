@@ -16,6 +16,11 @@
 #import <UIKit/UIKit.h>
 #import <KSOToken/KSOTokenTextAttachment.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
+/**
+ KSOTokenDefaultTextAttachment is an NSTextAttachment subclass that is used to represent model objects conforming to KSOTokenRepresentedObject. You can provide a custom class that conforms to KSOTokenTextAttachment or subclass KSOTokenDefaultTextAttachment and modify its appearance using the public properties.
+ */
 @interface KSOTokenDefaultTextAttachment : NSTextAttachment <KSOTokenTextAttachment>
 
 /**
@@ -23,31 +28,31 @@
  
  The default is self.tokenTextView.typingFont.
  */
-@property (strong,nonatomic) UIFont *tokenFont;
+@property (strong,nonatomic,null_resettable) UIFont *tokenFont;
 /**
  Set and get the text color used to draw tokens.
  
  The default is self.tokenTextView.tintColor.
  */
-@property (strong,nonatomic) UIColor *tokenTextColor;
+@property (strong,nonatomic,null_resettable) UIColor *tokenTextColor;
 /**
  Set and get the background color used to draw tokens.
  
  The default is [UIColor clearColor].
  */
-@property (strong,nonatomic) UIColor *tokenBackgroundColor;
+@property (strong,nonatomic,null_resettable) UIColor *tokenBackgroundColor;
 /**
  Set and get the text color used to draw highlighted tokens.
  
  The default is [UIColor whiteColor].
  */
-@property (strong,nonatomic) UIColor *tokenHighlightedTextColor;
+@property (strong,nonatomic,null_resettable) UIColor *tokenHighlightedTextColor;
 /**
  Set and get the background color used to draw highlighted tokens.
  
  The default is self.tokenTextView.tintColor.
  */
-@property (strong,nonatomic) UIColor *tokenHighlightedBackgroundColor;
+@property (strong,nonatomic,null_resettable) UIColor *tokenHighlightedBackgroundColor;
 /**
  Set and get the corner radius used to draw tokens.
  
@@ -56,3 +61,5 @@
 @property (assign,nonatomic) CGFloat tokenCornerRadius;
 
 @end
+
+NS_ASSUME_NONNULL_END

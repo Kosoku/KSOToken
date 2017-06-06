@@ -20,6 +20,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @class KSOTokenTextView;
 
+/**
+ Protocol describing NSTextAttachment instances that represent model objects conforming to KSOTokenRepresentedObject in the text view.
+ */
 @protocol KSOTokenTextAttachment <NSObject>
 @required
 /**
@@ -28,6 +31,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (readonly,weak,nonatomic) KSOTokenTextView *tokenTextView;
 /**
  Get the represented object represented by the receiver.
+ 
+ @see KSOTokenRepresentedObject
  */
 @property (readonly,strong,nonatomic) id<KSOTokenRepresentedObject> representedObject;
 

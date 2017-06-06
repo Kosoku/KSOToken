@@ -17,6 +17,9 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+/**
+ Protocol for objects that will be displayed in the completions table view.
+ */
 @protocol KSOTokenCompletionModel <NSObject>
 @required
 /**

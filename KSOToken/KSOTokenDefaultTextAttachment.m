@@ -25,6 +25,12 @@
 @property (strong,nonatomic) UIImage *highlightedImage;
 
 - (void)_updateImage:(BOOL)highlighted maxWidth:(CGFloat)maxWidth;
+- (UIFont *)_defaultTokenFont;
+- (UIColor *)_defaultTokenTextColor;
++ (UIColor *)_defaultTokenBackgroundColor;
++ (UIColor *)_defaultTokenHighlightedTextColor;
+- (UIColor *)_defaultTokenHighlightedBackgroundColor;
++ (CGFloat)_defaultCornerRadius;
 @end
 
 @implementation KSOTokenDefaultTextAttachment
@@ -51,12 +57,12 @@
     _tokenTextView = tokenTextView;
     _text = [text copy];
     
-    _tokenFont = _tokenTextView.typingFont;
-    _tokenTextColor = _tokenTextView.tintColor;
-    _tokenBackgroundColor = UIColor.clearColor;
-    _tokenHighlightedTextColor = UIColor.whiteColor;
-    _tokenHighlightedBackgroundColor = _tokenTextView.tintColor;
-    _tokenCornerRadius = 3.0;
+    _tokenFont = [self _defaultTokenFont];
+    _tokenTextColor = [self _defaultTokenTextColor];
+    _tokenBackgroundColor = [self.class _defaultTokenBackgroundColor];
+    _tokenHighlightedTextColor = [self.class _defaultTokenHighlightedTextColor];
+    _tokenHighlightedBackgroundColor = [self _defaultTokenHighlightedBackgroundColor];
+    _tokenCornerRadius = [self.class _defaultCornerRadius];
     
     CGFloat maxWidth = CGRectGetWidth(tokenTextView.frame);
     
@@ -70,7 +76,7 @@
     CGSize size = [self.text sizeWithAttributes:@{NSFontAttributeName: self.tokenFont}];
     
     CGRect rect = CGRectIntegral(CGRectMake(0, 0, size.width, size.height));
-    CGFloat delta = 6.0;
+    CGFloat delta = 4.0;
     
     rect.size.width += delta;
     
@@ -83,7 +89,7 @@
     [highlighted ? self.tokenHighlightedBackgroundColor : self.tokenBackgroundColor setFill];
     [[UIBezierPath bezierPathWithRoundedRect:CGRectInset(rect, 2.0, 1.0) cornerRadius:self.tokenCornerRadius] fill];
     
-    UIFont *drawFont = [UIFont fontWithName:self.tokenFont.fontName size:self.tokenFont.pointSize];
+    UIFont *drawFont = self.tokenFont;
     CGSize drawSize = [self.text sizeWithAttributes:@{NSFontAttributeName: drawFont}];
     
     if (drawSize.width > CGRectGetWidth(rect)) {
@@ -107,6 +113,25 @@
     else {
         [self setImage:retval];
     }
+}
+
+- (UIFont *)_defaultTokenFont; {
+    return self.tokenTextView.typingFont;
+}
+- (UIColor *)_defaultTokenTextColor; {
+    return self.tokenTextView.tintColor;
+}
++ (UIColor *)_defaultTokenBackgroundColor; {
+    return UIColor.clearColor;
+}
++ (UIColor *)_defaultTokenHighlightedTextColor; {
+    return UIColor.whiteColor;
+}
+- (UIColor *)_defaultTokenHighlightedBackgroundColor; {
+    return self.tokenTextView.tintColor;
+}
++ (CGFloat)_defaultCornerRadius; {
+    return 0.0;
 }
 
 @end

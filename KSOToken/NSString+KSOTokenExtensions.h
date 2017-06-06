@@ -18,6 +18,9 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+/**
+ Protocol adding support for KSOTokenRepresentedObject to NSString. This allows using an instance of NSString wherever the API asks for an object conforming to KSOTokenRepresentedObject.
+ */
 @interface NSString (KSOTokenExtensions) <KSOTokenRepresentedObject>
 
 @end

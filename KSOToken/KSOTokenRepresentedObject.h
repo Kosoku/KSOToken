@@ -17,8 +17,14 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+/**
+ Protocol for model objects represented by text attachments in an instance of KSOTokenTextView.
+ */
 @protocol KSOTokenRepresentedObject <NSObject>
 @required
+/**
+ Get the display name of the receiver. This will be drawn as part of the text attachment that represents the object within the text view.
+ */
 @property (readonly,nonatomic) NSString *tokenRepresentedObjectDisplayName;
 @end
 
