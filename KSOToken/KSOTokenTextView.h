@@ -43,7 +43,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Set and get the character set used to delimit tokens.
  
- The default is [NSCharacterSet characterSetWithCharactersInString:@","] unioned with [NSCharacterSet newlineCharacterSet].
+ The default is the union of [NSCharacterSet characterSetWithCharactersInString:@","] and [NSCharacterSet newlineCharacterSet].
  */
 @property (copy,nonatomic,null_resettable) NSCharacterSet *tokenizingCharacterSet;
 /**
