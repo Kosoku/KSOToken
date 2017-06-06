@@ -19,7 +19,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /**
- KSOTokenDefaultTextAttachment is an NSTextAttachment subclass that is used to represent model objects conforming to KSOTokenRepresentedObject. You can provide a custom class that conforms to KSOTokenTextAttachment or subclass KSOTokenDefaultTextAttachment and modify its appearance using the public properties.
+ KSOTokenDefaultTextAttachment is an NSTextAttachment subclass that is used to represent model objects conforming to KSOTokenRepresentedObject. You can provide a custom class that conforms to KSOTokenTextAttachment or subclass KSOTokenDefaultTextAttachment and modify its appearance using the public properties. The default values match the appearance of native iOS apps that use similar controls (e.g. Mail).
  */
 @interface KSOTokenDefaultTextAttachment : NSTextAttachment <KSOTokenTextAttachment>
 

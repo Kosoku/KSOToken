@@ -19,7 +19,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /**
- KSOTokenCompletionDefaultTableViewCell is a UITableViewCell subclass that is used by default to display model objects conforming to KSOTokenCompletionModel in the completions table view. You can provide a custom class conforming to KSOTokenCompletionTableViewCell.
+ KSOTokenCompletionDefaultTableViewCell is a UITableViewCell subclass that is used by default to display model objects conforming to KSOTokenCompletionModel in the completions table view. You can provide a custom class conforming to KSOTokenCompletionTableViewCell. The default appearance uses a UILabel with the titleTextColor as the text color and highlightBackgroundColor as the background color when drawing matching ranges.
  */
 @interface KSOTokenCompletionDefaultTableViewCell : UITableViewCell <KSOTokenCompletionTableViewCell>
 
