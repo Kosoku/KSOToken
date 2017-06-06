@@ -57,7 +57,7 @@
     [self.textView setTranslatesAutoresizingMaskIntoConstraints:NO];
     [self.textView setScrollEnabled:NO];
     [self.textView setBackgroundColor:UIColor.lightGrayColor];
-    [self.textView setPlaceholder:@"Type words with spaces and press comma or the return key to tokenize them"];
+    [self.textView setPlaceholder:@"Type a name then comma or return"];
     [self.textView setDelegate:self];
     [self.view addSubview:self.textView];
     
