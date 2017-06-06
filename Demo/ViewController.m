@@ -63,8 +63,14 @@
 
 @implementation ViewController
 
+- (NSString *)title {
+    return @"Contacts";
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    [self.view setBackgroundColor:UIColor.whiteColor];
     
     [self setTextView:[[KSOTokenTextView alloc] initWithFrame:CGRectZero]];
     [self.textView setTranslatesAutoresizingMaskIntoConstraints:NO];

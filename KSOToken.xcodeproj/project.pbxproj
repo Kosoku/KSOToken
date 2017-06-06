@@ -11,7 +11,6 @@
 		070EC1C21EE1D4D400118FCC /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 070EC1C11EE1D4D400118FCC /* main.m */; };
 		070EC1C51EE1D4D400118FCC /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 070EC1C41EE1D4D400118FCC /* AppDelegate.m */; };
 		070EC1C81EE1D4D400118FCC /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 070EC1C71EE1D4D400118FCC /* ViewController.m */; };
-		070EC1CB1EE1D4D400118FCC /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 070EC1C91EE1D4D400118FCC /* Main.storyboard */; };
 		070EC1CD1EE1D4D400118FCC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 070EC1CC1EE1D4D400118FCC /* Assets.xcassets */; };
 		070EC1D01EE1D4D400118FCC /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 070EC1CE1EE1D4D400118FCC /* LaunchScreen.storyboard */; };
 		070EC1D61EE1D4EA00118FCC /* Stanley.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 070EC1D51EE1D4EA00118FCC /* Stanley.framework */; };
@@ -37,6 +36,8 @@
 		07C37A281EE1F4FE0046AE13 /* KSOTokenTextAttachment.h in Headers */ = {isa = PBXBuildFile; fileRef = 07C37A271EE1F4FE0046AE13 /* KSOTokenTextAttachment.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		07C37A2B1EE1F5F80046AE13 /* KSOTokenDefaultTextAttachment.h in Headers */ = {isa = PBXBuildFile; fileRef = 07C37A291EE1F5F80046AE13 /* KSOTokenDefaultTextAttachment.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		07C37A2C1EE1F5F80046AE13 /* KSOTokenDefaultTextAttachment.m in Sources */ = {isa = PBXBuildFile; fileRef = 07C37A2A1EE1F5F80046AE13 /* KSOTokenDefaultTextAttachment.m */; };
+		07C43DA51EE717A60014659D /* words.txt in Resources */ = {isa = PBXBuildFile; fileRef = 07C43DA41EE717A60014659D /* words.txt */; };
+		07C43DA81EE718410014659D /* CustomViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 07C43DA71EE718410014659D /* CustomViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -76,7 +77,6 @@
 		070EC1C41EE1D4D400118FCC /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		070EC1C61EE1D4D400118FCC /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
 		070EC1C71EE1D4D400118FCC /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
-		070EC1CA1EE1D4D400118FCC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		070EC1CC1EE1D4D400118FCC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		070EC1CF1EE1D4D400118FCC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		070EC1D11EE1D4D400118FCC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -98,6 +98,9 @@
 		07C37A271EE1F4FE0046AE13 /* KSOTokenTextAttachment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSOTokenTextAttachment.h; sourceTree = "<group>"; };
 		07C37A291EE1F5F80046AE13 /* KSOTokenDefaultTextAttachment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSOTokenDefaultTextAttachment.h; sourceTree = "<group>"; };
 		07C37A2A1EE1F5F80046AE13 /* KSOTokenDefaultTextAttachment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSOTokenDefaultTextAttachment.m; sourceTree = "<group>"; };
+		07C43DA41EE717A60014659D /* words.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = words.txt; sourceTree = "<group>"; };
+		07C43DA61EE718410014659D /* CustomViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomViewController.h; sourceTree = "<group>"; };
+		07C43DA71EE718410014659D /* CustomViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -188,7 +191,8 @@
 				070EC1C41EE1D4D400118FCC /* AppDelegate.m */,
 				070EC1C61EE1D4D400118FCC /* ViewController.h */,
 				070EC1C71EE1D4D400118FCC /* ViewController.m */,
-				070EC1C91EE1D4D400118FCC /* Main.storyboard */,
+				07C43DA61EE718410014659D /* CustomViewController.h */,
+				07C43DA71EE718410014659D /* CustomViewController.m */,
 				070EC1CC1EE1D4D400118FCC /* Assets.xcassets */,
 				070EC1CE1EE1D4D400118FCC /* LaunchScreen.storyboard */,
 				070EC1D11EE1D4D400118FCC /* Info.plist */,
@@ -201,6 +205,7 @@
 			isa = PBXGroup;
 			children = (
 				070EC1C11EE1D4D400118FCC /* main.m */,
+				07C43DA41EE717A60014659D /* words.txt */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -329,7 +334,7 @@
 			files = (
 				070EC1D01EE1D4D400118FCC /* LaunchScreen.storyboard in Resources */,
 				070EC1CD1EE1D4D400118FCC /* Assets.xcassets in Resources */,
-				070EC1CB1EE1D4D400118FCC /* Main.storyboard in Resources */,
+				07C43DA51EE717A60014659D /* words.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -354,6 +359,7 @@
 				070EC1C81EE1D4D400118FCC /* ViewController.m in Sources */,
 				070EC1C51EE1D4D400118FCC /* AppDelegate.m in Sources */,
 				070EC1C21EE1D4D400118FCC /* main.m in Sources */,
+				07C43DA81EE718410014659D /* CustomViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -368,14 +374,6 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		070EC1C91EE1D4D400118FCC /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				070EC1CA1EE1D4D400118FCC /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		070EC1CE1EE1D4D400118FCC /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
