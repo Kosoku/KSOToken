@@ -56,7 +56,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Set and get the corner radius used to draw tokens.
  
- The default is 3.0.
+ The default is 0.0.
  */
 @property (assign,nonatomic) CGFloat tokenCornerRadius;
 
