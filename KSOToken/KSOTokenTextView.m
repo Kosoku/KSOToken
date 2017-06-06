@@ -60,11 +60,13 @@
 
 @implementation KSOTokenTextViewInternalDelegate
 
-- (id)forwardingTargetForSelector:(SEL)aSelector {
-    if ([self.delegate respondsToSelector:aSelector]) {
-        return self.delegate;
-    }
-    return nil;
+// Does the external delegate respond to aSelector or does our super class?
+- (BOOL)respondsToSelector:(SEL)aSelector {
+    return [self.delegate respondsToSelector:aSelector] || [super respondsToSelector:aSelector];
+}
+// forwardInvocation is only called if the receiver does not respond to a selector but respondsToSelector: returned YES. This will only happen if the external delegate responds to a delegate method that we do not implement
+- (void)forwardInvocation:(NSInvocation *)anInvocation {
+    [anInvocation invokeWithTarget:self.delegate];
 }
 
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {
@@ -392,7 +394,9 @@
     }
 }
 - (void)textViewDidChange:(UITextView *)textView {
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(_showCompletionsTableView) object:nil];
     
+    [self performSelector:@selector(_showCompletionsTableView) withObject:nil afterDelay:self.completionDelay];
 }
 #pragma mark UITableViewDataSource
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -690,8 +694,11 @@
             if ([self.delegate respondsToSelector:@selector(tokenTextView:representedObjectsForCompletionModel:)]) {
                 representedObjects = [self.delegate tokenTextView:self representedObjectsForCompletionModel:completionModel];
             }
-            else {
+            else if ([self.delegate respondsToSelector:@selector(tokenTextView:representedObjectForEditingText:)]) {
                 representedObjects = @[[self.delegate tokenTextView:self representedObjectForEditingText:[completionModel tokenCompletionModelTitle]]];
+            }
+            else {
+                representedObjects = @[[completionModel tokenCompletionModelTitle]];
             }
             
             NSInteger index = [self _indexOfTokenTextAttachmentInRange:self.selectedRange textAttachment:NULL];

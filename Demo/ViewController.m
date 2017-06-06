@@ -17,8 +17,35 @@
 
 #import <KSOToken/KSOToken.h>
 
+#import <Contacts/Contacts.h>
+
+@interface CompletionModel : NSObject <KSOTokenCompletionModel>
+@property (strong,nonatomic) CNContact *contact;
+
+- (instancetype)initWithContact:(CNContact *)contact;
+@end
+
+@implementation CompletionModel
+
+- (NSString *)tokenCompletionModelTitle {
+    return [[@[self.contact.givenName,self.contact.middleName,self.contact.familyName] componentsJoinedByString:@" "] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+}
+
+- (instancetype)initWithContact:(CNContact *)contact {
+    if (!(self = [super init]))
+        return nil;
+    
+    _contact = contact;
+    
+    return self;
+}
+
+@end
+
 @interface ViewController () <KSOTokenTextViewDelegate>
 @property (strong,nonatomic) KSOTokenTextView *textView;
+
+@property (strong,nonatomic) CNContactStore *contactStore;
 @end
 
 @implementation ViewController
@@ -28,12 +55,16 @@
     
     [self setTextView:[[KSOTokenTextView alloc] initWithFrame:CGRectZero]];
     [self.textView setTranslatesAutoresizingMaskIntoConstraints:NO];
+    [self.textView setScrollEnabled:NO];
+    [self.textView setBackgroundColor:UIColor.lightGrayColor];
     [self.textView setPlaceholder:@"Type words with spaces and press comma or the return key to tokenize them"];
     [self.textView setDelegate:self];
     [self.view addSubview:self.textView];
     
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-[view]-|" options:0 metrics:nil views:@{@"view": self.textView}]];
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[top]-[view]" options:0 metrics:nil views:@{@"view": self.textView, @"top": self.topLayoutGuide}]];
+    
+    [self setContactStore:[[CNContactStore alloc] init]];
 }
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
@@ -50,6 +81,31 @@
 }
 - (void)tokenTextView:(KSOTokenTextView *)tokenTextView hideCompletionsTableView:(UITableView *)tableView {
     [tableView removeFromSuperview];
+}
+- (void)tokenTextView:(KSOTokenTextView *)tokenTextView completionModelsForSubstring:(NSString *)substring indexOfRepresentedObject:(NSInteger)index completion:(void (^)(NSArray<id<KSOTokenCompletionModel>> * _Nullable))completion {
+    void(^fetchBlock)(void) = ^{
+        NSArray *contacts = [self.contactStore unifiedContactsMatchingPredicate:[CNContact predicateForContactsMatchingName:substring] keysToFetch:@[CNContactGivenNameKey,CNContactMiddleNameKey,CNContactFamilyNameKey] error:NULL];
+        NSMutableArray *completionModels = [[NSMutableArray alloc] init];
+        
+        for (CNContact *c in contacts) {
+            [completionModels addObject:[[CompletionModel alloc] initWithContact:c]];
+        }
+        
+        completion(completionModels);
+    };
+    
+    if ([CNContactStore authorizationStatusForEntityType:CNEntityTypeContacts] == CNAuthorizationStatusAuthorized) {
+        dispatch_async(dispatch_get_global_queue(QOS_CLASS_DEFAULT, 0), ^{
+            fetchBlock();
+        });
+    }
+    else {
+        [self.contactStore requestAccessForEntityType:CNEntityTypeContacts completionHandler:^(BOOL granted, NSError * _Nullable error) {
+            if (granted) {
+                fetchBlock();
+            }
+        }];
+    }
 }
 
 @end
