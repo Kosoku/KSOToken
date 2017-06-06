@@ -75,7 +75,7 @@
     [self setTextView:[[KSOTokenTextView alloc] initWithFrame:CGRectZero]];
     [self.textView setTranslatesAutoresizingMaskIntoConstraints:NO];
     [self.textView setScrollEnabled:NO];
-    [self.textView setPlaceholder:@"Type a name then comma or return"];
+    [self.textView setPlaceholder:@"Type a contact name then comma or return"];
     [self.textView setDelegate:self];
     [self.view addSubview:self.textView];
     
