@@ -98,6 +98,22 @@ static void *kObservingContext = &kObservingContext;
     return self;
 }
 
+- (void)setTokenFont:(UIFont *)tokenFont {
+    _tokenFont = tokenFont ?: [self _defaultTokenFont];
+}
+- (void)setTokenTextColor:(UIColor *)tokenTextColor {
+    _tokenTextColor = tokenTextColor ?: [self _defaultTokenTextColor];
+}
+- (void)setTokenBackgroundColor:(UIColor *)tokenBackgroundColor {
+    _tokenBackgroundColor = tokenBackgroundColor ?: [self.class _defaultTokenBackgroundColor];
+}
+- (void)setTokenHighlightedTextColor:(UIColor *)tokenHighlightedTextColor {
+    _tokenHighlightedTextColor = tokenHighlightedTextColor ?: [self.class _defaultTokenHighlightedTextColor];
+}
+- (void)setTokenHighlightedBackgroundColor:(UIColor *)tokenHighlightedBackgroundColor {
+    _tokenHighlightedBackgroundColor = tokenHighlightedBackgroundColor ?: [self _defaultTokenHighlightedBackgroundColor];
+}
+
 - (void)_updateImages {
     CGFloat maxWidth = CGRectGetWidth(self.tokenTextView.frame);
     
