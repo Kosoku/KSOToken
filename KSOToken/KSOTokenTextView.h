@@ -36,7 +36,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Set and get the represented objects of the receiver.
  
- These can either be NSString objects or custom model objects. If custom model objects are provided, the delegate should implement `tokenTextView:representedObjectForEditingText:`.
+ These can either be NSString objects or custom model objects. If the client is using custom model objects, the delegate should implement `tokenTextView:representedObjectForEditingText:` and provide them.
  */
 @property (copy,nonatomic,nullable) NSArray<id<KSOTokenRepresentedObject> > *representedObjects;
 
