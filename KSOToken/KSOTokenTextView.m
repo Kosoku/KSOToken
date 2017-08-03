@@ -18,7 +18,7 @@
 #import "KSOTokenCompletionDefaultTableViewCell.h"
 
 #import <Ditko/UIGestureRecognizer+KDIExtensions.h>
-#import <Stanley/KSTFunctions.h>
+#import <Stanley/Stanley.h>
 
 @interface KSOTokenTextViewGestureRecognizerDelegate : NSObject <UIGestureRecognizerDelegate>
 @property (copy,nonatomic) NSArray *gestureRecognizers;
@@ -495,7 +495,9 @@
     
     [tapGestureRecognizer setNumberOfTapsRequired:1];
     [tapGestureRecognizer setNumberOfTouchesRequired:1];
+    kstWeakify(self);
     [tapGestureRecognizer KDI_addBlock:^(__kindof UIGestureRecognizer * _Nonnull gestureRecognizer) {
+        kstStrongify(self);
         if (self.text.length == 0) {
             return;
         }
