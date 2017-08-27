@@ -164,7 +164,7 @@ static void *kObservingContext = &kObservingContext;
 }
 
 - (UIFont *)_defaultTokenFont; {
-    return self.tokenTextView.typingFont;
+    return self.tokenTextView.font;
 }
 - (UIColor *)_defaultTokenTextColor; {
     return self.tokenTextView.tintColor;

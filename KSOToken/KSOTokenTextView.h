@@ -65,19 +65,6 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property (copy,nonatomic,null_resettable) NSString *completionTableViewCellClassName UI_APPEARANCE_SELECTOR;
 
-/**
- Set and get the typing font of the receiver. Set this instead of the font of the receiver.
- 
- The default is [UIFont systemFontOfSize:17.0].
- */
-@property (strong,nonatomic,null_resettable) UIFont *typingFont UI_APPEARANCE_SELECTOR;
-/**
- Set and get the typing text color of the receiver. Set this instead of the text color of the receiver.
- 
- The default is UIColor.blackColor.
- */
-@property (strong,nonatomic,null_resettable) UIColor *typingTextColor UI_APPEARANCE_SELECTOR;
-
 @end
 
 @protocol KSOTokenTextViewDelegate <UITextViewDelegate>

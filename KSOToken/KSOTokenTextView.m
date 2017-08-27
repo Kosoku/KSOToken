@@ -119,8 +119,7 @@
 + (NSString *)_defaultTokenTextAttachmentClassName;
 + (NSTimeInterval)_defaultCompletionDelay;
 + (NSString *)_defaultCompletionTableViewCellClassName;
-+ (UIFont *)_defaultTypingFont;
-+ (UIColor *)_defaultTypingTextColor;
++ (UIColor *)_defaultTextColor;
 @end
 
 @implementation KSOTokenTextView
@@ -224,7 +223,7 @@
     }
     
     if (representedObjects.count > 0) {
-        NSMutableAttributedString *temp = [[NSMutableAttributedString alloc] initWithString:@"" attributes:@{NSFontAttributeName: self.typingFont, NSForegroundColorAttributeName: self.typingTextColor}];
+        NSMutableAttributedString *temp = [[NSMutableAttributedString alloc] initWithString:@"" attributes:@{NSFontAttributeName: self.font, NSForegroundColorAttributeName: self.textColor}];
         
         // loop through each represented object and ask the delegate for the display text for each one
         for (id<KSOTokenRepresentedObject> obj in representedObjects) {
@@ -264,10 +263,14 @@
         }
     }
 }
+
+- (void)setTextColor:(UIColor *)textColor {
+    [super setTextColor:textColor ?: [self.class _defaultTextColor]];
+}
 #pragma mark NSTextStorageDelegate
 - (void)textStorage:(NSTextStorage *)textStorage didProcessEditing:(NSTextStorageEditActions)editedMask range:(NSRange)editedRange changeInLength:(NSInteger)delta {
     // fix up our attributes so that everything, including the attachments, use our desired font and text color
-    [textStorage addAttributes:@{NSFontAttributeName: self.typingFont, NSForegroundColorAttributeName: self.typingTextColor} range:editedRange];
+    [textStorage addAttributes:@{NSFontAttributeName: self.font, NSForegroundColorAttributeName: self.textColor} range:editedRange];
 }
 #pragma mark UITextViewDelegate
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {
@@ -298,7 +301,7 @@
             
             // if there are represented objects to insert, continue
             if (representedObjects.count > 0) {
-                NSMutableAttributedString *temp = [[NSMutableAttributedString alloc] initWithString:@"" attributes:@{NSFontAttributeName: self.typingFont, NSForegroundColorAttributeName: self.typingTextColor}];
+                NSMutableAttributedString *temp = [[NSMutableAttributedString alloc] initWithString:@"" attributes:@{NSFontAttributeName: self.font, NSForegroundColorAttributeName: self.textColor}];
                 
                 // loop through each represented object and ask the delegate for the display text for each one
                 for (id<KSOTokenRepresentedObject> obj in representedObjects) {
@@ -375,8 +378,8 @@
     return YES;
 }
 - (void)textViewDidChangeSelection:(UITextView *)textView {
-    [self setTypingAttributes:@{NSFontAttributeName: self.typingFont,
-                                NSForegroundColorAttributeName: self.typingTextColor}];
+    [self setTypingAttributes:@{NSFontAttributeName: self.font,
+                                NSForegroundColorAttributeName: self.textColor}];
     
     if (self.selectedRange.length == 0) {
         [self setSelectedTextAttachmentRanges:nil];
@@ -441,7 +444,7 @@
     return retval;
 }
 - (void)setRepresentedObjects:(NSArray *)representedObjects {
-    NSMutableAttributedString *temp = [[NSMutableAttributedString alloc] initWithString:@"" attributes:@{NSFontAttributeName: self.typingFont, NSForegroundColorAttributeName: self.typingTextColor}];
+    NSMutableAttributedString *temp = [[NSMutableAttributedString alloc] initWithString:@"" attributes:@{NSFontAttributeName: self.font, NSForegroundColorAttributeName: self.textColor}];
     
     for (id<KSOTokenRepresentedObject> representedObject in representedObjects) {
         NSString *text = representedObject.tokenRepresentedObjectDisplayName;
@@ -467,25 +470,15 @@
 - (void)setCompletionTableViewCellClassName:(NSString *)completionTableViewCellClassName {
     _completionTableViewCellClassName = completionTableViewCellClassName ?: [self.class _defaultCompletionTableViewCellClassName];
 }
-- (void)setTypingFont:(UIFont *)typingFont {
-    _typingFont = typingFont ?: [self.class _defaultTypingFont];
-}
-- (void)setTypingTextColor:(UIColor *)typingTextColor {
-    _typingTextColor = typingTextColor ?: [self.class _defaultTypingTextColor];
-}
 #pragma mark *** Private Methods ***
 - (void)_KSOTokenTextViewInit; {
     _tokenizingCharacterSet = [self.class _defaultTokenizingCharacterSet];
     _tokenTextAttachmentClassName = [self.class _defaultTokenTextAttachmentClassName];
     _completionDelay = [self.class _defaultCompletionDelay];
     _completionTableViewCellClassName = [self.class _defaultCompletionTableViewCellClassName];
-    _typingFont = [self.class _defaultTypingFont];
-    _typingTextColor = [self.class _defaultTypingTextColor];
     
-    [self setContentInset:UIEdgeInsetsZero];
-    [self setTypingAttributes:@{NSFontAttributeName: _typingFont, NSForegroundColorAttributeName: _typingTextColor}];
-    [self setTextContainerInset:UIEdgeInsetsZero];
-    [self.textContainer setLineFragmentPadding:0];
+    [self setTextColor:[self.class _defaultTextColor]];
+    [self setTypingAttributes:@{NSFontAttributeName: self.font, NSForegroundColorAttributeName: self.textColor}];
     [self.textStorage setDelegate:self];
     
     _internalDelegate = [[KSOTokenTextViewInternalDelegate alloc] init];
@@ -711,7 +704,7 @@
             }
             
             if (representedObjects.count > 0) {
-                NSMutableAttributedString *temp = [[NSMutableAttributedString alloc] initWithString:@"" attributes:@{NSFontAttributeName: self.typingFont, NSForegroundColorAttributeName: self.typingTextColor}];
+                NSMutableAttributedString *temp = [[NSMutableAttributedString alloc] initWithString:@"" attributes:@{NSFontAttributeName: self.font, NSForegroundColorAttributeName: self.textColor}];
                 
                 for (id<KSOTokenRepresentedObject> representedObject in representedObjects) {
                     NSString *displayText = representedObject.tokenRepresentedObjectDisplayName;
@@ -754,10 +747,7 @@
 + (NSString *)_defaultCompletionTableViewCellClassName; {
     return NSStringFromClass([KSOTokenCompletionDefaultTableViewCell class]);
 }
-+ (UIFont *)_defaultTypingFont; {
-    return [UIFont systemFontOfSize:17.0];
-}
-+ (UIColor *)_defaultTypingTextColor; {
++ (UIColor *)_defaultTextColor; {
     return UIColor.blackColor;
 }
 #pragma mark Properties

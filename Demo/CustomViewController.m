@@ -27,10 +27,10 @@
     if (!(self = [super initWithRepresentedObject:representedObject text:text tokenTextView:tokenTextView]))
         return nil;
     
-    [self setTokenTextColor:tokenTextView.typingTextColor];
+    [self setTokenTextColor:tokenTextView.textColor];
     [self setTokenBackgroundColor:tokenTextView.tintColor];
     [self setTokenHighlightedTextColor:tokenTextView.tintColor];
-    [self setTokenHighlightedBackgroundColor:tokenTextView.typingTextColor];
+    [self setTokenHighlightedBackgroundColor:tokenTextView.textColor];
     [self setTokenCornerRadius:3.0];
     
     return self;
@@ -113,7 +113,7 @@
     [self.textView setTranslatesAutoresizingMaskIntoConstraints:NO];
     [self.textView setScrollEnabled:NO];
     [self.textView setBackgroundColor:UIColor.blackColor];
-    [self.textView setTypingTextColor:UIColor.whiteColor];
+    [self.textView setTextColor:UIColor.whiteColor];
     [self.textView setTokenTextAttachmentClassName:NSStringFromClass([TokenTextAttachment class])];
     [self.textView setCompletionTableViewCellClassName:NSStringFromClass([CompletionTableViewCell class])];
     [self.textView setPlaceholder:@"Type a word then comma or return"];
