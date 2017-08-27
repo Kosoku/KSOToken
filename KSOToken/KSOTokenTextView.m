@@ -111,6 +111,7 @@
 - (NSRange)_tokenRangeForRange:(NSRange)range;
 - (NSUInteger)_indexOfTokenTextAttachmentInRange:(NSRange)range textAttachment:(id<KSOTokenTextAttachment> *)textAttachment;
 - (NSArray *)_copyTokenTextAttachmentsInRange:(NSRange)range;
+- (NSTextAttachment<KSOTokenTextAttachment> *)_textAttachmentWithRepresentedObject:(id<KSOTokenRepresentedObject>)representedObject text:(NSString *)text;
 
 - (void)_showCompletionsTableView;
 - (void)_hideCompletionsTableViewAndSelectCompletionModel:(id<KSOTokenCompletionModel>)completionModel;
@@ -226,10 +227,10 @@
         NSMutableAttributedString *temp = [[NSMutableAttributedString alloc] initWithString:@"" attributes:@{NSFontAttributeName: self.font, NSForegroundColorAttributeName: self.textColor}];
         
         // loop through each represented object and ask the delegate for the display text for each one
-        for (id<KSOTokenRepresentedObject> obj in representedObjects) {
-            NSString *displayText = obj.tokenRepresentedObjectDisplayName;
+        for (id<KSOTokenRepresentedObject> representedObject in representedObjects) {
+            NSString *displayText = representedObject.tokenRepresentedObjectDisplayName;
             
-            [temp appendAttributedString:[NSAttributedString attributedStringWithAttachment:[[NSClassFromString(self.tokenTextAttachmentClassName) alloc] initWithRepresentedObject:obj text:displayText tokenTextView:self]]];
+            [temp appendAttributedString:[NSAttributedString attributedStringWithAttachment:[self _textAttachmentWithRepresentedObject:representedObject text:displayText]]];
         }
         
         NSMutableArray *deletedRepresentedObjects = [[NSMutableArray alloc] init];
@@ -264,6 +265,15 @@
     }
 }
 
+- (void)setFont:(UIFont *)font {
+    [super setFont:font];
+    
+    [self.textStorage enumerateAttribute:NSAttachmentAttributeName inRange:NSMakeRange(0, self.textStorage.length) options:NSAttributedStringEnumerationLongestEffectiveRangeNotRequired usingBlock:^(id  _Nullable value, NSRange range, BOOL * _Nonnull stop) {
+        if ([value respondsToSelector:@selector(setFont:)]) {
+            [value setFont:self.font];
+        }
+    }];
+}
 - (void)setTextColor:(UIColor *)textColor {
     [super setTextColor:textColor ?: [self.class _defaultTextColor]];
 }
@@ -304,10 +314,10 @@
                 NSMutableAttributedString *temp = [[NSMutableAttributedString alloc] initWithString:@"" attributes:@{NSFontAttributeName: self.font, NSForegroundColorAttributeName: self.textColor}];
                 
                 // loop through each represented object and ask the delegate for the display text for each one
-                for (id<KSOTokenRepresentedObject> obj in representedObjects) {
-                    NSString *displayText = obj.tokenRepresentedObjectDisplayName;
+                for (id<KSOTokenRepresentedObject> representedObject in representedObjects) {
+                    NSString *displayText = representedObject.tokenRepresentedObjectDisplayName;
                     
-                    [temp appendAttributedString:[NSAttributedString attributedStringWithAttachment:[[NSClassFromString(self.tokenTextAttachmentClassName) alloc] initWithRepresentedObject:obj text:displayText tokenTextView:self]]];
+                    [temp appendAttributedString:[NSAttributedString attributedStringWithAttachment:[self _textAttachmentWithRepresentedObject:representedObject text:displayText]]];
                 }
                 
                 // replace all characters in token range with the text attachments
@@ -449,7 +459,7 @@
     for (id<KSOTokenRepresentedObject> representedObject in representedObjects) {
         NSString *text = representedObject.tokenRepresentedObjectDisplayName;
         
-        [temp appendAttributedString:[NSAttributedString attributedStringWithAttachment:[[NSClassFromString(self.tokenTextAttachmentClassName) alloc] initWithRepresentedObject:representedObject text:text tokenTextView:self]]];
+        [temp appendAttributedString:[NSAttributedString attributedStringWithAttachment:[self _textAttachmentWithRepresentedObject:representedObject text:text]]];
     }
     
     [self.textStorage replaceCharactersInRange:NSMakeRange(0, self.textStorage.length) withAttributedString:temp];
@@ -639,6 +649,15 @@
     
     return representedObjects;
 }
+- (NSTextAttachment<KSOTokenTextAttachment> *)_textAttachmentWithRepresentedObject:(id<KSOTokenRepresentedObject>)representedObject text:(NSString *)text; {
+    NSTextAttachment<KSOTokenTextAttachment> *retval = [[NSClassFromString(self.tokenTextAttachmentClassName) alloc] initWithRepresentedObject:representedObject text:text tokenTextView:self];
+    
+    if ([retval respondsToSelector:@selector(setFont:)]) {
+        [retval setFont:self.font];
+    }
+    
+    return retval;
+}
 
 - (void)_showCompletionsTableView; {
     // if the completion range is zero length, hide the completions table view
@@ -709,7 +728,7 @@
                 for (id<KSOTokenRepresentedObject> representedObject in representedObjects) {
                     NSString *displayText = representedObject.tokenRepresentedObjectDisplayName;
                     
-                    [temp appendAttributedString:[NSAttributedString attributedStringWithAttachment:[[NSClassFromString(self.tokenTextAttachmentClassName) alloc] initWithRepresentedObject:representedObject text:displayText tokenTextView:self]]];
+                    [temp appendAttributedString:[NSAttributedString attributedStringWithAttachment:[self _textAttachmentWithRepresentedObject:representedObject text:displayText]]];
                 }
                 
                 if (![self.delegate respondsToSelector:@selector(tokenTextView:shouldAddRepresentedObjects:atIndex:)] ||

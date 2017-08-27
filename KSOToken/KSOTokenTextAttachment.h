@@ -45,6 +45,12 @@ NS_ASSUME_NONNULL_BEGIN
  @return An initialized instance of the receiver
  */
 - (instancetype)initWithRepresentedObject:(id<KSOTokenRepresentedObject>)representedObject text:(NSString *)text tokenTextView:(KSOTokenTextView *)tokenTextView;
+
+@optional
+/**
+ Set and get the font used to draw the text attachment. Implement this if you want your text attachment to respond to dynamic type changes.
+ */
+@property (strong,nonatomic,nullable) UIFont *font;
 @end
 
 NS_ASSUME_NONNULL_END

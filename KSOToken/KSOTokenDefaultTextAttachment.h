@@ -26,7 +26,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Set and get the font used to draw tokens.
  
- The default is self.tokenTextView.typingFont.
+ The default is self.tokenTextView.font.
  */
 @property (strong,nonatomic,null_resettable) UIFont *tokenFont;
 /**

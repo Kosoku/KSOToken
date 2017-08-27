@@ -98,6 +98,14 @@ static void *kObservingContext = &kObservingContext;
     return self;
 }
 
+@dynamic font;
+- (UIFont *)font {
+    return self.tokenFont;
+}
+- (void)setFont:(UIFont *)font {
+    [self setTokenFont:font];
+}
+
 - (void)setTokenFont:(UIFont *)tokenFont {
     _tokenFont = tokenFont ?: [self _defaultTokenFont];
 }

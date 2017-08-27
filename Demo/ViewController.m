@@ -16,6 +16,7 @@
 #import "ViewController.h"
 
 #import <KSOToken/KSOToken.h>
+#import <Ditko/Ditko.h>
 
 #import <Contacts/Contacts.h>
 
@@ -78,6 +79,8 @@
     [self.textView setPlaceholder:@"Type a contact name then comma or return"];
     [self.textView setDelegate:self];
     [self.view addSubview:self.textView];
+    
+    [NSObject KDI_registerDynamicTypeObject:self.textView forTextStyle:UIFontTextStyleBody];
     
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-[view]-|" options:0 metrics:nil views:@{@"view": self.textView}]];
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[top]-[view]" options:0 metrics:nil views:@{@"view": self.textView, @"top": self.topLayoutGuide}]];
