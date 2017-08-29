@@ -285,7 +285,6 @@
 #pragma mark UITextViewDelegate
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {
     if ([text rangeOfCharacterFromSet:self.tokenizingCharacterSet].length > 0) {
-        
         NSRange tokenRange = [self _tokenRangeForRange:range];
         
         if (tokenRange.length > 0) {
