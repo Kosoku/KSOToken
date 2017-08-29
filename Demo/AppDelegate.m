@@ -29,8 +29,8 @@
     
     UITabBarController *controller = [[UITabBarController alloc] init];
     
-    [controller setViewControllers:@[[[ViewController alloc] init],
-                                     [[CustomViewController alloc] init]]];
+    [controller setViewControllers:@[[[UINavigationController alloc] initWithRootViewController:[[ViewController alloc] init]],
+                                     [[UINavigationController alloc] initWithRootViewController:[[CustomViewController alloc] init]]]];
     
     [self.window setRootViewController:controller];
     [self.window makeKeyAndVisible];

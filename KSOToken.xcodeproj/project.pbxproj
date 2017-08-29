@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		070E3D6B1F5602E6006D1087 /* UIBarButtonItem+DemoExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 070E3D6A1F5602E6006D1087 /* UIBarButtonItem+DemoExtensions.m */; };
 		070EC1B21EE1D2FE00118FCC /* KSOToken.h in Headers */ = {isa = PBXBuildFile; fileRef = 070EC1B01EE1D2FE00118FCC /* KSOToken.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		070EC1C21EE1D4D400118FCC /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 070EC1C11EE1D4D400118FCC /* main.m */; };
 		070EC1C51EE1D4D400118FCC /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 070EC1C41EE1D4D400118FCC /* AppDelegate.m */; };
@@ -68,6 +69,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		070E3D691F5602E6006D1087 /* UIBarButtonItem+DemoExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIBarButtonItem+DemoExtensions.h"; sourceTree = "<group>"; };
+		070E3D6A1F5602E6006D1087 /* UIBarButtonItem+DemoExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIBarButtonItem+DemoExtensions.m"; sourceTree = "<group>"; };
 		070EC1AD1EE1D2FE00118FCC /* KSOToken.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = KSOToken.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		070EC1B01EE1D2FE00118FCC /* KSOToken.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KSOToken.h; sourceTree = "<group>"; };
 		070EC1B11EE1D2FE00118FCC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -193,6 +196,8 @@
 				070EC1C71EE1D4D400118FCC /* ViewController.m */,
 				07C43DA61EE718410014659D /* CustomViewController.h */,
 				07C43DA71EE718410014659D /* CustomViewController.m */,
+				070E3D691F5602E6006D1087 /* UIBarButtonItem+DemoExtensions.h */,
+				070E3D6A1F5602E6006D1087 /* UIBarButtonItem+DemoExtensions.m */,
 				070EC1CC1EE1D4D400118FCC /* Assets.xcassets */,
 				070EC1CE1EE1D4D400118FCC /* LaunchScreen.storyboard */,
 				070EC1D11EE1D4D400118FCC /* Info.plist */,
@@ -360,6 +365,7 @@
 				070EC1C51EE1D4D400118FCC /* AppDelegate.m in Sources */,
 				070EC1C21EE1D4D400118FCC /* main.m in Sources */,
 				07C43DA81EE718410014659D /* CustomViewController.m in Sources */,
+				070E3D6B1F5602E6006D1087 /* UIBarButtonItem+DemoExtensions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
