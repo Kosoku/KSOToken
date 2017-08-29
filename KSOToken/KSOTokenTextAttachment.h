@@ -51,6 +51,10 @@ NS_ASSUME_NONNULL_BEGIN
  Set and get the font used to draw the text attachment. Implement this if you want your text attachment to respond to dynamic type changes.
  */
 @property (strong,nonatomic,nullable) UIFont *font;
+/**
+ Set and get the tint color used when drawing the attachment. How the tint color is used is up to the implementation. Whenever the tint color of the owning KSOTokenTextView changes, this property will be set on all text attachments if it is implemented.
+ */
+@property (strong,nonatomic,nullable) UIColor *tintColor;
 @end
 
 NS_ASSUME_NONNULL_END

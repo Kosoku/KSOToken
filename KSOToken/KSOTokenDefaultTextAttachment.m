@@ -79,6 +79,7 @@ static void *kObservingContext = &kObservingContext;
     _tokenTextView = tokenTextView;
     _text = [text copy];
     
+    _respondsToTintColorChanges = YES;
     _tokenFont = [self _defaultTokenFont];
     _tokenTextColor = [self _defaultTokenTextColor];
     _tokenBackgroundColor = [self.class _defaultTokenBackgroundColor];
@@ -104,6 +105,18 @@ static void *kObservingContext = &kObservingContext;
 }
 - (void)setFont:(UIFont *)font {
     [self setTokenFont:font];
+}
+@dynamic tintColor;
+- (UIColor *)tintColor {
+    return self.tokenTextView.tintColor;
+}
+- (void)setTintColor:(UIColor *)tintColor {
+    if (!self.respondsToTintColorChanges) {
+        return;
+    }
+    
+    [self setTokenTextColor:tintColor];
+    [self setTokenHighlightedBackgroundColor:tintColor];
 }
 
 - (void)setTokenFont:(UIFont *)tokenFont {

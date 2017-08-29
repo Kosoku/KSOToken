@@ -141,14 +141,14 @@
     
     return self;
 }
-
+#pragma mark -
 - (BOOL)canPerformAction:(SEL)action withSender:(id)sender {
     if ([self.delegate respondsToSelector:@selector(tokenTextView:canPerformAction:withSender:)]) {
         return [self.delegate tokenTextView:self canPerformAction:action withSender:sender];
     }
     return [super canPerformAction:action withSender:sender];
 }
-
+#pragma mark -
 - (void)cut:(id)sender {
     NSRange range = self.selectedRange;
     NSArray *representedObjects = [self _copyTokenTextAttachmentsInRange:range];
@@ -264,7 +264,17 @@
         }
     }
 }
-
+#pragma mark -
+- (void)tintColorDidChange {
+    [super tintColorDidChange];
+    
+    [self.textStorage enumerateAttribute:NSAttachmentAttributeName inRange:NSMakeRange(0, self.textStorage.length) options:NSAttributedStringEnumerationLongestEffectiveRangeNotRequired usingBlock:^(id  _Nullable value, NSRange range, BOOL * _Nonnull stop) {
+        if ([value respondsToSelector:@selector(setTintColor:)]) {
+            [value setTintColor:self.tintColor];
+        }
+    }];
+}
+#pragma mark -
 - (void)setFont:(UIFont *)font {
     [super setFont:font];
     
@@ -549,7 +559,7 @@
     
     _gestureRecognizerDelegate = [[KSOTokenTextViewGestureRecognizerDelegate alloc] initWithGestureRecognizers:@[tapGestureRecognizer] textView:self];
 }
-
+#pragma mark -
 - (NSRange)_tokenRangeForRange:(NSRange)range; {
     NSRange searchRange = NSMakeRange(0, range.location);
     // take the inverted set of our tokenizing set
@@ -657,7 +667,7 @@
     
     return retval;
 }
-
+#pragma mark -
 - (void)_showCompletionsTableView; {
     // if the completion range is zero length, hide the completions table view
     if ([self _tokenRangeForRange:self.selectedRange].length == 0) {
@@ -748,7 +758,7 @@
         [self setCompletionModels:nil];
     }
 }
-
+#pragma mark -
 + (NSCharacterSet *)_defaultTokenizingCharacterSet; {
     NSMutableCharacterSet *retval = [[NSCharacterSet newlineCharacterSet] mutableCopy];
     

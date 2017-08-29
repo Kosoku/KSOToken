@@ -24,6 +24,12 @@ NS_ASSUME_NONNULL_BEGIN
 @interface KSOTokenDefaultTextAttachment : NSTextAttachment <KSOTokenTextAttachment>
 
 /**
+ Set and get whether the receiver updates its appearance when the tint color of the owning text view changes. You can set this to NO in a custom subclass if you do not want the tint color to be taken into account when drawing.
+ 
+ The default is YES.
+ */
+@property (assign,nonatomic) BOOL respondsToTintColorChanges;
+/**
  Set and get the font used to draw tokens.
  
  The default is self.tokenTextView.font.
