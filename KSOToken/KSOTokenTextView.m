@@ -284,6 +284,9 @@
         }
     }];
 }
+- (UIColor *)textColor {
+    return [super textColor] ?: [self.class _defaultTextColor];
+}
 - (void)setTextColor:(UIColor *)textColor {
     [super setTextColor:textColor ?: [self.class _defaultTextColor]];
 }
@@ -366,7 +369,9 @@
                 }
             }
             
-            [self.textStorage deleteCharactersInRange:range];
+            NSAttributedString *temp = [[NSAttributedString alloc] initWithString:@"" attributes:@{NSFontAttributeName: self.font, NSForegroundColorAttributeName: self.textColor}];
+            
+            [self.textStorage replaceCharactersInRange:range withAttributedString:temp];
             
             [self setSelectedRange:NSMakeRange(range.location, 0)];
             
