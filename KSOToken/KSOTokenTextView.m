@@ -20,6 +20,8 @@
 #import <Ditko/UIGestureRecognizer+KDIExtensions.h>
 #import <Stanley/Stanley.h>
 
+#import <objc/runtime.h>
+
 @interface KSOTokenTextViewGestureRecognizerDelegate : NSObject <UIGestureRecognizerDelegate>
 @property (copy,nonatomic) NSArray *gestureRecognizers;
 @property (weak,nonatomic) UITextView *textView;
@@ -56,17 +58,47 @@
 
 @interface KSOTokenTextViewInternalDelegate : NSObject <KSOTokenTextViewDelegate>
 @property (weak,nonatomic) id<KSOTokenTextViewDelegate> delegate;
+@property (assign,nonatomic) unsigned int delegateMethodsCount;
+@property (assign,nonatomic) struct objc_method_description *delegateMethods;
 @end
 
 @implementation KSOTokenTextViewInternalDelegate
 
-// Does the external delegate respond to aSelector or does our super class?
-- (BOOL)respondsToSelector:(SEL)aSelector {
-    return [self.delegate respondsToSelector:aSelector] || [super respondsToSelector:aSelector];
+- (void)dealloc {
+    free(_delegateMethods);
 }
-// forwardInvocation is only called if the receiver does not respond to a selector but respondsToSelector: returned YES. This will only happen if the external delegate responds to a delegate method that we do not implement
-- (void)forwardInvocation:(NSInvocation *)anInvocation {
-    [anInvocation invokeWithTarget:self.delegate];
+
+- (instancetype)init {
+    if (!(self = [super init]))
+        return nil;
+    
+    _delegateMethods = protocol_copyMethodDescriptionList(@protocol(KSOTokenTextViewDelegate), NO, YES, &_delegateMethodsCount);
+    
+    return self;
+}
+
+// does the real delegate respond to the selector and is the selector part of the UITextFieldDelegate protocol
+- (BOOL)respondsToSelector:(SEL)aSelector {
+    if ([self.delegate respondsToSelector:aSelector]) {
+        for (unsigned int i=0; i<self.delegateMethodsCount; i++) {
+            if (self.delegateMethods[i].name == aSelector) {
+                return YES;
+            }
+        }
+        return NO;
+    }
+    return [super respondsToSelector:aSelector];
+}
+// only forward if the selector is part of the UITextField protocol
+- (id)forwardingTargetForSelector:(SEL)aSelector {
+    if ([self.delegate respondsToSelector:aSelector]) {
+        for (unsigned int i=0; i<self.delegateMethodsCount; i++) {
+            if (self.delegateMethods[i].name == aSelector) {
+                return self.delegate;
+            }
+        }
+    }
+    return [super forwardingTargetForSelector:aSelector];
 }
 
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {
