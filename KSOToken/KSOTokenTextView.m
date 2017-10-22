@@ -16,6 +16,7 @@
 #import "KSOTokenTextView.h"
 #import "KSOTokenDefaultTextAttachment.h"
 #import "KSOTokenCompletionDefaultTableViewCell.h"
+#import "KSOTokenCompletionOperation.h"
 
 #import <Ditko/Ditko.h>
 #import <Stanley/Stanley.h>
@@ -137,6 +138,7 @@
 
 @property (strong,nonatomic) UITableView *tableView;
 @property (copy,nonatomic) NSArray<id<KSOTokenCompletionModel> > *completionModels;
+@property (strong,nonatomic) NSOperationQueue *completionOperationQueue;
 
 - (void)_KSOTokenTextViewInit;
 
@@ -528,6 +530,10 @@
 }
 #pragma mark *** Private Methods ***
 - (void)_KSOTokenTextViewInit; {
+    _completionOperationQueue = [[NSOperationQueue alloc] init];
+    [_completionOperationQueue setMaxConcurrentOperationCount:1];
+    [_completionOperationQueue setQualityOfService:NSQualityOfServiceUserInitiated];
+    
     _tokenizingCharacterSet = [self.class _defaultTokenizingCharacterSet];
     _tokenTextAttachmentClass = [self.class _defaultTokenTextAttachmentClass];
     _completionDelay = [self.class _defaultCompletionDelay];
@@ -717,7 +723,14 @@
     // if our completion table view doesn't exist, create it and ask the delegate to display it
     if (self.tableView == nil) {
         [self setTableView:[[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain]];
-        [self.tableView setEstimatedRowHeight:44.0];
+        
+        CGFloat estimatedRowHeight = 44.0;
+        
+        if ([self.completionTableViewCellClass respondsToSelector:@selector(estimatedRowHeight)]) {
+            estimatedRowHeight = [self.completionTableViewCellClass estimatedRowHeight];
+        }
+        
+        [self.tableView setEstimatedRowHeight:estimatedRowHeight];
         [self.tableView setRowHeight:UITableViewAutomaticDimension];
         [self.tableView setDataSource:self];
         [self.tableView setDelegate:self];
@@ -731,19 +744,22 @@
     if ([self.delegate respondsToSelector:@selector(tokenTextView:completionModelsForSubstring:indexOfRepresentedObject:completion:)]) {
         NSInteger index = [self _indexOfTokenTextAttachmentInRange:self.selectedRange textAttachment:NULL];
         NSRange range = [self _tokenRangeForRange:self.selectedRange];
+        NSString *substring = [self.text substringWithRange:range];
         
-        [self.delegate tokenTextView:self completionModelsForSubstring:[self.text substringWithRange:range] indexOfRepresentedObject:index completion:^(NSArray<id<KSOTokenCompletionModel>> * _Nullable completionModels) {
-            KSTDispatchMainSync(^{
-                [self setCompletionModels:completionModels];
-            });
-        }];
+        kstWeakify(self);
+        [self.completionOperationQueue cancelAllOperations];
+        [self.completionOperationQueue addOperation:[[KSOTokenCompletionOperation alloc] initWithTokenTextView:self substring:substring index:index completion:^(NSArray<id<KSOTokenCompletionModel>> * _Nullable completionModels) {
+            kstStrongify(self);
+            [self setCompletionModels:completionModels];
+        }]];
     }
     else if ([self.delegate respondsToSelector:@selector(tokenTextView:completionModelsForSubstring:indexOfRepresentedObject:)]) {
         
         NSInteger index = [self _indexOfTokenTextAttachmentInRange:self.selectedRange textAttachment:NULL];
         NSRange range = [self _tokenRangeForRange:self.selectedRange];
+        NSString *substring = [self.text substringWithRange:range];
         
-        [self setCompletionModels:[self.delegate tokenTextView:self completionModelsForSubstring:[self.text substringWithRange:range] indexOfRepresentedObject:index]];
+        [self setCompletionModels:[self.delegate tokenTextView:self completionModelsForSubstring:substring indexOfRepresentedObject:index]];
     }
 }
 - (void)_hideCompletionsTableViewAndSelectCompletionModel:(id<KSOTokenCompletionModel>)completionModel; {

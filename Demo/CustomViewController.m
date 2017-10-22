@@ -150,6 +150,7 @@
 
 - (void)tokenTextView:(KSOTokenTextView *)tokenTextView showCompletionsTableView:(UITableView *)tableView {
     [tableView setTranslatesAutoresizingMaskIntoConstraints:NO];
+    [tableView setBackgroundColor:UIColor.blackColor];
     [tableView setSeparatorColor:UIColor.whiteColor];
     [self.view addSubview:tableView];
     
@@ -160,10 +161,10 @@
     [tableView removeFromSuperview];
 }
 - (void)tokenTextView:(KSOTokenTextView *)tokenTextView completionModelsForSubstring:(NSString *)substring indexOfRepresentedObject:(NSInteger)index completion:(void (^)(NSArray<id<KSOTokenCompletionModel>> * _Nullable))completion {
-    if (substring.length <= 1) {
-        completion(nil);
-        return;
-    }
+//    if (substring.length <= 1) {
+//        completion(nil);
+//        return;
+//    }
     
     dispatch_async(dispatch_get_global_queue(QOS_CLASS_DEFAULT, 0), ^{
         if (self.words == nil) {

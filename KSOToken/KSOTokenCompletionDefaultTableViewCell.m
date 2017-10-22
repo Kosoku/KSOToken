@@ -22,6 +22,8 @@ static void *kObservingContext = &kObservingContext;
 @interface KSOTokenCompletionDefaultTableViewCell ()
 @property (strong,nonatomic) UILabel *titleLabel;
 
+@property (copy,nonatomic) NSArray<NSLayoutConstraint *> *activeConstraints;
+
 - (void)_updateTitleLabel;
 
 + (UIFont *)_defaultTitleFont;
@@ -49,8 +51,7 @@ static void *kObservingContext = &kObservingContext;
     [_titleLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
     [self.contentView addSubview:_titleLabel];
     
-    [self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-[view]-|" options:0 metrics:nil views:@{@"view": _titleLabel}]];
-    [self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-[view]-|" options:0 metrics:nil views:@{@"view": _titleLabel}]];
+    [NSLayoutConstraint activateConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[view(>=height@priority)]" options:0 metrics:@{@"height": @44.0, @"priority": @(UILayoutPriorityDefaultHigh)} views:@{@"view": self.contentView}]];
     
     [self addObserver:self forKeyPath:@kstKeypath(self,titleFont) options:0 context:kObservingContext];
     [self addObserver:self forKeyPath:@kstKeypath(self,titleTextColor) options:0 context:kObservingContext];
@@ -66,6 +67,30 @@ static void *kObservingContext = &kObservingContext;
     else {
         [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
     }
+}
+
++ (BOOL)requiresConstraintBasedLayout {
+    return YES;
+}
+- (void)updateConstraints {
+    NSMutableArray *constraints = [[NSMutableArray alloc] init];
+    
+    [constraints addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-[view]-|" options:0 metrics:nil views:@{@"view": _titleLabel}]];
+    [constraints addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|->=top-[view]->=bottom-|" options:0 metrics:@{@"top": @(self.layoutMargins.top), @"bottom": @(self.layoutMargins.bottom)} views:@{@"view": _titleLabel}]];
+    
+    [self setActiveConstraints:constraints];
+    
+    [super updateConstraints];
+}
+
+- (void)layoutMarginsDidChange {
+    [super layoutMarginsDidChange];
+    
+    [self setNeedsUpdateConstraints];
+}
+
++ (CGFloat)estimatedRowHeight {
+    return 44.0;
 }
 
 @synthesize completionModel=_completionModel;
@@ -112,6 +137,14 @@ static void *kObservingContext = &kObservingContext;
 }
 + (UIColor *)_defaultHighlightedBackgroundColor; {
     return UIColor.yellowColor;
+}
+
+- (void)setActiveConstraints:(NSArray<NSLayoutConstraint *> *)activeConstraints {
+    [NSLayoutConstraint deactivateConstraints:_activeConstraints];
+    
+    _activeConstraints = activeConstraints;
+    
+    [NSLayoutConstraint activateConstraints:_activeConstraints];
 }
 
 @end
