@@ -22,7 +22,7 @@ KSOToken is a `UITextView` subclass that provides functionality similar to `NSTo
                        DESC
 
   s.homepage         = 'https://github.com/Kosoku/KSOToken'
-  s.screenshots     = ['https://github.com/Kosoku/KSOToken/raw/master/screenshots/iOS.gif']
+  s.screenshots     = ['https://github.com/Kosoku/KSOToken/raw/master/screenshots/iOS-1.png','https://github.com/Kosoku/KSOToken/raw/master/screenshots/iOS-2.png']
   s.license          = { :type => 'BSD', :file => 'license.txt' }
   s.author           = { 'William Towe' => 'willbur1984@gmail.com' }
   s.source           = { :git => 'https://github.com/Kosoku/KSOToken.git', :tag => s.version.to_s }
