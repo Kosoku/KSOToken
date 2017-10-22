@@ -161,62 +161,26 @@
     [tableView removeFromSuperview];
 }
 - (void)tokenTextView:(KSOTokenTextView *)tokenTextView completionModelsForSubstring:(NSString *)substring indexOfRepresentedObject:(NSInteger)index completion:(void (^)(NSArray<id<KSOTokenCompletionModel>> * _Nullable))completion {
-//    if (substring.length <= 1) {
-//        completion(nil);
-//        return;
-//    }
+    if (self.words == nil) {
+        NSData *data = [NSData dataWithContentsOfURL:[[NSBundle mainBundle] URLForResource:@"words" withExtension:@"txt"] options:NSDataReadingMappedIfSafe error:NULL];
+        NSString *text = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+        
+        [self setWords:[text componentsSeparatedByCharactersInSet:[NSCharacterSet newlineCharacterSet]]];
+    }
     
-    dispatch_async(dispatch_get_global_queue(QOS_CLASS_DEFAULT, 0), ^{
-        if (self.words == nil) {
-            NSData *data = [NSData dataWithContentsOfURL:[[NSBundle mainBundle] URLForResource:@"words" withExtension:@"txt"] options:NSDataReadingMappedIfSafe error:NULL];
-            NSString *text = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-            
-            [self setWords:[text componentsSeparatedByCharactersInSet:[NSCharacterSet newlineCharacterSet]]];
+    NSMutableArray *models = [[NSMutableArray alloc] init];
+    
+    for (NSString *word in self.words) {
+        NSRange range = [word rangeOfString:substring options:NSCaseInsensitiveSearch];
+        
+        if (range.length == 0) {
+            continue;
         }
         
-//        NSMutableString *pattern = [[NSMutableString alloc] init];
-//
-//        for (NSUInteger i=0; i<substring.length; i++) {
-//            NSString *ss = [NSRegularExpression escapedPatternForString:[substring substringWithRange:NSMakeRange(i, 1)]];
-//
-//            [pattern appendFormat:@"[^%@]*(%@)",ss,ss];
-//        }
-//
-//        [pattern appendString:@".*"];
-//
-//        NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:pattern options:NSRegularExpressionCaseInsensitive error:NULL];
-//        NSMutableArray *models = [[NSMutableArray alloc] init];
-//
-//        for (NSString *word in self.words) {
-//            NSTextCheckingResult *result = [regex firstMatchInString:word options:0 range:NSMakeRange(0, word.length)];
-//
-//            if (result == nil) {
-//                continue;
-//            }
-//
-//            NSMutableIndexSet *indexes = [[NSMutableIndexSet alloc] init];
-//
-//            for (NSUInteger i=1; i<result.numberOfRanges; i++) {
-//                [indexes addIndexesInRange:[result rangeAtIndex:i]];
-//            }
-//
-//            [models addObject:[[WordCompletion alloc] initWithWord:word indexes:indexes]];
-//        }
-        
-        NSMutableArray *models = [[NSMutableArray alloc] init];
-
-        for (NSString *word in self.words) {
-            NSRange range = [word rangeOfString:substring options:NSCaseInsensitiveSearch];
-
-            if (range.length == 0) {
-                continue;
-            }
-
-            [models addObject:[[WordCompletion alloc] initWithWord:word indexes:[NSIndexSet indexSetWithIndexesInRange:range]]];
-        }
-        
-        completion(models);
-    });
+        [models addObject:[[WordCompletion alloc] initWithWord:word indexes:[NSIndexSet indexSetWithIndexesInRange:range]]];
+    }
+    
+    completion(models);
 }
 
 @end
