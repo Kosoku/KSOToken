@@ -27,6 +27,9 @@
 		070EC1E91EE1D51700118FCC /* Stanley.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 070EC1E81EE1D51700118FCC /* Stanley.framework */; };
 		070EC1EC1EE1D55200118FCC /* KSOTokenTextView.h in Headers */ = {isa = PBXBuildFile; fileRef = 070EC1EA1EE1D55200118FCC /* KSOTokenTextView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		070EC1ED1EE1D55200118FCC /* KSOTokenTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 070EC1EB1EE1D55200118FCC /* KSOTokenTextView.m */; };
+		072AD5611F9D0AC5003E9683 /* KSOFontAwesomeExtensions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 072AD5621F9D0AC5003E9683 /* KSOFontAwesomeExtensions.framework */; };
+		072AD5631F9D0AE3003E9683 /* KSOFontAwesomeExtensions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 072AD5621F9D0AC5003E9683 /* KSOFontAwesomeExtensions.framework */; };
+		072AD5641F9D0AE3003E9683 /* KSOFontAwesomeExtensions.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 072AD5621F9D0AC5003E9683 /* KSOFontAwesomeExtensions.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		074472DF1EE5C3D400DA7D42 /* KSOTokenRepresentedObject.h in Headers */ = {isa = PBXBuildFile; fileRef = 074472DE1EE5C3D400DA7D42 /* KSOTokenRepresentedObject.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		074472E21EE5C64000DA7D42 /* NSString+KSOTokenExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 074472E01EE5C64000DA7D42 /* NSString+KSOTokenExtensions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		074472E31EE5C64000DA7D42 /* NSString+KSOTokenExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 074472E11EE5C64000DA7D42 /* NSString+KSOTokenExtensions.m */; };
@@ -61,6 +64,7 @@
 				070EC1E01EE1D4FD00118FCC /* KSOToken.framework in Embed Frameworks */,
 				070EC1D71EE1D4EA00118FCC /* Stanley.framework in Embed Frameworks */,
 				070EC1DB1EE1D4EE00118FCC /* Loki.framework in Embed Frameworks */,
+				072AD5641F9D0AE3003E9683 /* KSOFontAwesomeExtensions.framework in Embed Frameworks */,
 				070EC1DE1EE1D4F400118FCC /* Ditko.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
@@ -91,6 +95,7 @@
 		070EC1E81EE1D51700118FCC /* Stanley.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Stanley.framework; path = "Vendor/Stanley/build/Debug-iphoneos/Stanley.framework"; sourceTree = "<group>"; };
 		070EC1EA1EE1D55200118FCC /* KSOTokenTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSOTokenTextView.h; sourceTree = "<group>"; };
 		070EC1EB1EE1D55200118FCC /* KSOTokenTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSOTokenTextView.m; sourceTree = "<group>"; };
+		072AD5621F9D0AC5003E9683 /* KSOFontAwesomeExtensions.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = KSOFontAwesomeExtensions.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		074472DE1EE5C3D400DA7D42 /* KSOTokenRepresentedObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSOTokenRepresentedObject.h; sourceTree = "<group>"; };
 		074472E01EE5C64000DA7D42 /* NSString+KSOTokenExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+KSOTokenExtensions.h"; sourceTree = "<group>"; };
 		074472E11EE5C64000DA7D42 /* NSString+KSOTokenExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+KSOTokenExtensions.m"; sourceTree = "<group>"; };
@@ -111,6 +116,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				072AD5611F9D0AC5003E9683 /* KSOFontAwesomeExtensions.framework in Frameworks */,
 				070EC1E91EE1D51700118FCC /* Stanley.framework in Frameworks */,
 				070EC1E71EE1D51300118FCC /* Loki.framework in Frameworks */,
 				070EC1E51EE1D50D00118FCC /* Ditko.framework in Frameworks */,
@@ -124,6 +130,7 @@
 				070EC1DF1EE1D4FD00118FCC /* KSOToken.framework in Frameworks */,
 				070EC1D61EE1D4EA00118FCC /* Stanley.framework in Frameworks */,
 				070EC1DA1EE1D4EE00118FCC /* Loki.framework in Frameworks */,
+				072AD5631F9D0AE3003E9683 /* KSOFontAwesomeExtensions.framework in Frameworks */,
 				070EC1DD1EE1D4F400118FCC /* Ditko.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -218,6 +225,7 @@
 		070EC1E31EE1D50D00118FCC /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				072AD5621F9D0AC5003E9683 /* KSOFontAwesomeExtensions.framework */,
 				070EC1DC1EE1D4F400118FCC /* Ditko.framework */,
 				070EC1D91EE1D4EE00118FCC /* Loki.framework */,
 				070EC1D51EE1D4EA00118FCC /* Stanley.framework */,
@@ -302,6 +310,7 @@
 					};
 					070EC1BD1EE1D4D400118FCC = {
 						CreatedOnToolsVersion = 8.3.2;
+						DevelopmentTeam = 74KPPW2K35;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -541,6 +550,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = 74KPPW2K35;
 				INFOPLIST_FILE = Demo/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kosoku.Demo;
@@ -552,6 +562,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = 74KPPW2K35;
 				INFOPLIST_FILE = Demo/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kosoku.Demo;
