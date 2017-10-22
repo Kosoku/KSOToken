@@ -31,15 +31,7 @@
 @implementation CompletionModel
 
 - (NSString *)tokenCompletionModelTitle {
-    NSMutableArray *strs = [NSMutableArray arrayWithArray:@[self.contact.givenName,self.contact.middleName,self.contact.familyName]];
-    
-    for (NSString *s in [strs copy]) {
-        if (s.length == 0) {
-            [strs removeObject:s];
-        }
-    }
-    
-    return [[strs componentsJoinedByString:@" "] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    return [CNContactFormatter stringFromContact:self.contact style:CNContactFormatterStyleFullName];
 }
 - (NSRange)tokenCompletionModelRange {
     return self.range;
@@ -81,6 +73,11 @@
     [self setTextView:[[KSOTokenTextView alloc] initWithFrame:CGRectZero]];
     [self.textView setTranslatesAutoresizingMaskIntoConstraints:NO];
     [self.textView setScrollEnabled:NO];
+    [self.textView setAutocorrectionType:UITextAutocorrectionTypeNo];
+    [self.textView setAutocapitalizationType:UITextAutocapitalizationTypeNone];
+    [self.textView setSpellCheckingType:UITextSpellCheckingTypeNo];
+    [self.textView setKeyboardType:UIKeyboardTypeEmailAddress];
+    [self.textView setTextContentType:UITextContentTypeEmailAddress];
     [self.textView setPlaceholder:@"Type a contact name then comma or return"];
     [self.textView setDelegate:self];
     [self.view addSubview:self.textView];
@@ -92,7 +89,12 @@
     
     [self setContactStore:[[CNContactStore alloc] init]];
     
-    [self.navigationItem setRightBarButtonItems:@[[UIBarButtonItem iosd_changeTintColorBarButtonItemWithViewController:self]]];
+    [self.navigationItem setRightBarButtonItems:@[[UIBarButtonItem iosd_changeTintColorBarButtonItemWithViewController:self],[UIBarButtonItem KDI_barButtonSystemItem:UIBarButtonSystemItemCompose block:^(__kindof UIBarButtonItem * _Nonnull barButtonItem) {
+        NSRange tokenRange;
+        if (![self.textView tokenizeTextAndGetTokenRange:&tokenRange]) {
+            [self.textView setSelectedRange:tokenRange];
+        }
+    }]]];
 }
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
@@ -100,6 +102,21 @@
     [self.textView becomeFirstResponder];
 }
 
+- (NSArray<id<KSOTokenRepresentedObject>> *)tokenTextView:(KSOTokenTextView *)tokenTextView shouldAddRepresentedObjects:(NSArray<id<KSOTokenRepresentedObject>> *)representedObjects atIndex:(NSInteger)index {
+    NSMutableArray *retval = [[NSMutableArray alloc] init];
+    
+    for (id<KSOTokenRepresentedObject> object in representedObjects) {
+        if ([object.tokenRepresentedObjectDisplayName containsString:@"@"]) {
+            [retval addObject:object];
+        }
+    }
+    
+    if (retval.count == 0) {
+        [UIAlertController KDI_presentAlertControllerWithTitle:nil message:@"Enter a valid email address!" cancelButtonTitle:nil otherButtonTitles:nil completion:nil];
+    }
+    
+    return retval;
+}
 - (void)tokenTextView:(KSOTokenTextView *)tokenTextView showCompletionsTableView:(UITableView *)tableView {
     [tableView setTranslatesAutoresizingMaskIntoConstraints:NO];
     [self.view addSubview:tableView];
@@ -112,7 +129,7 @@
 }
 - (void)tokenTextView:(KSOTokenTextView *)tokenTextView completionModelsForSubstring:(NSString *)substring indexOfRepresentedObject:(NSInteger)index completion:(void (^)(NSArray<id<KSOTokenCompletionModel>> * _Nullable))completion {
     void(^fetchBlock)(void) = ^{
-        NSArray *contacts = [self.contactStore unifiedContactsMatchingPredicate:[CNContact predicateForContactsMatchingName:substring] keysToFetch:@[CNContactGivenNameKey,CNContactMiddleNameKey,CNContactFamilyNameKey] error:NULL];
+        NSArray *contacts = [self.contactStore unifiedContactsMatchingPredicate:[CNContact predicateForContactsMatchingName:substring] keysToFetch:@[[CNContactFormatter descriptorForRequiredKeysForStyle:CNContactFormatterStyleFullName],CNContactEmailAddressesKey] error:NULL];
         NSMutableArray *completionModels = [[NSMutableArray alloc] init];
         
         for (CNContact *c in contacts) {
@@ -123,9 +140,7 @@
     };
     
     if ([CNContactStore authorizationStatusForEntityType:CNEntityTypeContacts] == CNAuthorizationStatusAuthorized) {
-        dispatch_async(dispatch_get_global_queue(QOS_CLASS_DEFAULT, 0), ^{
-            fetchBlock();
-        });
+        fetchBlock();
     }
     else {
         [self.contactStore requestAccessForEntityType:CNEntityTypeContacts completionHandler:^(BOOL granted, NSError * _Nullable error) {

@@ -142,6 +142,7 @@
 
 - (void)_KSOTokenTextViewInit;
 
+- (BOOL)_tokenizeTextInRange:(NSRange)range tokenRange:(NSRangePointer)tokenRange;
 - (NSRange)_tokenRangeForRange:(NSRange)range;
 - (NSUInteger)_indexOfTokenTextAttachmentInRange:(NSRange)range textAttachment:(id<KSOTokenTextAttachment> *)textAttachment;
 - (NSArray *)_copyTokenTextAttachmentsInRange:(NSRange)range;
@@ -332,53 +333,7 @@
 #pragma mark UITextViewDelegate
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {
     if ([text rangeOfCharacterFromSet:self.tokenizingCharacterSet].length > 0) {
-        NSRange tokenRange = [self _tokenRangeForRange:range];
-        
-        if (tokenRange.length > 0) {
-            // trim surrounding whitespace to prevent something like " a@b.com" being shown as a token
-            NSString *tokenText = [[self.text substringWithRange:tokenRange] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-            // initially the represented object is the token text itself
-            id representedObject = tokenText;
-            
-            // if the delegate implements tokenTextView:representedObjectForEditingText: use its return value for the represented object
-            if ([self.delegate respondsToSelector:@selector(tokenTextView:representedObjectForEditingText:)]) {
-                representedObject = [self.delegate tokenTextView:self representedObjectForEditingText:tokenText];
-            }
-            
-            // initial array of represented objects to insert
-            NSArray *representedObjects = @[representedObject];
-            // index to insert the objects at
-            NSInteger index = [self _indexOfTokenTextAttachmentInRange:range textAttachment:NULL];
-            
-            // if the delegate responds to tokenTextView:shouldAddRepresentedObjects:atIndex use its return value for the represented objects to insert
-            if ([self.delegate respondsToSelector:@selector(tokenTextView:shouldAddRepresentedObjects:atIndex:)]) {
-                representedObjects = [self.delegate tokenTextView:self shouldAddRepresentedObjects:representedObjects atIndex:index];
-            }
-            
-            // if there are represented objects to insert, continue
-            if (representedObjects.count > 0) {
-                NSMutableAttributedString *temp = [[NSMutableAttributedString alloc] initWithString:@"" attributes:@{NSFontAttributeName: self.font, NSForegroundColorAttributeName: self.textColor}];
-                
-                // loop through each represented object and ask the delegate for the display text for each one
-                for (id<KSOTokenRepresentedObject> representedObject in representedObjects) {
-                    NSString *displayText = representedObject.tokenRepresentedObjectDisplayName;
-                    
-                    [temp appendAttributedString:[NSAttributedString attributedStringWithAttachment:[self _textAttachmentWithRepresentedObject:representedObject text:displayText]]];
-                }
-                
-                // replace all characters in token range with the text attachments
-                [self.textStorage replaceCharactersInRange:tokenRange withAttributedString:temp];
-                
-                [self setSelectedRange:NSMakeRange(tokenRange.location + 1, 0)];
-                
-                // hide the completion table view if it was visible
-                [self _hideCompletionsTableViewAndSelectCompletionModel:nil];
-                
-                if ([self.delegate respondsToSelector:@selector(tokenTextView:didAddRepresentedObjects:atIndex:)]) {
-                    [self.delegate tokenTextView:self didAddRepresentedObjects:representedObjects atIndex:index];
-                }
-            }
-        }
+        [self _tokenizeTextInRange:range tokenRange:NULL];
         return NO;
     }
     // delete
@@ -488,6 +443,9 @@
     [super setDelegate:self.internalDelegate];
 }
 #pragma mark *** Public Methods ***
+- (BOOL)tokenizeTextAndGetTokenRange:(NSRangePointer)tokenRange; {
+    return [self _tokenizeTextInRange:self.selectedRange tokenRange:tokenRange];
+}
 #pragma mark Properties
 @dynamic representedObjects;
 - (NSArray *)representedObjects {
@@ -605,6 +563,62 @@
     _gestureRecognizerDelegate = [[KSOTokenTextViewGestureRecognizerDelegate alloc] initWithGestureRecognizers:@[tapGestureRecognizer] textView:self];
 }
 #pragma mark -
+- (BOOL)_tokenizeTextInRange:(NSRange)range tokenRange:(NSRangePointer)outTokenRange; {
+    NSRange tokenRange = [self _tokenRangeForRange:range];
+    
+    if (tokenRange.length > 0) {
+        // trim surrounding whitespace to prevent something like " a@b.com" being shown as a token
+        NSString *tokenText = [[self.text substringWithRange:tokenRange] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+        // initially the represented object is the token text itself
+        id representedObject = tokenText;
+        
+        // if the delegate implements tokenTextView:representedObjectForEditingText: use its return value for the represented object
+        if ([self.delegate respondsToSelector:@selector(tokenTextView:representedObjectForEditingText:)]) {
+            representedObject = [self.delegate tokenTextView:self representedObjectForEditingText:tokenText];
+        }
+        
+        // initial array of represented objects to insert
+        NSArray *representedObjects = @[representedObject];
+        // index to insert the objects at
+        NSInteger index = [self _indexOfTokenTextAttachmentInRange:range textAttachment:NULL];
+        
+        // if the delegate responds to tokenTextView:shouldAddRepresentedObjects:atIndex use its return value for the represented objects to insert
+        if ([self.delegate respondsToSelector:@selector(tokenTextView:shouldAddRepresentedObjects:atIndex:)]) {
+            representedObjects = [self.delegate tokenTextView:self shouldAddRepresentedObjects:representedObjects atIndex:index];
+        }
+        
+        // if there are represented objects to insert, continue
+        if (representedObjects.count > 0) {
+            NSMutableAttributedString *temp = [[NSMutableAttributedString alloc] initWithString:@"" attributes:@{NSFontAttributeName: self.font, NSForegroundColorAttributeName: self.textColor}];
+            
+            // loop through each represented object and ask the delegate for the display text for each one
+            for (id<KSOTokenRepresentedObject> representedObject in representedObjects) {
+                NSString *displayText = representedObject.tokenRepresentedObjectDisplayName;
+                
+                [temp appendAttributedString:[NSAttributedString attributedStringWithAttachment:[self _textAttachmentWithRepresentedObject:representedObject text:displayText]]];
+            }
+            
+            // replace all characters in token range with the text attachments
+            [self.textStorage replaceCharactersInRange:tokenRange withAttributedString:temp];
+            
+            [self setSelectedRange:NSMakeRange(tokenRange.location + 1, 0)];
+            
+            // hide the completion table view if it was visible
+            [self _hideCompletionsTableViewAndSelectCompletionModel:nil];
+            
+            if ([self.delegate respondsToSelector:@selector(tokenTextView:didAddRepresentedObjects:atIndex:)]) {
+                [self.delegate tokenTextView:self didAddRepresentedObjects:representedObjects atIndex:index];
+            }
+            
+            return YES;
+        }
+        
+        if (outTokenRange != NULL) {
+            *outTokenRange = tokenRange;
+        }
+    }
+    return NO;
+}
 - (NSRange)_tokenRangeForRange:(NSRange)range; {
     NSRange searchRange = NSMakeRange(0, range.location);
     // take the inverted set of our tokenizing set

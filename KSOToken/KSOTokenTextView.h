@@ -67,6 +67,14 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property (strong,nonatomic,null_resettable) Class<KSOTokenCompletionTableViewCell> completionTableViewCellClass;
 
+/**
+ Attempts to tokenize the text at the selectedRange of the receiver. Returns YES, if the text was tokenized, otherwise NO. Returns by reference the range of text for which tokenization was attempted.
+ 
+ @param tokenRange A pointer to the range of text for which tokenization was attempted
+ @return YES if the text was tokenized, otherwise NO
+ */
+- (BOOL)tokenizeTextAndGetTokenRange:(nullable NSRangePointer)tokenRange;
+
 @end
 
 @protocol KSOTokenTextViewDelegate <UITextViewDelegate>
@@ -171,7 +179,7 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (nullable NSArray<id<KSOTokenCompletionModel> > *)tokenTextView:(KSOTokenTextView *)tokenTextView completionModelsForSubstring:(NSString *)substring indexOfRepresentedObject:(NSInteger)index;
 /**
- Determine the possible completions, which should be an array of objects conforming to KSOTokenCompletionModel, for the provided substring and index and invoke the completion block. If this method is implemented, it is preferred over tokenTextView:completionModelsForSubstring:indexOfRepresentedObject:.
+ Determine the possible completions, which should be an array of objects conforming to KSOTokenCompletionModel, for the provided substring and index and invoke the completion block. If this method is implemented, it is preferred over tokenTextView:completionModelsForSubstring:indexOfRepresentedObject:. This method is called on a private background queue.
  
  @param tokenTextView The token text view that sent the message
  @param substring The substring to provide completions for
