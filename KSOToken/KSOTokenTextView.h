@@ -16,6 +16,7 @@
 #import <Ditko/KDITextView.h>
 #import <KSOToken/KSOTokenRepresentedObject.h>
 #import <KSOToken/KSOTokenCompletionModel.h>
+#import <KSOToken/KSOTokenCompletionTableViewCell.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -61,9 +62,9 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Set and get the completion table view cell class of the receiver. This must be the class of an object conforming to KSOTokenCompletionTableViewCell.
  
- The default is @"KSOTokenCompletionDefaultTableViewCell".
+ The default is KSOTokenCompletionDefaultTableViewCell.class.
  */
-@property (copy,nonatomic,null_resettable) NSString *completionTableViewCellClassName UI_APPEARANCE_SELECTOR;
+@property (strong,nonatomic,null_resettable) Class<KSOTokenCompletionTableViewCell> completionTableViewCellClass;
 
 @end
 
