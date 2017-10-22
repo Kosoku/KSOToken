@@ -100,6 +100,7 @@
 		072AD5621F9D0AC5003E9683 /* KSOFontAwesomeExtensions.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = KSOFontAwesomeExtensions.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		072AD5651F9D1764003E9683 /* KSOTokenCompletionOperation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KSOTokenCompletionOperation.h; sourceTree = "<group>"; };
 		072AD5661F9D1764003E9683 /* KSOTokenCompletionOperation.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KSOTokenCompletionOperation.m; sourceTree = "<group>"; };
+		072AD56A1F9D5082003E9683 /* KSOToken-Info.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "KSOToken-Info.h"; sourceTree = "<group>"; };
 		074472DE1EE5C3D400DA7D42 /* KSOTokenRepresentedObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSOTokenRepresentedObject.h; sourceTree = "<group>"; };
 		074472E01EE5C64000DA7D42 /* NSString+KSOTokenExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+KSOTokenExtensions.h"; sourceTree = "<group>"; };
 		074472E11EE5C64000DA7D42 /* NSString+KSOTokenExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+KSOTokenExtensions.m"; sourceTree = "<group>"; };
@@ -175,6 +176,7 @@
 			isa = PBXGroup;
 			children = (
 				070EC1B11EE1D2FE00118FCC /* Info.plist */,
+				072AD56A1F9D5082003E9683 /* KSOToken-Info.h */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -529,6 +531,8 @@
 					"$(PROJECT_DIR)/Vendor/Stanley/build/Debug-iphoneos",
 				);
 				INFOPLIST_FILE = KSOToken/Info.plist;
+				INFOPLIST_PREFIX_HEADER = "$(SRCROOT)/KSOToken/KSOToken-Info.h";
+				INFOPLIST_PREPROCESS = YES;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -553,6 +557,8 @@
 					"$(PROJECT_DIR)/Vendor/Stanley/build/Debug-iphoneos",
 				);
 				INFOPLIST_FILE = KSOToken/Info.plist;
+				INFOPLIST_PREFIX_HEADER = "$(SRCROOT)/KSOToken/KSOToken-Info.h";
+				INFOPLIST_PREPROCESS = YES;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
