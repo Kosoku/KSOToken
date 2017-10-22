@@ -16,6 +16,7 @@
 #import <Ditko/KDITextView.h>
 #import <KSOToken/KSOTokenRepresentedObject.h>
 #import <KSOToken/KSOTokenCompletionModel.h>
+#import <KSOToken/KSOTokenTextAttachment.h>
 #import <KSOToken/KSOTokenCompletionTableViewCell.h>
 
 NS_ASSUME_NONNULL_BEGIN
@@ -48,11 +49,11 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property (copy,nonatomic,null_resettable) NSCharacterSet *tokenizingCharacterSet;
 /**
- Set and get the NSTextAttachment class name used to draw tokens.
+ Set and get the NSTextAttachment class name used to draw tokens. This should be a class that conforms to the KSOTokenTextAttachment protocol.
  
- The default is @"KSOTokenDefaultTextAttachment".
+ The default is KSOTokenDefaultTextAttachment.class.
  */
-@property (copy,nonatomic,null_resettable) NSString *tokenTextAttachmentClassName UI_APPEARANCE_SELECTOR;
+@property (copy,nonatomic,null_resettable) Class<KSOTokenTextAttachment> tokenTextAttachmentClass;
 /**
  Set and get the completion delay of the receiver.
  

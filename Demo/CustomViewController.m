@@ -129,7 +129,7 @@
     [self.textView setScrollEnabled:NO];
     [self.textView setBackgroundColor:UIColor.blackColor];
     [self.textView setTextColor:UIColor.whiteColor];
-    [self.textView setTokenTextAttachmentClassName:NSStringFromClass([TokenTextAttachment class])];
+    [self.textView setTokenTextAttachmentClass:TokenTextAttachment.class];
     [self.textView setCompletionTableViewCellClass:CompletionTableViewCell.class];
     [self.textView setPlaceholder:@"Type a word then comma or return"];
     [self.textView setDelegate:self];

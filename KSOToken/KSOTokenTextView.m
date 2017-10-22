@@ -149,9 +149,9 @@
 - (void)_hideCompletionsTableViewAndSelectCompletionModel:(id<KSOTokenCompletionModel>)completionModel;
 
 + (NSCharacterSet *)_defaultTokenizingCharacterSet;
-+ (NSString *)_defaultTokenTextAttachmentClassName;
++ (Class<KSOTokenTextAttachment>)_defaultTokenTextAttachmentClass;
 + (NSTimeInterval)_defaultCompletionDelay;
-+ (Class)_defaultCompletionTableViewCellClass;
++ (Class<KSOTokenCompletionTableViewCell>)_defaultCompletionTableViewCellClass;
 + (UIColor *)_defaultTextColor;
 @end
 
@@ -517,8 +517,8 @@
 - (void)setTokenizingCharacterSet:(NSCharacterSet *)tokenizingCharacterSet {
     _tokenizingCharacterSet = [tokenizingCharacterSet copy] ?: [self.class _defaultTokenizingCharacterSet];
 }
-- (void)setTokenTextAttachmentClassName:(NSString *)tokenTextAttachmentClassName {
-    _tokenTextAttachmentClassName = tokenTextAttachmentClassName ?: [self.class _defaultTokenTextAttachmentClassName];
+- (void)setTokenTextAttachmentClass:(Class<KSOTokenTextAttachment>)tokenTextAttachmentClass {
+    _tokenTextAttachmentClass = tokenTextAttachmentClass ?: [self.class _defaultTokenTextAttachmentClass];
 }
 - (void)setCompletionDelay:(NSTimeInterval)completionDelay {
     _completionDelay = completionDelay < 0.0 ? [self.class _defaultCompletionDelay] : completionDelay;
@@ -529,7 +529,7 @@
 #pragma mark *** Private Methods ***
 - (void)_KSOTokenTextViewInit; {
     _tokenizingCharacterSet = [self.class _defaultTokenizingCharacterSet];
-    _tokenTextAttachmentClassName = [self.class _defaultTokenTextAttachmentClassName];
+    _tokenTextAttachmentClass = [self.class _defaultTokenTextAttachmentClass];
     _completionDelay = [self.class _defaultCompletionDelay];
     _completionTableViewCellClass = [self.class _defaultCompletionTableViewCellClass];
     
@@ -698,7 +698,7 @@
     return representedObjects;
 }
 - (NSTextAttachment<KSOTokenTextAttachment> *)_textAttachmentWithRepresentedObject:(id<KSOTokenRepresentedObject>)representedObject text:(NSString *)text; {
-    NSTextAttachment<KSOTokenTextAttachment> *retval = [[NSClassFromString(self.tokenTextAttachmentClassName) alloc] initWithRepresentedObject:representedObject text:text tokenTextView:self];
+    NSTextAttachment<KSOTokenTextAttachment> *retval = [[(id)self.tokenTextAttachmentClass alloc] initWithRepresentedObject:representedObject text:text tokenTextView:self];
     
     if ([retval respondsToSelector:@selector(setFont:)]) {
         [retval setFont:self.font];
@@ -805,13 +805,13 @@
     
     return [retval copy];
 }
-+ (NSString *)_defaultTokenTextAttachmentClassName {
-    return NSStringFromClass([KSOTokenDefaultTextAttachment class]);
++ (Class<KSOTokenTextAttachment>)_defaultTokenTextAttachmentClass; {
+    return KSOTokenDefaultTextAttachment.class;
 }
 + (NSTimeInterval)_defaultCompletionDelay; {
     return 0.0;
 }
-+ (Class)_defaultCompletionTableViewCellClass; {
++ (Class<KSOTokenCompletionTableViewCell>)_defaultCompletionTableViewCellClass; {
     return KSOTokenCompletionDefaultTableViewCell.class;
 }
 + (UIColor *)_defaultTextColor; {
