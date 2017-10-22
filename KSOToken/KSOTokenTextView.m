@@ -17,7 +17,7 @@
 #import "KSOTokenDefaultTextAttachment.h"
 #import "KSOTokenCompletionDefaultTableViewCell.h"
 
-#import <Ditko/UIGestureRecognizer+KDIExtensions.h>
+#import <Ditko/Ditko.h>
 #import <Stanley/Stanley.h>
 
 #import <objc/runtime.h>
@@ -535,6 +535,8 @@
     
     [self setTextColor:[self.class _defaultTextColor]];
     [self setTypingAttributes:@{NSFontAttributeName: self.font, NSForegroundColorAttributeName: self.textColor}];
+    [self setInputAccessoryView:[[KDINextPreviousInputAccessoryView alloc] initWithFrame:CGRectZero responder:self]];
+    [(KDINextPreviousInputAccessoryView *)self.inputAccessoryView setItemOptions:KDINextPreviousInputAccessoryViewItemOptionsDone];
     [self.textStorage setDelegate:self];
     
     _internalDelegate = [[KSOTokenTextViewInternalDelegate alloc] init];
