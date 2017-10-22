@@ -32,6 +32,7 @@ KSOToken is a `UITextView` subclass that provides functionality similar to `NSTo
   s.requires_arc = true
 
   s.source_files = 'KSOToken/**/*.{h,m}'
+  s.private_header_files = 'KSOToken/Private/*.h'
   
   s.frameworks = 'UIKit'
   
