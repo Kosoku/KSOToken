@@ -17,6 +17,7 @@
 #import "UIBarButtonItem+DemoExtensions.h"
 
 #import <KSOToken/KSOToken.h>
+#import <Stanley/Stanley.h>
 #import <Ditko/Ditko.h>
 
 #import <Contacts/Contacts.h>
@@ -107,7 +108,7 @@
     
     for (id<KSOTokenRepresentedObject> object in representedObjects) {
         if ([object.tokenRepresentedObjectDisplayName containsString:@"@"]) {
-            [retval addObject:object];
+            [retval addObject:[object.tokenRepresentedObjectDisplayName stringByAppendingString:@","]];
         }
     }
     
@@ -128,6 +129,8 @@
     [tableView removeFromSuperview];
 }
 - (void)tokenTextView:(KSOTokenTextView *)tokenTextView completionModelsForSubstring:(NSString *)substring indexOfRepresentedObject:(NSInteger)index completion:(void (^)(NSArray<id<KSOTokenCompletionModel>> * _Nullable))completion {
+    KSTLogObject(substring);
+    
     void(^fetchBlock)(void) = ^{
         NSArray *contacts = [self.contactStore unifiedContactsMatchingPredicate:[CNContact predicateForContactsMatchingName:substring] keysToFetch:@[[CNContactFormatter descriptorForRequiredKeysForStyle:CNContactFormatterStyleFullName],CNContactEmailAddressesKey] error:NULL];
         NSMutableArray *completionModels = [[NSMutableArray alloc] init];
@@ -135,6 +138,7 @@
         for (CNContact *c in contacts) {
             [completionModels addObject:[[CompletionModel alloc] initWithContact:c substring:substring]];
         }
+        KSTLogObject(completionModels);
         
         completion(completionModels);
     };
