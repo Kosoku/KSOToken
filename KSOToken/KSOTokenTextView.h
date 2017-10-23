@@ -152,6 +152,13 @@ NS_ASSUME_NONNULL_BEGIN
 - (nullable NSArray<id<KSOTokenRepresentedObject> > *)tokenTextView:(KSOTokenTextView *)tokenTextView readFromPasteboard:(UIPasteboard *)pasteboard;
 
 /**
+ Return YES if the completion table view should be shown, otherwise NO. If this method returns YES or is not implemented tokenTextView:showCompletionsTableView: is called to actually display the table view.
+ 
+ @param tokenTextView The token text that sent the message
+ @return YES if the completion table view should be shown, otherwise NO
+ */
+- (BOOL)tokenTextViewShouldShowCompletionTableView:(KSOTokenTextView *)tokenTextView;
+/**
  Called when the receiver's delegate should display the completions table view.
  
  The provided table view should be inserted into the view hierarchy and its frame set accordingly.

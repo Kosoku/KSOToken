@@ -728,6 +728,11 @@
 }
 #pragma mark -
 - (void)_showCompletionsTableView; {
+    if ([self.delegate respondsToSelector:@selector(tokenTextViewShouldShowCompletionTableView:)] &&
+        ![self.delegate tokenTextViewShouldShowCompletionTableView:self]) {
+        return;
+    }
+    
     // if the completion range is zero length, hide the completions table view
     if ([self _tokenRangeForRange:self.selectedRange].length == 0) {
         [self _hideCompletionsTableViewAndSelectCompletionModel:nil];
