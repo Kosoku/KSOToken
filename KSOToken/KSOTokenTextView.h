@@ -179,7 +179,7 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (nullable NSArray<id<KSOTokenCompletionModel> > *)tokenTextView:(KSOTokenTextView *)tokenTextView completionModelsForSubstring:(NSString *)substring indexOfRepresentedObject:(NSInteger)index;
 /**
- Determine the possible completions, which should be an array of objects conforming to KSOTokenCompletionModel, for the provided substring and index and invoke the completion block. If this method is implemented, it is preferred over tokenTextView:completionModelsForSubstring:indexOfRepresentedObject:. This method is called on a private background queue.
+ Determine the possible completions, which should be an array of objects conforming to KSOTokenCompletionModel, for the provided substring and index and invoke the completion block. If this method is implemented, it is preferred over tokenTextView:completionModelsForSubstring:indexOfRepresentedObject:.
  
  @param tokenTextView The token text view that sent the message
  @param substring The substring to provide completions for
