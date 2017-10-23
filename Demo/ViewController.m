@@ -43,7 +43,7 @@
         return nil;
     
     _contact = contact;
-    _range = [self.tokenCompletionModelTitle rangeOfString:substring options:NSCaseInsensitiveSearch];
+//    _range = [self.tokenCompletionModelTitle rangeOfString:substring options:NSCaseInsensitiveSearch];
     
     return self;
 }
@@ -129,30 +129,29 @@
     [tableView removeFromSuperview];
 }
 - (void)tokenTextView:(KSOTokenTextView *)tokenTextView completionModelsForSubstring:(NSString *)substring indexOfRepresentedObject:(NSInteger)index completion:(void (^)(NSArray<id<KSOTokenCompletionModel>> * _Nullable))completion {
-    KSTLogObject(substring);
-    
-    void(^fetchBlock)(void) = ^{
-        NSArray *contacts = [self.contactStore unifiedContactsMatchingPredicate:[CNContact predicateForContactsMatchingName:substring] keysToFetch:@[[CNContactFormatter descriptorForRequiredKeysForStyle:CNContactFormatterStyleFullName],CNContactEmailAddressesKey] error:NULL];
-        NSMutableArray *completionModels = [[NSMutableArray alloc] init];
-        
-        for (CNContact *c in contacts) {
-            [completionModels addObject:[[CompletionModel alloc] initWithContact:c substring:substring]];
-        }
-        KSTLogObject(completionModels);
-        
-        completion(completionModels);
-    };
-    
-    if ([CNContactStore authorizationStatusForEntityType:CNEntityTypeContacts] == CNAuthorizationStatusAuthorized) {
-        fetchBlock();
-    }
-    else {
-        [self.contactStore requestAccessForEntityType:CNEntityTypeContacts completionHandler:^(BOOL granted, NSError * _Nullable error) {
-            if (granted) {
-                fetchBlock();
+    dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INITIATED, 0), ^{
+        void(^fetchBlock)(void) = ^{
+            NSArray *contacts = [self.contactStore unifiedContactsMatchingPredicate:[CNContact predicateForContactsMatchingName:substring] keysToFetch:@[[CNContactFormatter descriptorForRequiredKeysForStyle:CNContactFormatterStyleFullName],CNContactEmailAddressesKey] error:NULL];
+            NSMutableArray *completionModels = [[NSMutableArray alloc] init];
+            
+            for (CNContact *c in contacts) {
+                [completionModels addObject:[[CompletionModel alloc] initWithContact:c substring:substring]];
             }
-        }];
-    }
+            
+            completion(completionModels);
+        };
+        
+        if ([CNContactStore authorizationStatusForEntityType:CNEntityTypeContacts] == CNAuthorizationStatusAuthorized) {
+            fetchBlock();
+        }
+        else {
+            [self.contactStore requestAccessForEntityType:CNEntityTypeContacts completionHandler:^(BOOL granted, NSError * _Nullable error) {
+                if (granted) {
+                    fetchBlock();
+                }
+            }];
+        }
+    });
 }
 
 @end

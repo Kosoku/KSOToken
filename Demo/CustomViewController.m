@@ -96,7 +96,7 @@
         return nil;
     
     _word = [word copy];
-    _indexes = [indexes copy];
+//    _indexes = [indexes copy];
     
     return self;
 }
@@ -107,6 +107,7 @@
 @property (strong,nonatomic) KSOTokenTextView *textView;
 
 @property (copy,nonatomic) NSArray<NSString *> *words;
+@property (strong,nonatomic) dispatch_semaphore_t wordsSemaphore;
 @end
 
 @implementation CustomViewController
@@ -121,6 +122,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    [self setWordsSemaphore:dispatch_semaphore_create(0)];
     
     [self.view setBackgroundColor:UIColor.blackColor];
     
@@ -161,26 +164,34 @@
     [tableView removeFromSuperview];
 }
 - (void)tokenTextView:(KSOTokenTextView *)tokenTextView completionModelsForSubstring:(NSString *)substring indexOfRepresentedObject:(NSInteger)index completion:(void (^)(NSArray<id<KSOTokenCompletionModel>> * _Nullable))completion {
-    if (self.words == nil) {
-        NSData *data = [NSData dataWithContentsOfURL:[[NSBundle mainBundle] URLForResource:@"words" withExtension:@"txt"] options:NSDataReadingMappedIfSafe error:NULL];
-        NSString *text = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+    dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INITIATED, 0), ^{
+        dispatch_async(dispatch_get_global_queue(QOS_CLASS_UTILITY, 0), ^{
+            if (self.words == nil) {
+                NSData *data = [NSData dataWithContentsOfURL:[[NSBundle mainBundle] URLForResource:@"words" withExtension:@"txt"] options:NSDataReadingMappedIfSafe error:NULL];
+                NSString *text = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+                
+                [self setWords:[text componentsSeparatedByCharactersInSet:[NSCharacterSet newlineCharacterSet]]];
+            }
+            
+            dispatch_semaphore_signal(self.wordsSemaphore);
+        });
         
-        [self setWords:[text componentsSeparatedByCharactersInSet:[NSCharacterSet newlineCharacterSet]]];
-    }
-    
-    NSMutableArray *models = [[NSMutableArray alloc] init];
-    
-    for (NSString *word in self.words) {
-        NSRange range = [word rangeOfString:substring options:NSCaseInsensitiveSearch];
+        dispatch_semaphore_wait(self.wordsSemaphore, DISPATCH_TIME_FOREVER);
         
-        if (range.length == 0) {
-            continue;
+        NSMutableArray *models = [[NSMutableArray alloc] init];
+        
+        for (NSString *word in self.words) {
+            NSRange range = [word rangeOfString:substring options:NSCaseInsensitiveSearch];
+            
+            if (range.length == 0) {
+                continue;
+            }
+            
+            [models addObject:[[WordCompletion alloc] initWithWord:word indexes:[NSIndexSet indexSetWithIndexesInRange:range]]];
         }
         
-        [models addObject:[[WordCompletion alloc] initWithWord:word indexes:[NSIndexSet indexSetWithIndexesInRange:range]]];
-    }
-    
-    completion(models);
+        completion(models);
+    });
 }
 
 @end
