@@ -96,7 +96,7 @@ NS_ASSUME_NONNULL_BEGIN
  @param index The index in the receiver's represented objects array that the new represented objects will be inserted
  @return The filtered array of represented objects, return nil or an empty array to prevent adding represented objects
  */
-- (nullable NSArray<id<KSOTokenRepresentedObject> > *)tokenTextView:(KSOTokenTextView *)tokenTextView shouldAddRepresentedObjects:(NSArray<id<KSOTokenRepresentedObject> > *)representedObjects atIndex:(NSInteger)index;
+- (nullable NSArray<id<KSOTokenRepresentedObject>> *)tokenTextView:(KSOTokenTextView *)tokenTextView shouldAddRepresentedObjects:(NSArray<id<KSOTokenRepresentedObject>> *)representedObjects atIndex:(NSInteger)index;
 /**
  Called when an array of represented objects are added to the receiver at the provided index.
  
@@ -104,7 +104,7 @@ NS_ASSUME_NONNULL_BEGIN
  @param representedObjects The array of represented objects that were added
  @param index The first index of the represented objects that were added
  */
-- (void)tokenTextView:(KSOTokenTextView *)tokenTextView didAddRepresentedObjects:(NSArray<id<KSOTokenRepresentedObject> > *)representedObjects atIndex:(NSInteger)index;
+- (void)tokenTextView:(KSOTokenTextView *)tokenTextView didAddRepresentedObjects:(NSArray<id<KSOTokenRepresentedObject>> *)representedObjects atIndex:(NSInteger)index;
 
 /**
  Called when an array of represented objects are removed from the receiver at the provided index.
@@ -113,7 +113,7 @@ NS_ASSUME_NONNULL_BEGIN
  @param representedObjects The array of represented objects that were removed
  @param index The first index of the represented objects that were removed
  */
-- (BOOL)tokenTextView:(KSOTokenTextView *)tokenTextView shouldRemoveRepresentedObjects:(NSArray<id<KSOTokenRepresentedObject> > *)representedObjects atIndex:(NSInteger)index;
+- (BOOL)tokenTextView:(KSOTokenTextView *)tokenTextView shouldRemoveRepresentedObjects:(NSArray<id<KSOTokenRepresentedObject>> *)representedObjects atIndex:(NSInteger)index;
 /**
  Called when an array of represented objects are removed from the receiver at the provided index.
  
@@ -121,7 +121,7 @@ NS_ASSUME_NONNULL_BEGIN
  @param representedObjects The array of represented objects that were removed
  @param index The first index of the represented objects that were removed
  */
-- (void)tokenTextView:(KSOTokenTextView *)tokenTextView didRemoveRepresentedObjects:(NSArray<id<KSOTokenRepresentedObject> > *)representedObjects atIndex:(NSInteger)index;
+- (void)tokenTextView:(KSOTokenTextView *)tokenTextView didRemoveRepresentedObjects:(NSArray<id<KSOTokenRepresentedObject>> *)representedObjects atIndex:(NSInteger)index;
 
 /**
  Called to determine which editing commands should be displayed by the receiver. The action parameter represents the relevant command (e.g. cut:, copy:, paste:).
@@ -141,7 +141,7 @@ NS_ASSUME_NONNULL_BEGIN
  @param pasteboard The pasteboard to write to
  @return YES if the delegate handled writing to the pasteboard, NO otherwise
  */
-- (BOOL)tokenTextView:(KSOTokenTextView *)tokenTextView writeRepresentedObjects:(NSArray<id<KSOTokenRepresentedObject> > *)representedObjects pasteboard:(UIPasteboard *)pasteboard;
+- (BOOL)tokenTextView:(KSOTokenTextView *)tokenTextView writeRepresentedObjects:(NSArray<id<KSOTokenRepresentedObject>> *)representedObjects pasteboard:(UIPasteboard *)pasteboard;
 /**
  Called when the paste: command is chosen from the context menu. The delegate should return an array of represented objects created by reading data from pasteboard. If this method is not implemented, the token text view will read the array of strings stored on the pasteboard and create represented objects from them.
  
@@ -149,7 +149,7 @@ NS_ASSUME_NONNULL_BEGIN
  @param pasteboard The pasteboard to read from
  @return An array of represented objects created by reading from pasteboard
  */
-- (nullable NSArray<id<KSOTokenRepresentedObject> > *)tokenTextView:(KSOTokenTextView *)tokenTextView readFromPasteboard:(UIPasteboard *)pasteboard;
+- (nullable NSArray<id<KSOTokenRepresentedObject>> *)tokenTextView:(KSOTokenTextView *)tokenTextView readFromPasteboard:(UIPasteboard *)pasteboard;
 
 /**
  Return YES if the completion table view should be shown, otherwise NO. If this method returns YES or is not implemented tokenTextView:showCompletionsTableView: is called to actually display the table view.
@@ -184,7 +184,7 @@ NS_ASSUME_NONNULL_BEGIN
  @param index The index of the represented object where the completion would be inserted
  @return An array of objects conforming to KSOTokenCompletionModel
  */
-- (nullable NSArray<id<KSOTokenCompletionModel> > *)tokenTextView:(KSOTokenTextView *)tokenTextView completionModelsForSubstring:(NSString *)substring indexOfRepresentedObject:(NSInteger)index;
+- (nullable NSArray<id<KSOTokenCompletionModel>> *)tokenTextView:(KSOTokenTextView *)tokenTextView completionModelsForSubstring:(NSString *)substring indexOfRepresentedObject:(NSInteger)index;
 /**
  Determine the possible completions, which should be an array of objects conforming to KSOTokenCompletionModel, for the provided substring and index and invoke the completion block. If this method is implemented, it is preferred over tokenTextView:completionModelsForSubstring:indexOfRepresentedObject:.
  
@@ -193,7 +193,7 @@ NS_ASSUME_NONNULL_BEGIN
  @param index The index of the represented object where the completion would be inserted
  @param completion The completion block to invoke with the array of completion model objects
  */
-- (void)tokenTextView:(KSOTokenTextView *)tokenTextView completionModelsForSubstring:(NSString *)substring indexOfRepresentedObject:(NSInteger)index completion:(void(^)(NSArray<id<KSOTokenCompletionModel> > * _Nullable completionModels))completion;
+- (void)tokenTextView:(KSOTokenTextView *)tokenTextView completionModelsForSubstring:(NSString *)substring indexOfRepresentedObject:(NSInteger)index completion:(void(^)(NSArray<id<KSOTokenCompletionModel>> * _Nullable completionModels))completion;
 /**
  Called when the user selects a row in the completions table view. This method should return the corresponding represented object for the selected completion object.
  
@@ -201,7 +201,7 @@ NS_ASSUME_NONNULL_BEGIN
  @param completionModel The completion model that was selected
  @return The represented object for the selected completion
  */
-- (NSArray<id<KSOTokenRepresentedObject> > *)tokenTextView:(KSOTokenTextView *)tokenTextView representedObjectsForCompletionModel:(id<KSOTokenCompletionModel>)completionModel;
+- (NSArray<id<KSOTokenRepresentedObject>> *)tokenTextView:(KSOTokenTextView *)tokenTextView representedObjectsForCompletionModel:(id<KSOTokenCompletionModel>)completionModel;
 
 @end
 
