@@ -153,12 +153,13 @@
 
 - (void)tokenTextView:(KSOTokenTextView *)tokenTextView showCompletionsTableView:(UITableView *)tableView {
     [tableView setTranslatesAutoresizingMaskIntoConstraints:NO];
+    [tableView setIndicatorStyle:UIScrollViewIndicatorStyleWhite];
     [tableView setBackgroundColor:UIColor.blackColor];
     [tableView setSeparatorColor:UIColor.whiteColor];
     [self.view addSubview:tableView];
     
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[view]|" options:0 metrics:nil views:@{@"view": tableView}]];
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[subview][view]|" options:0 metrics:nil views:@{@"view": tableView, @"subview": self.textView}]];
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[subview][view][bottom]" options:0 metrics:nil views:@{@"view": tableView, @"subview": self.textView, @"bottom": self.bottomLayoutGuide}]];
 }
 - (void)tokenTextView:(KSOTokenTextView *)tokenTextView hideCompletionsTableView:(UITableView *)tableView {
     [tableView removeFromSuperview];
