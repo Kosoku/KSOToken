@@ -157,7 +157,7 @@ NS_ASSUME_NONNULL_BEGIN
  @param tokenTextView The token text that sent the message
  @return YES if the completion table view should be shown, otherwise NO
  */
-- (BOOL)tokenTextViewShouldShowCompletionTableView:(KSOTokenTextView *)tokenTextView;
+- (BOOL)tokenTextViewShouldShowCompletionsTableView:(KSOTokenTextView *)tokenTextView;
 /**
  Called when the receiver's delegate should display the completions table view.
  

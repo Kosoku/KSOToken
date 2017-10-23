@@ -728,8 +728,8 @@
 }
 #pragma mark -
 - (void)_showCompletionsTableView; {
-    if ([self.delegate respondsToSelector:@selector(tokenTextViewShouldShowCompletionTableView:)] &&
-        ![self.delegate tokenTextViewShouldShowCompletionTableView:self]) {
+    if ([self.delegate respondsToSelector:@selector(tokenTextViewShouldShowCompletionsTableView:)] &&
+        ![self.delegate tokenTextViewShouldShowCompletionsTableView:self]) {
         return;
     }
     
