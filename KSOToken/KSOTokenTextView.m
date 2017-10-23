@@ -751,6 +751,7 @@
         
         [self.tableView setEstimatedRowHeight:estimatedRowHeight];
         [self.tableView setRowHeight:UITableViewAutomaticDimension];
+        [self.tableView registerClass:self.completionTableViewCellClass forCellReuseIdentifier:NSStringFromClass(self.completionTableViewCellClass)];
         [self.tableView setDataSource:self];
         [self.tableView setDelegate:self];
     }
