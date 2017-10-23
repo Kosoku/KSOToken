@@ -154,6 +154,7 @@
 + (NSCharacterSet *)_defaultTokenizingCharacterSet;
 + (Class<KSOTokenTextAttachment>)_defaultTokenTextAttachmentClass;
 + (NSTimeInterval)_defaultCompletionDelay;
++ (Class)_defaultCompletionTableViewClass;
 + (Class<KSOTokenCompletionTableViewCell>)_defaultCompletionTableViewCellClass;
 + (UIColor *)_defaultTextColor;
 @end
@@ -422,7 +423,7 @@
     UITableViewCell<KSOTokenCompletionTableViewCell> *cell = [tableView dequeueReusableCellWithIdentifier:NSStringFromClass(self.completionTableViewCellClass)];
     
     if (cell == nil) {
-        cell = [[(id)self.completionTableViewCellClass alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:NSStringFromClass(self.completionTableViewCellClass)];
+        cell = [[(Class)self.completionTableViewCellClass alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:NSStringFromClass(self.completionTableViewCellClass)];
     }
     
     [cell setCompletionModel:self.completionModels[indexPath.row]];
@@ -479,12 +480,23 @@
 }
 - (void)setTokenTextAttachmentClass:(Class<KSOTokenTextAttachment>)tokenTextAttachmentClass {
     _tokenTextAttachmentClass = tokenTextAttachmentClass ?: [self.class _defaultTokenTextAttachmentClass];
+    
+    NSAssert([_tokenTextAttachmentClass isKindOfClass:NSTextAttachment.class], @"%@ must be a subclass of %@",NSStringFromClass(_tokenTextAttachmentClass),NSStringFromClass(NSTextAttachment.class));
+    NSAssert([_tokenTextAttachmentClass conformsToProtocol:@protocol(KSOTokenTextAttachment)], @"%@ must conform to %@",NSStringFromClass(_tokenTextAttachmentClass),NSStringFromProtocol(@protocol(KSOTokenTextAttachment)));
 }
 - (void)setCompletionDelay:(NSTimeInterval)completionDelay {
     _completionDelay = completionDelay < 0.0 ? [self.class _defaultCompletionDelay] : completionDelay;
 }
+- (void)setCompletionTableViewClass:(Class)completionTableViewClass {
+    _completionTableViewClass = completionTableViewClass ?: [self.class _defaultCompletionTableViewClass];
+    
+    NSAssert([_completionTableViewClass isKindOfClass:UITableView.class], @"%@ must be a subclass of %@",NSStringFromClass(_completionTableViewClass),NSStringFromClass(UITableView.class));
+}
 - (void)setCompletionTableViewCellClass:(Class<KSOTokenCompletionTableViewCell>)completionTableViewCellClass {
     _completionTableViewCellClass = completionTableViewCellClass ?: [self.class _defaultCompletionTableViewCellClass];
+    
+    NSAssert([_completionTableViewCellClass isKindOfClass:UITableViewCell.class], @"%@ must be a subclass of %@",NSStringFromClass(_completionTableViewCellClass),NSStringFromClass(UITableViewCell.class));
+    NSAssert([_completionTableViewCellClass conformsToProtocol:@protocol(KSOTokenCompletionTableViewCell)], @"%@ must conform to %@",NSStringFromClass(_completionTableViewCellClass),NSStringFromProtocol(@protocol(KSOTokenCompletionTableViewCell)));
 }
 #pragma mark *** Private Methods ***
 - (void)_KSOTokenTextViewInit; {
@@ -495,6 +507,7 @@
     _tokenizingCharacterSet = [self.class _defaultTokenizingCharacterSet];
     _tokenTextAttachmentClass = [self.class _defaultTokenTextAttachmentClass];
     _completionDelay = [self.class _defaultCompletionDelay];
+    _completionTableViewClass = [self.class _defaultCompletionTableViewClass];
     _completionTableViewCellClass = [self.class _defaultCompletionTableViewCellClass];
     
     [self setTextColor:[self.class _defaultTextColor]];
@@ -741,7 +754,7 @@
     
     // if our completion table view doesn't exist, create it and ask the delegate to display it
     if (self.tableView == nil) {
-        [self setTableView:[[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain]];
+        [self setTableView:[[self.completionTableViewClass alloc] initWithFrame:CGRectZero style:UITableViewStylePlain]];
         
         CGFloat estimatedRowHeight = 44.0;
         
@@ -846,6 +859,9 @@
 }
 + (NSTimeInterval)_defaultCompletionDelay; {
     return 0.0;
+}
++ (Class)_defaultCompletionTableViewClass; {
+    return UITableView.class;
 }
 + (Class<KSOTokenCompletionTableViewCell>)_defaultCompletionTableViewCellClass; {
     return KSOTokenDefaultCompletionTableViewCell.class;

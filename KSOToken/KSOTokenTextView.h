@@ -40,7 +40,7 @@ NS_ASSUME_NONNULL_BEGIN
  
  These can either be NSString objects or custom model objects. If the client is using custom model objects, the delegate should implement `tokenTextView:representedObjectForEditingText:` and provide them.
  */
-@property (copy,nonatomic,nullable) NSArray<id<KSOTokenRepresentedObject> > *representedObjects;
+@property (copy,nonatomic,nullable) NSArray<id<KSOTokenRepresentedObject>> *representedObjects;
 
 /**
  Set and get the character set used to delimit tokens.
@@ -60,6 +60,12 @@ NS_ASSUME_NONNULL_BEGIN
  The default is 0.0.
  */
 @property (assign,nonatomic) NSTimeInterval completionDelay;
+/**
+ Set and get the completion table view class of the receiver. This must be a subclass of UITableView.
+ 
+ The default is UITableView.class.
+ */
+@property (strong,nonatomic,null_resettable) Class completionTableViewClass;
 /**
  Set and get the completion table view cell class of the receiver. This must be the class of an object conforming to KSOTokenCompletionTableViewCell.
  
