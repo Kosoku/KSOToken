@@ -24,13 +24,6 @@ NS_ASSUME_NONNULL_BEGIN
 @interface KSOTokenDefaultCompletionTableViewCell : UITableViewCell <KSOTokenCompletionTableViewCell>
 
 /**
- Return the estimated row height of the receiver. This will be set as the estimatedRowHeight of the completion table view.
- 
- The default is 44.0.
- */
-@property (class,readonly,nonatomic) CGFloat estimatedRowHeight;
-
-/**
  Set and get the title font.
  
  The default is [UIFont systemFontOfSize:17.0].
