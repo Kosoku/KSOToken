@@ -28,4 +28,16 @@ NS_ASSUME_NONNULL_BEGIN
 @property (readonly,nonatomic) NSString *tokenRepresentedObjectDisplayName;
 @end
 
+/**
+ Adds support for KSOTokenRepresentedObject to NSString.
+ */
+@interface NSString (KSOTokenRepresentedObjectExtensions) <KSOTokenRepresentedObject>
+@end
+
+/**
+ Adds support for KSOTokenRepresentedObject to NSURL
+ */
+@interface NSURL (KSOTokenRepresentedObjectExtensions) <KSOTokenRepresentedObject>
+@end
+
 NS_ASSUME_NONNULL_END

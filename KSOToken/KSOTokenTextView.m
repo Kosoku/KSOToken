@@ -15,7 +15,7 @@
 
 #import "KSOTokenTextView.h"
 #import "KSOTokenDefaultTextAttachment.h"
-#import "KSOTokenCompletionDefaultTableViewCell.h"
+#import "KSOTokenDefaultCompletionTableViewCell.h"
 #import "KSOTokenCompletionOperation.h"
 
 #import <Ditko/Ditko.h>
@@ -848,7 +848,7 @@
     return 0.0;
 }
 + (Class<KSOTokenCompletionTableViewCell>)_defaultCompletionTableViewCellClass; {
-    return KSOTokenCompletionDefaultTableViewCell.class;
+    return KSOTokenDefaultCompletionTableViewCell.class;
 }
 + (UIColor *)_defaultTextColor; {
     return UIColor.blackColor;

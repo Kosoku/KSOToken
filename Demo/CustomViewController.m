@@ -49,7 +49,7 @@
 
 @end
 
-@interface CompletionTableViewCell : KSOTokenCompletionDefaultTableViewCell
+@interface CompletionTableViewCell : KSOTokenDefaultCompletionTableViewCell
 
 @end
 

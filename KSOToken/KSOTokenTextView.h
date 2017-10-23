@@ -63,7 +63,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Set and get the completion table view cell class of the receiver. This must be the class of an object conforming to KSOTokenCompletionTableViewCell.
  
- The default is KSOTokenCompletionDefaultTableViewCell.class.
+ The default is KSOTokenDefaultCompletionTableViewCell.class.
  */
 @property (strong,nonatomic,null_resettable) Class<KSOTokenCompletionTableViewCell> completionTableViewCellClass;
 

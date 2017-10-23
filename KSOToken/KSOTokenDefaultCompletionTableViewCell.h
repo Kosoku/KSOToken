@@ -1,5 +1,5 @@
 //
-//  KSOTokenCompletionDefaultTableViewCell.h
+//  KSOTokenDefaultCompletionTableViewCell.h
 //  KSOToken
 //
 //  Created by William Towe on 6/5/17.
@@ -19,9 +19,9 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /**
- KSOTokenCompletionDefaultTableViewCell is a UITableViewCell subclass that is used by default to display model objects conforming to KSOTokenCompletionModel in the completions table view. You can provide a custom class conforming to KSOTokenCompletionTableViewCell. The default appearance uses a UILabel with the titleTextColor as the text color and highlightBackgroundColor as the background color when drawing matching ranges.
+ KSOTokenDefaultCompletionTableViewCell is a UITableViewCell subclass that is used by default to display model objects conforming to KSOTokenCompletionModel in the completions table view. You can provide a custom class conforming to KSOTokenCompletionTableViewCell. The default appearance uses a UILabel with the titleTextColor as the text color and highlightBackgroundColor as the background color when drawing matching ranges.
  */
-@interface KSOTokenCompletionDefaultTableViewCell : UITableViewCell <KSOTokenCompletionTableViewCell>
+@interface KSOTokenDefaultCompletionTableViewCell : UITableViewCell <KSOTokenCompletionTableViewCell>
 
 /**
  Return the estimated row height of the receiver. This will be set as the estimatedRowHeight of the completion table view.

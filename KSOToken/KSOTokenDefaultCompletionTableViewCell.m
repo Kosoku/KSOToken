@@ -1,5 +1,5 @@
 //
-//  KSOTokenCompletionDefaultTableViewCell.m
+//  KSOTokenDefaultCompletionTableViewCell.m
 //  KSOToken
 //
 //  Created by William Towe on 6/5/17.
@@ -13,13 +13,13 @@
 //
 //  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-#import "KSOTokenCompletionDefaultTableViewCell.h"
+#import "KSOTokenDefaultCompletionTableViewCell.h"
 
 #import <Stanley/KSTScopeMacros.h>
 
 static void *kObservingContext = &kObservingContext;
 
-@interface KSOTokenCompletionDefaultTableViewCell ()
+@interface KSOTokenDefaultCompletionTableViewCell ()
 @property (strong,nonatomic) UILabel *titleLabel;
 
 @property (copy,nonatomic) NSArray<NSLayoutConstraint *> *activeConstraints;
@@ -31,7 +31,7 @@ static void *kObservingContext = &kObservingContext;
 + (UIColor *)_defaultHighlightedBackgroundColor;
 @end
 
-@implementation KSOTokenCompletionDefaultTableViewCell
+@implementation KSOTokenDefaultCompletionTableViewCell
 
 - (void)dealloc {
     [self removeObserver:self forKeyPath:@kstKeypath(self,titleFont) context:kObservingContext];

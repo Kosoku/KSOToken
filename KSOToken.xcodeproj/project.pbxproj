@@ -33,12 +33,11 @@
 		072AD5671F9D1764003E9683 /* KSOTokenCompletionOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 072AD5651F9D1764003E9683 /* KSOTokenCompletionOperation.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		072AD5681F9D1764003E9683 /* KSOTokenCompletionOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 072AD5661F9D1764003E9683 /* KSOTokenCompletionOperation.m */; };
 		074472DF1EE5C3D400DA7D42 /* KSOTokenRepresentedObject.h in Headers */ = {isa = PBXBuildFile; fileRef = 074472DE1EE5C3D400DA7D42 /* KSOTokenRepresentedObject.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		074472E21EE5C64000DA7D42 /* NSString+KSOTokenExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 074472E01EE5C64000DA7D42 /* NSString+KSOTokenExtensions.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		074472E31EE5C64000DA7D42 /* NSString+KSOTokenExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 074472E11EE5C64000DA7D42 /* NSString+KSOTokenExtensions.m */; };
 		074472E51EE5CBF300DA7D42 /* KSOTokenCompletionTableViewCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 074472E41EE5CBF300DA7D42 /* KSOTokenCompletionTableViewCell.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		074472E71EE5CC4400DA7D42 /* KSOTokenCompletionModel.h in Headers */ = {isa = PBXBuildFile; fileRef = 074472E61EE5CC4400DA7D42 /* KSOTokenCompletionModel.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		074472EA1EE5CDDC00DA7D42 /* KSOTokenCompletionDefaultTableViewCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 074472E81EE5CDDC00DA7D42 /* KSOTokenCompletionDefaultTableViewCell.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		074472EB1EE5CDDC00DA7D42 /* KSOTokenCompletionDefaultTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 074472E91EE5CDDC00DA7D42 /* KSOTokenCompletionDefaultTableViewCell.m */; };
+		074472EA1EE5CDDC00DA7D42 /* KSOTokenDefaultCompletionTableViewCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 074472E81EE5CDDC00DA7D42 /* KSOTokenDefaultCompletionTableViewCell.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		074472EB1EE5CDDC00DA7D42 /* KSOTokenDefaultCompletionTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 074472E91EE5CDDC00DA7D42 /* KSOTokenDefaultCompletionTableViewCell.m */; };
+		07BDD3621F9DC9C7005DED66 /* KSOTokenRepresentedObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 07BDD3611F9DC9C7005DED66 /* KSOTokenRepresentedObject.m */; };
 		07C37A281EE1F4FE0046AE13 /* KSOTokenTextAttachment.h in Headers */ = {isa = PBXBuildFile; fileRef = 07C37A271EE1F4FE0046AE13 /* KSOTokenTextAttachment.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		07C37A2B1EE1F5F80046AE13 /* KSOTokenDefaultTextAttachment.h in Headers */ = {isa = PBXBuildFile; fileRef = 07C37A291EE1F5F80046AE13 /* KSOTokenDefaultTextAttachment.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		07C37A2C1EE1F5F80046AE13 /* KSOTokenDefaultTextAttachment.m in Sources */ = {isa = PBXBuildFile; fileRef = 07C37A2A1EE1F5F80046AE13 /* KSOTokenDefaultTextAttachment.m */; };
@@ -102,12 +101,11 @@
 		072AD5661F9D1764003E9683 /* KSOTokenCompletionOperation.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KSOTokenCompletionOperation.m; sourceTree = "<group>"; };
 		072AD56A1F9D5082003E9683 /* KSOToken-Info.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "KSOToken-Info.h"; sourceTree = "<group>"; };
 		074472DE1EE5C3D400DA7D42 /* KSOTokenRepresentedObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSOTokenRepresentedObject.h; sourceTree = "<group>"; };
-		074472E01EE5C64000DA7D42 /* NSString+KSOTokenExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+KSOTokenExtensions.h"; sourceTree = "<group>"; };
-		074472E11EE5C64000DA7D42 /* NSString+KSOTokenExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+KSOTokenExtensions.m"; sourceTree = "<group>"; };
 		074472E41EE5CBF300DA7D42 /* KSOTokenCompletionTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSOTokenCompletionTableViewCell.h; sourceTree = "<group>"; };
 		074472E61EE5CC4400DA7D42 /* KSOTokenCompletionModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSOTokenCompletionModel.h; sourceTree = "<group>"; };
-		074472E81EE5CDDC00DA7D42 /* KSOTokenCompletionDefaultTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSOTokenCompletionDefaultTableViewCell.h; sourceTree = "<group>"; };
-		074472E91EE5CDDC00DA7D42 /* KSOTokenCompletionDefaultTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSOTokenCompletionDefaultTableViewCell.m; sourceTree = "<group>"; };
+		074472E81EE5CDDC00DA7D42 /* KSOTokenDefaultCompletionTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSOTokenDefaultCompletionTableViewCell.h; sourceTree = "<group>"; };
+		074472E91EE5CDDC00DA7D42 /* KSOTokenDefaultCompletionTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSOTokenDefaultCompletionTableViewCell.m; sourceTree = "<group>"; };
+		07BDD3611F9DC9C7005DED66 /* KSOTokenRepresentedObject.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KSOTokenRepresentedObject.m; sourceTree = "<group>"; };
 		07C37A271EE1F4FE0046AE13 /* KSOTokenTextAttachment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSOTokenTextAttachment.h; sourceTree = "<group>"; };
 		07C37A291EE1F5F80046AE13 /* KSOTokenDefaultTextAttachment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSOTokenDefaultTextAttachment.h; sourceTree = "<group>"; };
 		07C37A2A1EE1F5F80046AE13 /* KSOTokenDefaultTextAttachment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSOTokenDefaultTextAttachment.m; sourceTree = "<group>"; };
@@ -187,15 +185,14 @@
 				070EC1EA1EE1D55200118FCC /* KSOTokenTextView.h */,
 				070EC1EB1EE1D55200118FCC /* KSOTokenTextView.m */,
 				074472DE1EE5C3D400DA7D42 /* KSOTokenRepresentedObject.h */,
-				074472E01EE5C64000DA7D42 /* NSString+KSOTokenExtensions.h */,
-				074472E11EE5C64000DA7D42 /* NSString+KSOTokenExtensions.m */,
+				07BDD3611F9DC9C7005DED66 /* KSOTokenRepresentedObject.m */,
 				07C37A271EE1F4FE0046AE13 /* KSOTokenTextAttachment.h */,
 				07C37A291EE1F5F80046AE13 /* KSOTokenDefaultTextAttachment.h */,
 				07C37A2A1EE1F5F80046AE13 /* KSOTokenDefaultTextAttachment.m */,
 				074472E61EE5CC4400DA7D42 /* KSOTokenCompletionModel.h */,
 				074472E41EE5CBF300DA7D42 /* KSOTokenCompletionTableViewCell.h */,
-				074472E81EE5CDDC00DA7D42 /* KSOTokenCompletionDefaultTableViewCell.h */,
-				074472E91EE5CDDC00DA7D42 /* KSOTokenCompletionDefaultTableViewCell.m */,
+				074472E81EE5CDDC00DA7D42 /* KSOTokenDefaultCompletionTableViewCell.h */,
+				074472E91EE5CDDC00DA7D42 /* KSOTokenDefaultCompletionTableViewCell.m */,
 				072AD5691F9D17C8003E9683 /* Private */,
 			);
 			name = Source;
@@ -260,12 +257,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				074472E71EE5CC4400DA7D42 /* KSOTokenCompletionModel.h in Headers */,
-				074472EA1EE5CDDC00DA7D42 /* KSOTokenCompletionDefaultTableViewCell.h in Headers */,
+				074472EA1EE5CDDC00DA7D42 /* KSOTokenDefaultCompletionTableViewCell.h in Headers */,
 				07C37A281EE1F4FE0046AE13 /* KSOTokenTextAttachment.h in Headers */,
 				070EC1EC1EE1D55200118FCC /* KSOTokenTextView.h in Headers */,
 				074472DF1EE5C3D400DA7D42 /* KSOTokenRepresentedObject.h in Headers */,
 				07C37A2B1EE1F5F80046AE13 /* KSOTokenDefaultTextAttachment.h in Headers */,
-				074472E21EE5C64000DA7D42 /* NSString+KSOTokenExtensions.h in Headers */,
 				070EC1B21EE1D2FE00118FCC /* KSOToken.h in Headers */,
 				072AD5671F9D1764003E9683 /* KSOTokenCompletionOperation.h in Headers */,
 				074472E51EE5CBF300DA7D42 /* KSOTokenCompletionTableViewCell.h in Headers */,
@@ -376,11 +372,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				07BDD3621F9DC9C7005DED66 /* KSOTokenRepresentedObject.m in Sources */,
 				070EC1ED1EE1D55200118FCC /* KSOTokenTextView.m in Sources */,
-				074472E31EE5C64000DA7D42 /* NSString+KSOTokenExtensions.m in Sources */,
 				07C37A2C1EE1F5F80046AE13 /* KSOTokenDefaultTextAttachment.m in Sources */,
 				072AD5681F9D1764003E9683 /* KSOTokenCompletionOperation.m in Sources */,
-				074472EB1EE5CDDC00DA7D42 /* KSOTokenCompletionDefaultTableViewCell.m in Sources */,
+				074472EB1EE5CDDC00DA7D42 /* KSOTokenDefaultCompletionTableViewCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
