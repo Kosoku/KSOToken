@@ -431,6 +431,11 @@
     return cell;
 }
 #pragma mark UITableViewDelegate
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
+    if ([self.delegate respondsToSelector:@selector(tokenTextView:willDisplayCompletionTableViewCell:completionModel:)]) {
+        [self.delegate tokenTextView:self willDisplayCompletionTableViewCell:cell completionModel:self.completionModels[indexPath.row]];
+    }
+}
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     // hide the completions table view and insert the selected completion
     [self _hideCompletionsTableViewAndSelectCompletionModel:self.completionModels[indexPath.row]];

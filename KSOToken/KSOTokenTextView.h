@@ -201,6 +201,14 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)tokenTextView:(KSOTokenTextView *)tokenTextView completionModelsForSubstring:(NSString *)substring indexOfRepresentedObject:(NSInteger)index completion:(void(^)(NSArray<id<KSOTokenCompletionModel>> * _Nullable completionModels))completion;
 /**
+ Called when the tableView:willDisplayCell:forRowAtIndexPath: method is called on the managed completion table view. The delegate can use this to perform any last minute customizations on the cell before being displayed.
+ 
+ @param tokenTextView The token text view that sent the message
+ @param completionTableViewCell The completion table view cell
+ @param completionModel The completion model
+ */
+- (void)tokenTextView:(KSOTokenTextView *)tokenTextView willDisplayCompletionTableViewCell:(__kindof UITableViewCell<KSOTokenCompletionTableViewCell> *)completionTableViewCell completionModel:(id<KSOTokenCompletionModel>)completionModel;
+/**
  Called when the user selects a row in the completions table view. This method should return the corresponding represented object for the selected completion object.
  
  @param tokenTextView The token text view that sent the message
