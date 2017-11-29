@@ -420,10 +420,10 @@
     return self.completionModels.count;
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell<KSOTokenCompletionTableViewCell> *cell = [tableView dequeueReusableCellWithIdentifier:NSStringFromClass(self.completionTableViewCellClass)];
+    UITableViewCell<KSOTokenCompletionTableViewCell> *cell = [tableView dequeueReusableCellWithIdentifier:NSStringFromClass(self.completionsTableViewCellClass)];
     
     if (cell == nil) {
-        cell = [[(Class)self.completionTableViewCellClass alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:NSStringFromClass(self.completionTableViewCellClass)];
+        cell = [[(Class)self.completionsTableViewCellClass alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:NSStringFromClass(self.completionsTableViewCellClass)];
     }
     
     [cell setCompletionModel:self.completionModels[indexPath.row]];
@@ -515,7 +515,7 @@
 - (void)setCompletionsTableViewCellClass:(Class<KSOTokenCompletionTableViewCell>)completionTableViewCellClass {
     _completionsTableViewCellClass = completionTableViewCellClass ?: [self.class _defaultCompletionTableViewCellClass];
     
-    NSAssert([(id)_completionsTableViewCellClass isSubclassOfClass:UITableViewCell.class], @"%@ must be a subclass of %@",NSStringFromClass(_completionTableViewCellClass),NSStringFromClass(UITableViewCell.class));
+    NSAssert([(id)_completionsTableViewCellClass isSubclassOfClass:UITableViewCell.class], @"%@ must be a subclass of %@",NSStringFromClass(_completionsTableViewCellClass),NSStringFromClass(UITableViewCell.class));
     NSAssert([_completionsTableViewCellClass conformsToProtocol:@protocol(KSOTokenCompletionTableViewCell)], @"%@ must conform to %@",NSStringFromClass(_completionsTableViewCellClass),NSStringFromProtocol(@protocol(KSOTokenCompletionTableViewCell)));
 }
 #pragma mark *** Private Methods ***
@@ -774,17 +774,17 @@
     
     // if our completion table view doesn't exist, create it and ask the delegate to display it
     if (self.tableView == nil) {
-        [self setTableView:[[self.completionTableViewClass alloc] initWithFrame:CGRectZero style:UITableViewStylePlain]];
+        [self setTableView:[[self.completionsTableViewClass alloc] initWithFrame:CGRectZero style:UITableViewStylePlain]];
         
         CGFloat estimatedRowHeight = 44.0;
         
-        if ([self.completionTableViewCellClass respondsToSelector:@selector(estimatedRowHeight)]) {
-            estimatedRowHeight = [self.completionTableViewCellClass estimatedRowHeight];
+        if ([self.completionsTableViewCellClass respondsToSelector:@selector(estimatedRowHeight)]) {
+            estimatedRowHeight = [self.completionsTableViewCellClass estimatedRowHeight];
         }
         
         [self.tableView setEstimatedRowHeight:estimatedRowHeight];
         [self.tableView setRowHeight:UITableViewAutomaticDimension];
-        [self.tableView registerClass:self.completionTableViewCellClass forCellReuseIdentifier:NSStringFromClass(self.completionTableViewCellClass)];
+        [self.tableView registerClass:self.completionsTableViewCellClass forCellReuseIdentifier:NSStringFromClass(self.completionsTableViewCellClass)];
         [self.tableView setDataSource:self];
         [self.tableView setDelegate:self];
     }
