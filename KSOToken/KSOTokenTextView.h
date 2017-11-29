@@ -80,6 +80,12 @@ NS_ASSUME_NONNULL_BEGIN
  @return YES if the text was tokenized, otherwise NO
  */
 - (BOOL)tokenizeTextAndGetTokenRange:(nullable NSRangePointer)tokenRange;
+/**
+ Returns the token range for the selectedRange of the receiver, but does not attempt to tokenize it. This could be used to highlight the token range after an error, for example. If you want to force the receiver to attempt tokenization of its text, use tokenizeTextAndGetTokenRange: instead. This returns an NSRange with length == 0 on failure.
+ 
+ @return The token range for the selectedRange
+ */
+- (NSRange)tokenRangeForSelectedRange;
 
 /**
  Manually show the completions table view for the selected range of the receiver. If the required delegate methods are not implemented, this method does nothing.

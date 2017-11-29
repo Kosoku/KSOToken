@@ -458,6 +458,9 @@
 - (BOOL)tokenizeTextAndGetTokenRange:(NSRangePointer)tokenRange; {
     return [self _tokenizeTextInRange:self.selectedRange tokenRange:tokenRange];
 }
+- (NSRange)tokenRangeForSelectedRange; {
+    return [self _tokenRangeForRange:self.selectedRange];
+}
 - (void)showCompletionsTableView; {
     [self _showCompletionsTableView];
 }
