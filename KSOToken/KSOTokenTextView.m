@@ -486,7 +486,7 @@
 - (void)setTokenTextAttachmentClass:(Class<KSOTokenTextAttachment>)tokenTextAttachmentClass {
     _tokenTextAttachmentClass = tokenTextAttachmentClass ?: [self.class _defaultTokenTextAttachmentClass];
     
-    NSAssert([_tokenTextAttachmentClass isKindOfClass:NSTextAttachment.class], @"%@ must be a subclass of %@",NSStringFromClass(_tokenTextAttachmentClass),NSStringFromClass(NSTextAttachment.class));
+    NSAssert([(id)_tokenTextAttachmentClass isSubclassOfClass:NSTextAttachment.class], @"%@ must be a subclass of %@",NSStringFromClass(_tokenTextAttachmentClass),NSStringFromClass(NSTextAttachment.class));
     NSAssert([_tokenTextAttachmentClass conformsToProtocol:@protocol(KSOTokenTextAttachment)], @"%@ must conform to %@",NSStringFromClass(_tokenTextAttachmentClass),NSStringFromProtocol(@protocol(KSOTokenTextAttachment)));
 }
 - (void)setCompletionDelay:(NSTimeInterval)completionDelay {
@@ -495,12 +495,12 @@
 - (void)setCompletionTableViewClass:(Class)completionTableViewClass {
     _completionTableViewClass = completionTableViewClass ?: [self.class _defaultCompletionTableViewClass];
     
-    NSAssert([_completionTableViewClass isKindOfClass:UITableView.class], @"%@ must be a subclass of %@",NSStringFromClass(_completionTableViewClass),NSStringFromClass(UITableView.class));
+    NSAssert([(id)_completionTableViewClass isSubclassOfClass:UITableView.class], @"%@ must be a subclass of %@",NSStringFromClass(_completionTableViewClass),NSStringFromClass(UITableView.class));
 }
 - (void)setCompletionTableViewCellClass:(Class<KSOTokenCompletionTableViewCell>)completionTableViewCellClass {
     _completionTableViewCellClass = completionTableViewCellClass ?: [self.class _defaultCompletionTableViewCellClass];
     
-    NSAssert([_completionTableViewCellClass isKindOfClass:UITableViewCell.class], @"%@ must be a subclass of %@",NSStringFromClass(_completionTableViewCellClass),NSStringFromClass(UITableViewCell.class));
+    NSAssert([(id)_completionTableViewCellClass isSubclassOfClass:UITableViewCell.class], @"%@ must be a subclass of %@",NSStringFromClass(_completionTableViewCellClass),NSStringFromClass(UITableViewCell.class));
     NSAssert([_completionTableViewCellClass conformsToProtocol:@protocol(KSOTokenCompletionTableViewCell)], @"%@ must conform to %@",NSStringFromClass(_completionTableViewCellClass),NSStringFromProtocol(@protocol(KSOTokenCompletionTableViewCell)));
 }
 #pragma mark *** Private Methods ***
