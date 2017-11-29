@@ -433,7 +433,7 @@
 #pragma mark UITableViewDelegate
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
     if ([self.delegate respondsToSelector:@selector(tokenTextView:willDisplayCompletionTableViewCell:completionModel:)]) {
-        [self.delegate tokenTextView:self willDisplayCompletionTableViewCell:cell completionModel:self.completionModels[indexPath.row]];
+        [self.delegate tokenTextView:self willDisplayCompletionTableViewCell:(UITableViewCell<KSOTokenCompletionTableViewCell> *)cell completionModel:self.completionModels[indexPath.row]];
     }
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
