@@ -413,7 +413,7 @@
 - (void)textViewDidChange:(UITextView *)textView {
     [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(_showCompletionsTableView) object:nil];
     
-    [self performSelector:@selector(_showCompletionsTableView) withObject:nil afterDelay:self.completionDelay];
+    [self performSelector:@selector(_showCompletionsTableView) withObject:nil afterDelay:self.completionsDelay];
 }
 #pragma mark UITableViewDataSource
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -431,6 +431,12 @@
     return cell;
 }
 #pragma mark UITableViewDelegate
+- (NSArray<UITableViewRowAction *> *)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath {
+    if ([self.delegate respondsToSelector:@selector(tokenTextView:editActionsForCompletionModel:)]) {
+        return [self.delegate tokenTextView:self editActionsForCompletionModel:self.completionModels[indexPath.row]] ?: @[];
+    }
+    return @[];
+}
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
     if ([self.delegate respondsToSelector:@selector(tokenTextView:willDisplayCompletionTableViewCell:completionModel:)]) {
         [self.delegate tokenTextView:self willDisplayCompletionTableViewCell:(UITableViewCell<KSOTokenCompletionTableViewCell> *)cell completionModel:self.completionModels[indexPath.row]];
@@ -451,6 +457,15 @@
 #pragma mark *** Public Methods ***
 - (BOOL)tokenizeTextAndGetTokenRange:(NSRangePointer)tokenRange; {
     return [self _tokenizeTextInRange:self.selectedRange tokenRange:tokenRange];
+}
+- (void)showCompletionsTableView; {
+    [self _showCompletionsTableView];
+}
+- (void)hideCompletionsTableView; {
+    [self hideCompletionsTableViewAndSelectCompletionModel:nil];
+}
+- (void)hideCompletionsTableViewAndSelectCompletionModel:(id<KSOTokenCompletionModel>)completionModel {
+    [self _hideCompletionsTableViewAndSelectCompletionModel:completionModel];
 }
 #pragma mark Properties
 @dynamic representedObjects;
@@ -489,19 +504,19 @@
     NSAssert([(id)_tokenTextAttachmentClass isSubclassOfClass:NSTextAttachment.class], @"%@ must be a subclass of %@",NSStringFromClass(_tokenTextAttachmentClass),NSStringFromClass(NSTextAttachment.class));
     NSAssert([_tokenTextAttachmentClass conformsToProtocol:@protocol(KSOTokenTextAttachment)], @"%@ must conform to %@",NSStringFromClass(_tokenTextAttachmentClass),NSStringFromProtocol(@protocol(KSOTokenTextAttachment)));
 }
-- (void)setCompletionDelay:(NSTimeInterval)completionDelay {
-    _completionDelay = completionDelay < 0.0 ? [self.class _defaultCompletionDelay] : completionDelay;
+- (void)setCompletionsDelay:(NSTimeInterval)completionDelay {
+    _completionsDelay = completionDelay < 0.0 ? [self.class _defaultCompletionDelay] : completionDelay;
 }
-- (void)setCompletionTableViewClass:(Class)completionTableViewClass {
-    _completionTableViewClass = completionTableViewClass ?: [self.class _defaultCompletionTableViewClass];
+- (void)setCompletionsTableViewClass:(Class)completionTableViewClass {
+    _completionsTableViewClass = completionTableViewClass ?: [self.class _defaultCompletionTableViewClass];
     
-    NSAssert([(id)_completionTableViewClass isSubclassOfClass:UITableView.class], @"%@ must be a subclass of %@",NSStringFromClass(_completionTableViewClass),NSStringFromClass(UITableView.class));
+    NSAssert([(id)_completionsTableViewClass isSubclassOfClass:UITableView.class], @"%@ must be a subclass of %@",NSStringFromClass(_completionsTableViewClass),NSStringFromClass(UITableView.class));
 }
-- (void)setCompletionTableViewCellClass:(Class<KSOTokenCompletionTableViewCell>)completionTableViewCellClass {
-    _completionTableViewCellClass = completionTableViewCellClass ?: [self.class _defaultCompletionTableViewCellClass];
+- (void)setCompletionsTableViewCellClass:(Class<KSOTokenCompletionTableViewCell>)completionTableViewCellClass {
+    _completionsTableViewCellClass = completionTableViewCellClass ?: [self.class _defaultCompletionTableViewCellClass];
     
-    NSAssert([(id)_completionTableViewCellClass isSubclassOfClass:UITableViewCell.class], @"%@ must be a subclass of %@",NSStringFromClass(_completionTableViewCellClass),NSStringFromClass(UITableViewCell.class));
-    NSAssert([_completionTableViewCellClass conformsToProtocol:@protocol(KSOTokenCompletionTableViewCell)], @"%@ must conform to %@",NSStringFromClass(_completionTableViewCellClass),NSStringFromProtocol(@protocol(KSOTokenCompletionTableViewCell)));
+    NSAssert([(id)_completionsTableViewCellClass isSubclassOfClass:UITableViewCell.class], @"%@ must be a subclass of %@",NSStringFromClass(_completionTableViewCellClass),NSStringFromClass(UITableViewCell.class));
+    NSAssert([_completionsTableViewCellClass conformsToProtocol:@protocol(KSOTokenCompletionTableViewCell)], @"%@ must conform to %@",NSStringFromClass(_completionsTableViewCellClass),NSStringFromProtocol(@protocol(KSOTokenCompletionTableViewCell)));
 }
 #pragma mark *** Private Methods ***
 - (void)_KSOTokenTextViewInit; {
@@ -511,9 +526,9 @@
     
     _tokenizingCharacterSet = [self.class _defaultTokenizingCharacterSet];
     _tokenTextAttachmentClass = [self.class _defaultTokenTextAttachmentClass];
-    _completionDelay = [self.class _defaultCompletionDelay];
-    _completionTableViewClass = [self.class _defaultCompletionTableViewClass];
-    _completionTableViewCellClass = [self.class _defaultCompletionTableViewCellClass];
+    _completionsDelay = [self.class _defaultCompletionDelay];
+    _completionsTableViewClass = [self.class _defaultCompletionTableViewClass];
+    _completionsTableViewCellClass = [self.class _defaultCompletionTableViewCellClass];
     
     [self setTextColor:[self.class _defaultTextColor]];
     [self setTypingAttributes:@{NSFontAttributeName: self.font, NSForegroundColorAttributeName: self.textColor}];

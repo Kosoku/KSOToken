@@ -59,19 +59,19 @@ NS_ASSUME_NONNULL_BEGIN
  
  The default is 0.0.
  */
-@property (assign,nonatomic) NSTimeInterval completionDelay;
+@property (assign,nonatomic) NSTimeInterval completionsDelay;
 /**
  Set and get the completion table view class of the receiver. This must be a subclass of UITableView.
  
  The default is UITableView.class.
  */
-@property (strong,nonatomic,null_resettable) Class completionTableViewClass;
+@property (strong,nonatomic,null_resettable) Class completionsTableViewClass;
 /**
  Set and get the completion table view cell class of the receiver. This must be the class of an object conforming to KSOTokenCompletionTableViewCell.
  
  The default is KSOTokenDefaultCompletionTableViewCell.class.
  */
-@property (strong,nonatomic,null_resettable) Class<KSOTokenCompletionTableViewCell> completionTableViewCellClass;
+@property (strong,nonatomic,null_resettable) Class<KSOTokenCompletionTableViewCell> completionsTableViewCellClass;
 
 /**
  Attempts to tokenize the text at the selectedRange of the receiver. Returns YES, if the text was tokenized, otherwise NO. Returns by reference the range of text for which tokenization was attempted.
@@ -80,6 +80,21 @@ NS_ASSUME_NONNULL_BEGIN
  @return YES if the text was tokenized, otherwise NO
  */
 - (BOOL)tokenizeTextAndGetTokenRange:(nullable NSRangePointer)tokenRange;
+
+/**
+ Manually show the completions table view for the selected range of the receiver. If the required delegate methods are not implemented, this method does nothing.
+ */
+- (void)showCompletionsTableView;
+/**
+ Manually hide the completions table view without selecting a completion model. Calls through to hideCompletionsTableViewAndSelectCompletionModel: passing nil.
+ */
+- (void)hideCompletionsTableView;
+/**
+ Manually hide the completions table view and select the provided *completionModel* if non-nil. If the required delegate methods are not implemented, this method does nothing.
+ 
+ @param completionModel The completion model to select
+ */
+- (void)hideCompletionsTableViewAndSelectCompletionModel:(nullable id<KSOTokenCompletionModel>)completionModel;
 
 @end
 
@@ -200,6 +215,14 @@ NS_ASSUME_NONNULL_BEGIN
  @param completion The completion block to invoke with the array of completion model objects
  */
 - (void)tokenTextView:(KSOTokenTextView *)tokenTextView completionModelsForSubstring:(NSString *)substring indexOfRepresentedObject:(NSInteger)index completion:(void(^)(NSArray<id<KSOTokenCompletionModel>> * _Nullable completionModels))completion;
+/**
+ Return the desired edit actions for the provided completion model. If you return nil or an empty array (e.g. @[]) no actions will be displayed on swipe of the row. If this method is not implemented a nil return value is assumed.
+ 
+ @param tokenTextView The token text view that sent the message
+ @param completionModel The completion model for which to return edit actions
+ @return The edit actions or nil
+ */
+- (nullable NSArray<UITableViewRowAction *> *)tokenTextView:(KSOTokenTextView *)tokenTextView editActionsForCompletionModel:(id<KSOTokenCompletionModel>)completionModel;
 /**
  Called when the tableView:willDisplayCell:forRowAtIndexPath: method is called on the managed completion table view. The delegate can use this to perform any last minute customizations on the cell before being displayed.
  
