@@ -521,6 +521,10 @@
     NSAssert([(id)_completionsTableViewCellClass isSubclassOfClass:UITableViewCell.class], @"%@ must be a subclass of %@",NSStringFromClass(_completionsTableViewCellClass),NSStringFromClass(UITableViewCell.class));
     NSAssert([_completionsTableViewCellClass conformsToProtocol:@protocol(KSOTokenCompletionTableViewCell)], @"%@ must conform to %@",NSStringFromClass(_completionsTableViewCellClass),NSStringFromProtocol(@protocol(KSOTokenCompletionTableViewCell)));
 }
+- (BOOL)isCompletionsTableViewShowing {
+    return (self.tableView.superview != nil &&
+            self.tableView.window != nil);
+}
 #pragma mark *** Private Methods ***
 - (void)_KSOTokenTextViewInit; {
     _completionOperationQueue = [[NSOperationQueue alloc] init];
