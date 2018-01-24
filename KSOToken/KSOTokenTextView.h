@@ -107,6 +107,11 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)hideCompletionsTableViewAndSelectCompletionModel:(nullable id<KSOTokenCompletionModel>)completionModel;
 
+/**
+ Reload the completions table view independent of the user typing. This will call the relevant delegate methods to get the completions for display. If the completions table view is not visible, this method does nothing.
+ */
+- (void)reloadCompletionsTableView;
+
 @end
 
 @protocol KSOTokenTextViewDelegate <UITextViewDelegate>

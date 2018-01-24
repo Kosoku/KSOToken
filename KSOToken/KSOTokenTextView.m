@@ -150,6 +150,7 @@
 
 - (void)_showCompletionsTableView;
 - (void)_hideCompletionsTableViewAndSelectCompletionModel:(id<KSOTokenCompletionModel>)completionModel;
+- (void)_reloadCompletionsTableView;
 
 + (NSCharacterSet *)_defaultTokenizingCharacterSet;
 + (Class<KSOTokenTextAttachment>)_defaultTokenTextAttachmentClass;
@@ -469,6 +470,13 @@
 }
 - (void)hideCompletionsTableViewAndSelectCompletionModel:(id<KSOTokenCompletionModel>)completionModel {
     [self _hideCompletionsTableViewAndSelectCompletionModel:completionModel];
+}
+- (void)reloadCompletionsTableView {
+    if (!self.isCompletionsTableViewShowing) {
+        return;
+    }
+    
+    [self _reloadCompletionsTableView];
 }
 #pragma mark Properties
 @dynamic representedObjects;
@@ -800,27 +808,7 @@
         [self.delegate tokenTextView:self showCompletionsTableView:self.tableView];
     }
     
-    // if the delegate responds to either of the completion returning methods, continue
-    if ([self.delegate respondsToSelector:@selector(tokenTextView:completionModelsForSubstring:indexOfRepresentedObject:completion:)]) {
-        NSInteger index = [self _indexOfTokenTextAttachmentInRange:self.selectedRange textAttachment:NULL];
-        NSRange range = [self _tokenRangeForRange:self.selectedRange];
-        NSString *substring = [self.text substringWithRange:range];
-        
-        kstWeakify(self);
-        [self.completionOperationQueue cancelAllOperations];
-        [self.completionOperationQueue addOperation:[[KSOTokenCompletionOperation alloc] initWithTokenTextView:self substring:substring index:index completion:^(NSArray<id<KSOTokenCompletionModel>> * _Nullable completionModels) {
-            kstStrongify(self);
-            [self setCompletionModels:completionModels];
-        }]];
-    }
-    else if ([self.delegate respondsToSelector:@selector(tokenTextView:completionModelsForSubstring:indexOfRepresentedObject:)]) {
-        
-        NSInteger index = [self _indexOfTokenTextAttachmentInRange:self.selectedRange textAttachment:NULL];
-        NSRange range = [self _tokenRangeForRange:self.selectedRange];
-        NSString *substring = [self.text substringWithRange:range];
-        
-        [self setCompletionModels:[self.delegate tokenTextView:self completionModelsForSubstring:substring indexOfRepresentedObject:index]];
-    }
+    [self _reloadCompletionsTableView];
 }
 - (void)_hideCompletionsTableViewAndSelectCompletionModel:(id<KSOTokenCompletionModel>)completionModel; {
     // if the delegate responds, ask it to hide the completions table view
@@ -871,6 +859,29 @@
         [self.delegate tokenTextView:self hideCompletionsTableView:self.tableView];
         
         [self setCompletionModels:nil];
+    }
+}
+- (void)_reloadCompletionsTableView; {
+    // if the delegate responds to either of the completion returning methods, continue
+    if ([self.delegate respondsToSelector:@selector(tokenTextView:completionModelsForSubstring:indexOfRepresentedObject:completion:)]) {
+        NSInteger index = [self _indexOfTokenTextAttachmentInRange:self.selectedRange textAttachment:NULL];
+        NSRange range = [self _tokenRangeForRange:self.selectedRange];
+        NSString *substring = [self.text substringWithRange:range];
+        
+        kstWeakify(self);
+        [self.completionOperationQueue cancelAllOperations];
+        [self.completionOperationQueue addOperation:[[KSOTokenCompletionOperation alloc] initWithTokenTextView:self substring:substring index:index completion:^(NSArray<id<KSOTokenCompletionModel>> * _Nullable completionModels) {
+            kstStrongify(self);
+            [self setCompletionModels:completionModels];
+        }]];
+    }
+    else if ([self.delegate respondsToSelector:@selector(tokenTextView:completionModelsForSubstring:indexOfRepresentedObject:)]) {
+        
+        NSInteger index = [self _indexOfTokenTextAttachmentInRange:self.selectedRange textAttachment:NULL];
+        NSRange range = [self _tokenRangeForRange:self.selectedRange];
+        NSString *substring = [self.text substringWithRange:range];
+        
+        [self setCompletionModels:[self.delegate tokenTextView:self completionModelsForSubstring:substring indexOfRepresentedObject:index]];
     }
 }
 #pragma mark -
