@@ -37,9 +37,12 @@
         return;
     }
     
-    KSTDispatchMainAsync(^{
-        [self main];
-    });
+    if (!NSThread.isMainThread) {
+        [self performSelectorOnMainThread:_cmd withObject:nil waitUntilDone:NO];
+        return;
+    }
+    
+    [self main];
 }
 - (void)main {
     if (self.isCancelled) {
