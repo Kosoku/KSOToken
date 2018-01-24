@@ -76,7 +76,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Returns whether the completions table view is currently showing. This can be used to determine when to call showCompletionsTableView and hideCompletionsTableView to manually control display of the completions table view.
  */
-@property (readonly,nonnull,getter=isCompletionsTableViewShowing) BOOL completionsTableViewShowing;
+@property (readonly,nonatomic,getter=isCompletionsTableViewShowing) BOOL completionsTableViewShowing;
 
 /**
  Attempts to tokenize the text at the selectedRange of the receiver. Returns YES, if the text was tokenized, otherwise NO. Returns by reference the range of text for which tokenization was attempted.
