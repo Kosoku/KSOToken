@@ -24,7 +24,6 @@
 
 @interface CompletionModel : NSObject <KSOTokenCompletionModel>
 @property (strong,nonatomic) CNContact *contact;
-@property (assign,nonatomic) NSRange range;
 
 - (instancetype)initWithContact:(CNContact *)contact substring:(NSString *)substring;
 @end
@@ -34,16 +33,12 @@
 - (NSString *)tokenCompletionModelTitle {
     return [CNContactFormatter stringFromContact:self.contact style:CNContactFormatterStyleFullName];
 }
-- (NSRange)tokenCompletionModelRange {
-    return self.range;
-}
 
 - (instancetype)initWithContact:(CNContact *)contact substring:(NSString *)substring {
     if (!(self = [super init]))
         return nil;
     
     _contact = contact;
-//    _range = [self.tokenCompletionModelTitle rangeOfString:substring options:NSCaseInsensitiveSearch];
     
     return self;
 }
@@ -135,6 +130,10 @@
             NSMutableArray *completionModels = [[NSMutableArray alloc] init];
             
             for (CNContact *c in contacts) {
+                if (c.emailAddresses.count == 0) {
+                    continue;
+                }
+                
                 [completionModels addObject:[[CompletionModel alloc] initWithContact:c substring:substring]];
             }
             
@@ -152,6 +151,14 @@
             }];
         }
     });
+}
+- (NSArray<id<KSOTokenRepresentedObject>> *)tokenTextView:(KSOTokenTextView *)tokenTextView representedObjectsForCompletionModel:(id<KSOTokenCompletionModel>)completionModel {
+    if ([completionModel isKindOfClass:CompletionModel.class]) {
+        return [[(CompletionModel *)completionModel contact].emailAddresses valueForKey:@"value"];
+    }
+    else {
+        return @[completionModel.tokenCompletionModelTitle];
+    }
 }
 
 @end
