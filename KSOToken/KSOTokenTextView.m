@@ -59,47 +59,16 @@
 
 @interface KSOTokenTextViewInternalDelegate : NSObject <KSOTokenTextViewDelegate>
 @property (weak,nonatomic) id<KSOTokenTextViewDelegate> delegate;
-@property (assign,nonatomic) unsigned int delegateMethodsCount;
-@property (assign,nonatomic) struct objc_method_description *delegateMethods;
 @end
 
 @implementation KSOTokenTextViewInternalDelegate
 
-- (void)dealloc {
-    free(_delegateMethods);
-}
-
-- (instancetype)init {
-    if (!(self = [super init]))
-        return nil;
-    
-    _delegateMethods = protocol_copyMethodDescriptionList(@protocol(KSOTokenTextViewDelegate), NO, YES, &_delegateMethodsCount);
-    
-    return self;
-}
-
-// does the real delegate respond to the selector and is the selector part of the UITextFieldDelegate protocol
 - (BOOL)respondsToSelector:(SEL)aSelector {
-    if ([self.delegate respondsToSelector:aSelector]) {
-        for (unsigned int i=0; i<self.delegateMethodsCount; i++) {
-            if (self.delegateMethods[i].name == aSelector) {
-                return YES;
-            }
-        }
-        return NO;
-    }
-    return [super respondsToSelector:aSelector];
+    return ([self.delegate respondsToSelector:aSelector] ||
+            [super respondsToSelector:aSelector]);
 }
-// only forward if the selector is part of the UITextField protocol
-- (id)forwardingTargetForSelector:(SEL)aSelector {
-    if ([self.delegate respondsToSelector:aSelector]) {
-        for (unsigned int i=0; i<self.delegateMethodsCount; i++) {
-            if (self.delegateMethods[i].name == aSelector) {
-                return self.delegate;
-            }
-        }
-    }
-    return [super forwardingTargetForSelector:aSelector];
+- (void)forwardInvocation:(NSInvocation *)anInvocation {
+    [anInvocation invokeWithTarget:self.delegate];
 }
 
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {
