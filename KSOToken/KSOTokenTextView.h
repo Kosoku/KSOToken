@@ -232,6 +232,13 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)tokenTextView:(KSOTokenTextView *)tokenTextView completionModelsForSubstring:(NSString *)substring indexOfRepresentedObject:(NSInteger)index completion:(void(^)(NSArray<id<KSOTokenCompletionModel>> * _Nullable completionModels))completion;
 /**
+ Return whether the completions table view should be hidden if no completions were provided from either tokenTextView:completionModelsForSubstring:indexOfRepresentedObject: or tokenTextView:completionModelsForSubstring:indexOfRepresentedObject:completion:. If this method is not implemented or returns YES the tokenTextView:hideCompletionsTableView: method will be called to hide the completions table view.
+ 
+ @param tokenTextView The token text view that sent the message
+ @return Whether the completions table view should be hidden for an empty array of completion models
+ */
+- (BOOL)tokenTextViewShouldHideCompletionsTableViewForEmptyCompletionModels:(KSOTokenTextView *)tokenTextView;
+/**
  Return the desired edit actions for the provided completion model. If you return nil or an empty array (e.g. @[]) no actions will be displayed on swipe of the row. If this method is not implemented a nil return value is assumed.
  
  @param tokenTextView The token text view that sent the message

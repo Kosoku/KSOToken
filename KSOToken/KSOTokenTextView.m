@@ -904,7 +904,13 @@
     if (_completionModels.count == 0 &&
         self.tableView.window != nil) {
         
-        [self.tableView setHidden:YES];
+        BOOL shouldHide = YES;
+        
+        if ([self.delegate respondsToSelector:@selector(tokenTextViewShouldHideCompletionsTableViewForEmptyCompletionModels:)]) {
+            shouldHide = [self.delegate tokenTextViewShouldHideCompletionsTableViewForEmptyCompletionModels:self];
+        }
+        
+        [self.tableView setHidden:shouldHide];
     }
     
     [self.tableView reloadData];
