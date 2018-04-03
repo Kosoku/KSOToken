@@ -541,7 +541,8 @@
         location.y -= self.textContainerInset.top;
         
         // ask the layout manager for character index corresponding to the tapped location
-        NSInteger index = [self.layoutManager characterIndexForPoint:location inTextContainer:self.textContainer fractionOfDistanceBetweenInsertionPoints:NULL];
+        CGFloat fraction;
+        NSInteger index = [self.layoutManager characterIndexForPoint:location inTextContainer:self.textContainer fractionOfDistanceBetweenInsertionPoints:&fraction];
         
         // if the index is within our text
         if (index >= self.text.length) {
@@ -557,15 +558,14 @@
             return;
         }
         
-        // if our selection is zero length or a different token is selected, select the entire range of the token
-        if (self.selectedRange.length == 0) {
-            [self setSelectedRange:range];
-        }
         // if the user tapped on a token that was already selected, move the caret immediately after the token
-        else if (NSEqualRanges(range, self.selectedRange)) {
+        // alternatively, if the user selected at the edge of a token, they probably don't want to select it
+        if (NSEqualRanges(range, self.selectedRange) ||
+            fraction == 1.0) {
+            
             [self setSelectedRange:NSMakeRange(NSMaxRange(range), 0)];
         }
-        // otherwise select the different token
+        // otherwise select the range of the token
         else {
             [self setSelectedRange:range];
         }
