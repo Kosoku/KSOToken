@@ -53,7 +53,7 @@ NS_ASSUME_NONNULL_BEGIN
  
  The default is KSOTokenDefaultTextAttachment.class.
  */
-@property (copy,nonatomic,null_resettable) Class<KSOTokenTextAttachment> tokenTextAttachmentClass;
+@property (strong,nonatomic,null_resettable) Class<KSOTokenTextAttachment> tokenTextAttachmentClass;
 /**
  Set and get the completion delay of the receiver.
  
