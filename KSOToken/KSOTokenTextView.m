@@ -534,7 +534,7 @@
             return;
         }
         
-        CGPoint location = [tapGestureRecognizer locationInView:self];
+        CGPoint location = [gestureRecognizer locationInView:self];
         
         // adjust the location by the text container insets
         location.x -= self.textContainerInset.left;
