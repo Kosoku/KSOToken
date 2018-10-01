@@ -34,6 +34,8 @@ static void *kObservingContext = &kObservingContext;
 + (UIColor *)_defaultTokenBackgroundColor;
 + (UIColor *)_defaultTokenHighlightedTextColor;
 - (UIColor *)_defaultTokenHighlightedBackgroundColor;
+- (UIColor *)_defaultTokenDisabledTextColor;
++ (UIColor *)_defaultTokenDisabledBackgroundColor;
 + (CGFloat)_defaultTokenCornerRadius;
 @end
 
@@ -45,6 +47,8 @@ static void *kObservingContext = &kObservingContext;
     [self removeObserver:self forKeyPath:@kstKeypath(self,tokenBackgroundColor) context:kObservingContext];
     [self removeObserver:self forKeyPath:@kstKeypath(self,tokenHighlightedTextColor) context:kObservingContext];
     [self removeObserver:self forKeyPath:@kstKeypath(self,tokenHighlightedBackgroundColor) context:kObservingContext];
+    [self removeObserver:self forKeyPath:@kstKeypath(self,tokenDisabledTextColor) context:kObservingContext];
+    [self removeObserver:self forKeyPath:@kstKeypath(self,tokenDisabledBackgroundColor) context:kObservingContext];
     [self removeObserver:self forKeyPath:@kstKeypath(self,tokenCornerRadius) context:kObservingContext];
 }
 
@@ -61,6 +65,7 @@ static void *kObservingContext = &kObservingContext;
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context {
     if (context == kObservingContext) {
+        NSLog(@"%@",keyPath);
         [self _updateImages];
     }
     else {
@@ -85,6 +90,8 @@ static void *kObservingContext = &kObservingContext;
     _tokenBackgroundColor = [self.class _defaultTokenBackgroundColor];
     _tokenHighlightedTextColor = [self.class _defaultTokenHighlightedTextColor];
     _tokenHighlightedBackgroundColor = [self _defaultTokenHighlightedBackgroundColor];
+    _tokenDisabledTextColor = [self _defaultTokenDisabledTextColor];
+    _tokenDisabledBackgroundColor = [self.class _defaultTokenDisabledBackgroundColor];
     _tokenCornerRadius = [self.class _defaultTokenCornerRadius];
     
     [self addObserver:self forKeyPath:@kstKeypath(self,tokenFont) options:0 context:kObservingContext];
@@ -92,6 +99,8 @@ static void *kObservingContext = &kObservingContext;
     [self addObserver:self forKeyPath:@kstKeypath(self,tokenBackgroundColor) options:0 context:kObservingContext];
     [self addObserver:self forKeyPath:@kstKeypath(self,tokenHighlightedTextColor) options:0 context:kObservingContext];
     [self addObserver:self forKeyPath:@kstKeypath(self,tokenHighlightedBackgroundColor) options:0 context:kObservingContext];
+    [self addObserver:self forKeyPath:@kstKeypath(self,tokenDisabledTextColor) options:0 context:kObservingContext];
+    [self addObserver:self forKeyPath:@kstKeypath(self,tokenDisabledBackgroundColor) options:0 context:kObservingContext];
     [self addObserver:self forKeyPath:@kstKeypath(self,tokenCornerRadius) options:0 context:kObservingContext];
     
     [self _updateImages];
@@ -99,6 +108,13 @@ static void *kObservingContext = &kObservingContext;
     return self;
 }
 
+@dynamic enabled;
+- (BOOL)isEnabled {
+    return self.tokenTextView.isUserInteractionEnabled;
+}
+- (void)setEnabled:(BOOL)enabled {
+    [self _updateImages];
+}
 @dynamic font;
 - (UIFont *)font {
     return self.tokenFont;
@@ -134,6 +150,12 @@ static void *kObservingContext = &kObservingContext;
 - (void)setTokenHighlightedBackgroundColor:(UIColor *)tokenHighlightedBackgroundColor {
     _tokenHighlightedBackgroundColor = tokenHighlightedBackgroundColor ?: [self _defaultTokenHighlightedBackgroundColor];
 }
+- (void)setTokenDisabledTextColor:(UIColor *)tokenDisabledTextColor {
+    _tokenDisabledTextColor = tokenDisabledTextColor ?: [self _defaultTokenDisabledTextColor];
+}
+- (void)setTokenDisabledBackgroundColor:(UIColor *)tokenDisabledBackgroundColor {
+    _tokenDisabledBackgroundColor = tokenDisabledBackgroundColor ?: [self.class _defaultTokenDisabledBackgroundColor];
+}
 
 - (void)_updateImages {
     CGFloat maxWidth = CGRectGetWidth(self.tokenTextView.frame);
@@ -158,7 +180,16 @@ static void *kObservingContext = &kObservingContext;
     
     UIGraphicsBeginImageContextWithOptions(rect.size, NO, 0);
     
-    [highlighted ? self.tokenHighlightedBackgroundColor : self.tokenBackgroundColor setFill];
+    UIColor *color = self.tokenBackgroundColor;
+    
+    if (highlighted) {
+        color = self.tokenHighlightedBackgroundColor;
+    }
+    else if (!self.isEnabled) {
+        color = self.tokenDisabledBackgroundColor;
+    }
+    
+    [color setFill];
     [[UIBezierPath bezierPathWithRoundedRect:CGRectInset(rect, 2.0, 1.0) cornerRadius:self.tokenCornerRadius] fill];
     
     UIFont *drawFont = self.tokenFont;
@@ -173,7 +204,17 @@ static void *kObservingContext = &kObservingContext;
     [style setLineBreakMode:NSLineBreakByTruncatingTail];
     [style setAlignment:NSTextAlignmentCenter];
     
-    [self.text drawInRect:KSTCGRectCenterInRect(CGRectMake(0, 0, drawSize.width, drawSize.height), rect) withAttributes:@{NSFontAttributeName: drawFont, NSForegroundColorAttributeName: highlighted ? self.tokenHighlightedTextColor : self.tokenTextColor, NSParagraphStyleAttributeName: style}];
+    if (highlighted) {
+        color = self.tokenHighlightedTextColor;
+    }
+    else if (!self.isEnabled) {
+        color = self.tokenDisabledTextColor;
+    }
+    else {
+        color = self.tokenTextColor;
+    }
+    
+    [self.text drawInRect:KSTCGRectCenterInRect(CGRectMake(0, 0, drawSize.width, drawSize.height), rect) withAttributes:@{NSFontAttributeName: drawFont, NSForegroundColorAttributeName: color, NSParagraphStyleAttributeName: style}];
     
     UIImage *retval = UIGraphicsGetImageFromCurrentImageContext();
     
@@ -201,6 +242,12 @@ static void *kObservingContext = &kObservingContext;
 }
 - (UIColor *)_defaultTokenHighlightedBackgroundColor; {
     return self.tokenTextView.tintColor;
+}
+- (UIColor *)_defaultTokenDisabledTextColor; {
+    return self.tokenTextView.textColor;
+}
++ (UIColor *)_defaultTokenDisabledBackgroundColor; {
+    return UIColor.clearColor;
 }
 + (CGFloat)_defaultTokenCornerRadius; {
     return 0.0;

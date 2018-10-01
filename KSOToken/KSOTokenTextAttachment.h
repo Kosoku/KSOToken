@@ -48,6 +48,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 @optional
 /**
+ Set and get whether the owning text view has user interaction enabled.
+ */
+@property (assign,nonatomic,getter=isEnabled) BOOL enabled;
+
+/**
  Set and get the font used to draw the text attachment. Implement this if you want your text attachment to respond to dynamic type changes.
  */
 @property (strong,nonatomic,nullable) UIFont *font;

@@ -60,6 +60,18 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property (strong,nonatomic,null_resettable) UIColor *tokenHighlightedBackgroundColor;
 /**
+ Set and get the text color to use when disabled.
+ 
+ The default is self.tokenTextView.textColor.
+ */
+@property (strong,nonatomic,null_resettable) UIColor *tokenDisabledTextColor;
+/**
+ Set and get the color used to draw the background when disabled.
+ 
+ The default is UIColor.clearColor.
+ */
+@property (strong,nonatomic,null_resettable) UIColor *tokenDisabledBackgroundColor;
+/**
  Set and get the corner radius used to draw tokens.
  
  The default is 0.0.

@@ -281,6 +281,16 @@
     }];
 }
 #pragma mark -
+- (void)setUserInteractionEnabled:(BOOL)userInteractionEnabled {
+    [super setUserInteractionEnabled:userInteractionEnabled];
+    
+    [self.textStorage enumerateAttribute:NSAttachmentAttributeName inRange:NSMakeRange(0, self.textStorage.length) options:NSAttributedStringEnumerationLongestEffectiveRangeNotRequired usingBlock:^(id  _Nullable value, NSRange range, BOOL * _Nonnull stop) {
+        if ([value respondsToSelector:@selector(setEnabled:)]) {
+            [value setEnabled:userInteractionEnabled];
+        }
+    }];
+}
+#pragma mark -
 - (void)setFont:(UIFont *)font {
     [super setFont:font];
     
