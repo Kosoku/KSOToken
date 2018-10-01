@@ -16,6 +16,6 @@
 #ifndef __KSO_TOKEN_INFO__
 #define __KSO_TOKEN_INFO__
 
-#define KSO_BUNDLE_SHORT_VERSION_STRING 1.3.3
+#define KSO_BUNDLE_SHORT_VERSION_STRING 1.4.0
 
 #endif
