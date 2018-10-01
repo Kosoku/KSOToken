@@ -138,13 +138,16 @@ static void *kObservingContext = &kObservingContext;
 - (void)_updateImages {
     CGFloat maxWidth = CGRectGetWidth(self.tokenTextView.frame);
     
+    if (self.tokenTextView.window == nil) {
+        maxWidth = CGRectGetWidth(UIScreen.mainScreen.bounds);
+    }
+    
     [self _updateImage:NO maxWidth:maxWidth];
     [self _updateImage:YES maxWidth:maxWidth];
 }
 - (void)_updateImage:(BOOL)highlighted maxWidth:(CGFloat)maxWidth; {
     CGSize size = [self.text sizeWithAttributes:@{NSFontAttributeName: self.tokenFont}];
-    
-    CGRect rect = CGRectIntegral(CGRectMake(0, 0, size.width, size.height));
+    CGRect rect = CGRectMake(0, 0, ceil(size.width), ceil(size.height));
     CGFloat delta = 4.0;
     
     rect.size.width += delta;
@@ -153,7 +156,7 @@ static void *kObservingContext = &kObservingContext;
         rect.size.width = maxWidth;
     }
     
-    UIGraphicsBeginImageContextWithOptions(CGSizeMake(CGRectGetWidth(rect), CGRectGetHeight(rect)), NO, 0);
+    UIGraphicsBeginImageContextWithOptions(rect.size, NO, 0);
     
     [highlighted ? self.tokenHighlightedBackgroundColor : self.tokenBackgroundColor setFill];
     [[UIBezierPath bezierPathWithRoundedRect:CGRectInset(rect, 2.0, 1.0) cornerRadius:self.tokenCornerRadius] fill];
