@@ -116,6 +116,7 @@
 - (NSUInteger)_indexOfTokenTextAttachmentInRange:(NSRange)range textAttachment:(id<KSOTokenTextAttachment> *)textAttachment;
 - (NSArray *)_copyTokenTextAttachmentsInRange:(NSRange)range;
 - (NSTextAttachment<KSOTokenTextAttachment> *)_textAttachmentWithRepresentedObject:(id<KSOTokenRepresentedObject>)representedObject text:(NSString *)text;
+- (NSAttributedString *)_emptyAttributedStringWithDefaultAttributes;
 
 - (void)_showCompletionsTableView;
 - (void)_hideCompletionsTableViewAndSelectCompletionModel:(id<KSOTokenCompletionModel>)completionModel;
@@ -230,7 +231,7 @@
     }
     
     if (representedObjects.count > 0) {
-        NSMutableAttributedString *temp = [[NSMutableAttributedString alloc] initWithString:@"" attributes:@{NSFontAttributeName: self.font, NSForegroundColorAttributeName: self.textColor}];
+        NSMutableAttributedString *temp = [[self _emptyAttributedStringWithDefaultAttributes] mutableCopy];
         
         // loop through each represented object and ask the delegate for the display text for each one
         for (id<KSOTokenRepresentedObject> representedObject in representedObjects) {
@@ -473,7 +474,7 @@
     return retval;
 }
 - (void)setRepresentedObjects:(NSArray *)representedObjects {
-    NSMutableAttributedString *temp = [[NSMutableAttributedString alloc] initWithString:@"" attributes:@{NSFontAttributeName: self.font, NSForegroundColorAttributeName: self.textColor}];
+    NSMutableAttributedString *temp = [[self _emptyAttributedStringWithDefaultAttributes] mutableCopy];
     
     for (id<KSOTokenRepresentedObject> representedObject in representedObjects) {
         NSString *text = representedObject.tokenRepresentedObjectDisplayName;
@@ -618,7 +619,7 @@
         
         // if there are represented objects to insert, continue
         if (representedObjects.count > 0) {
-            NSMutableAttributedString *temp = [[NSMutableAttributedString alloc] initWithString:@"" attributes:@{NSFontAttributeName: self.font, NSForegroundColorAttributeName: self.textColor}];
+            NSMutableAttributedString *temp = [[self _emptyAttributedStringWithDefaultAttributes] mutableCopy];
             
             // loop through each represented object and ask the delegate for the display text for each one
             for (id<KSOTokenRepresentedObject> representedObject in representedObjects) {
@@ -755,6 +756,9 @@
     
     return retval;
 }
+- (NSAttributedString *)_emptyAttributedStringWithDefaultAttributes; {
+    return [[NSAttributedString alloc] initWithString:@"" attributes:@{NSFontAttributeName: self.font, NSForegroundColorAttributeName: self.textColor, NSParagraphStyleAttributeName: [NSParagraphStyle KDI_paragraphStyleWithTextAlignment:self.textAlignment]}];
+}
 #pragma mark -
 - (void)_showCompletionsTableView; {
     if ([self.delegate respondsToSelector:@selector(tokenTextViewShouldShowCompletionsTableView:)] &&
@@ -816,7 +820,7 @@
             }
             
             if (representedObjects.count > 0) {
-                NSMutableAttributedString *temp = [[NSMutableAttributedString alloc] initWithString:@"" attributes:@{NSFontAttributeName: self.font, NSForegroundColorAttributeName: self.textColor}];
+                NSMutableAttributedString *temp = [[self _emptyAttributedStringWithDefaultAttributes] mutableCopy];
                 
                 for (id<KSOTokenRepresentedObject> representedObject in representedObjects) {
                     NSString *displayText = representedObject.tokenRepresentedObjectDisplayName;
