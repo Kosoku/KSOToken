@@ -309,7 +309,7 @@
 #pragma mark NSTextStorageDelegate
 - (void)textStorage:(NSTextStorage *)textStorage didProcessEditing:(NSTextStorageEditActions)editedMask range:(NSRange)editedRange changeInLength:(NSInteger)delta {
     // fix up our attributes so that everything, including the attachments, use our desired font and text color
-    [textStorage addAttributes:@{NSFontAttributeName: self.font, NSForegroundColorAttributeName: self.textColor} range:editedRange];
+    [textStorage addAttributes:@{NSFontAttributeName: self.font, NSForegroundColorAttributeName: self.textColor, NSParagraphStyleAttributeName: [NSParagraphStyle KDI_paragraphStyleWithTextAlignment:self.textAlignment]} range:editedRange];
 }
 #pragma mark UITextViewDelegate
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {
@@ -339,7 +339,7 @@
                 }
             }
             
-            NSAttributedString *temp = [[NSAttributedString alloc] initWithString:@"" attributes:@{NSFontAttributeName: self.font, NSForegroundColorAttributeName: self.textColor}];
+            NSAttributedString *temp = [[NSAttributedString alloc] initWithString:@"" attributes:@{NSFontAttributeName: self.font, NSForegroundColorAttributeName: self.textColor, NSParagraphStyleAttributeName: [NSParagraphStyle KDI_paragraphStyleWithTextAlignment:self.textAlignment]}];
             
             [self.textStorage replaceCharactersInRange:range withAttributedString:temp];
             
@@ -373,7 +373,9 @@
 }
 - (void)textViewDidChangeSelection:(UITextView *)textView {
     [self setTypingAttributes:@{NSFontAttributeName: self.font,
-                                NSForegroundColorAttributeName: self.textColor}];
+                                NSForegroundColorAttributeName: self.textColor,
+                                NSParagraphStyleAttributeName: [NSParagraphStyle KDI_paragraphStyleWithTextAlignment:self.textAlignment]
+                                }];
     
     if (self.selectedRange.length == 0) {
         [self setSelectedTextAttachmentRanges:nil];
