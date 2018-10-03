@@ -372,6 +372,11 @@
     }
     return YES;
 }
+- (void)textViewDidChange:(UITextView *)textView {
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(_showCompletionsTableView) object:nil];
+    
+    [self performSelector:@selector(_showCompletionsTableView) withObject:nil afterDelay:self.completionsDelay];
+}
 - (void)textViewDidChangeSelection:(UITextView *)textView {
     [self setTypingAttributes:@{NSFontAttributeName: self.font,
                                 NSForegroundColorAttributeName: self.textColor,
@@ -392,11 +397,6 @@
         
         [self setSelectedTextAttachmentRanges:temp];
     }
-}
-- (void)textViewDidChange:(UITextView *)textView {
-    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(_showCompletionsTableView) object:nil];
-    
-    [self performSelector:@selector(_showCompletionsTableView) withObject:nil afterDelay:self.completionsDelay];
 }
 #pragma mark UITableViewDataSource
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -433,9 +433,15 @@
 @dynamic delegate;
 // the internal delegate tracks the external delegate that is set on the receiver
 - (void)setDelegate:(id<KSOTokenTextViewDelegate>)delegate {
-    [self.internalDelegate setDelegate:delegate];
-    
-    [super setDelegate:self.internalDelegate];
+    // things blow up if self wants to act as its own delegate using the internal delegate trick, there are private delegate methods that UITextView implements that we do not know about, so skip the internal delegate trick
+    if ([delegate isEqual:self]) {
+        [super setDelegate:delegate];
+    }
+    else {
+        [self.internalDelegate setDelegate:delegate];
+        
+        [super setDelegate:self.internalDelegate];
+    }
 }
 #pragma mark *** Public Methods ***
 - (BOOL)tokenizeTextAndGetTokenRange:(NSRangePointer)tokenRange; {

@@ -26,7 +26,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  KSOTokenTextView mirrors the functionality provided by NSTokenField on macOS.
  */
-@interface KSOTokenTextView : KDITextView
+@interface KSOTokenTextView : KDITextView <UITextViewDelegate>
 
 /**
  Set and get the delegate of the receiver.
@@ -111,6 +111,10 @@ NS_ASSUME_NONNULL_BEGIN
  Reload the completions table view independent of the user typing. This will call the relevant delegate methods to get the completions for display. If the completions table view is not visible, this method does nothing.
  */
 - (void)reloadCompletionsTableView;
+
+- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text NS_REQUIRES_SUPER;
+- (void)textViewDidChange:(UITextView *)textView NS_REQUIRES_SUPER;
+- (void)textViewDidChangeSelection:(UITextView *)textView NS_REQUIRES_SUPER;
 
 @end
 
