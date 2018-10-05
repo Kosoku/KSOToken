@@ -44,6 +44,7 @@
 		07C37A2C1EE1F5F80046AE13 /* KSOTokenDefaultTextAttachment.m in Sources */ = {isa = PBXBuildFile; fileRef = 07C37A2A1EE1F5F80046AE13 /* KSOTokenDefaultTextAttachment.m */; };
 		07C43DA51EE717A60014659D /* words.txt in Resources */ = {isa = PBXBuildFile; fileRef = 07C43DA41EE717A60014659D /* words.txt */; };
 		07C43DA81EE718410014659D /* CustomViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 07C43DA71EE718410014659D /* CustomViewController.m */; };
+		07FA1C512167DDAA00BC9EFE /* LoremIpsum.m in Sources */ = {isa = PBXBuildFile; fileRef = 07FA1C502167DDAA00BC9EFE /* LoremIpsum.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -114,6 +115,8 @@
 		07C43DA41EE717A60014659D /* words.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = words.txt; sourceTree = "<group>"; };
 		07C43DA61EE718410014659D /* CustomViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomViewController.h; sourceTree = "<group>"; };
 		07C43DA71EE718410014659D /* CustomViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomViewController.m; sourceTree = "<group>"; };
+		07FA1C4F2167DDAA00BC9EFE /* LoremIpsum.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LoremIpsum.h; path = Vendor/LoremIpsum/LoremIpsum/LoremIpsum.h; sourceTree = SOURCE_ROOT; };
+		07FA1C502167DDAA00BC9EFE /* LoremIpsum.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LoremIpsum.m; path = Vendor/LoremIpsum/LoremIpsum/LoremIpsum.m; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -212,6 +215,8 @@
 				07C43DA71EE718410014659D /* CustomViewController.m */,
 				070E3D691F5602E6006D1087 /* UIBarButtonItem+DemoExtensions.h */,
 				070E3D6A1F5602E6006D1087 /* UIBarButtonItem+DemoExtensions.m */,
+				07FA1C4F2167DDAA00BC9EFE /* LoremIpsum.h */,
+				07FA1C502167DDAA00BC9EFE /* LoremIpsum.m */,
 				070EC1CC1EE1D4D400118FCC /* Assets.xcassets */,
 				070EC1CE1EE1D4D400118FCC /* LaunchScreen.storyboard */,
 				070EC1D11EE1D4D400118FCC /* Info.plist */,
@@ -410,6 +415,7 @@
 				070EC1C51EE1D4D400118FCC /* AppDelegate.m in Sources */,
 				070EC1C21EE1D4D400118FCC /* main.m in Sources */,
 				07C43DA81EE718410014659D /* CustomViewController.m in Sources */,
+				07FA1C512167DDAA00BC9EFE /* LoremIpsum.m in Sources */,
 				070E3D6B1F5602E6006D1087 /* UIBarButtonItem+DemoExtensions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
