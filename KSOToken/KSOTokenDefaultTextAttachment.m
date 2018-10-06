@@ -159,7 +159,9 @@ static void *kObservingContext = &kObservingContext;
 - (void)_updateImages {
     CGFloat maxWidth = CGRectGetWidth(self.tokenTextView.frame);
     
-    if (self.tokenTextView.window == nil) {
+    if (isnan(maxWidth) ||
+        maxWidth <= 0.0) {
+        
         maxWidth = CGRectGetWidth(UIScreen.mainScreen.bounds);
     }
     
