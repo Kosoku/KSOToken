@@ -646,11 +646,11 @@
                 [self.delegate tokenTextView:self didAddRepresentedObjects:representedObjects atIndex:index];
             }
             
+            if (outTokenRange != NULL) {
+                *outTokenRange = tokenRange;
+            }
+            
             return YES;
-        }
-        
-        if (outTokenRange != NULL) {
-            *outTokenRange = tokenRange;
         }
     }
     return NO;
