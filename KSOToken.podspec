@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'KSOToken'
-  s.version          = '1.6.2'
+  s.version          = '1.6.3'
   s.summary          = 'KSOToken is a UITextView subclass that provides functionality similar to NSTokenField on macOS.'
 
 # This description is used to generate tags and improve search results.
@@ -23,7 +23,7 @@ KSOToken is a `UITextView` subclass that provides functionality similar to `NSTo
 
   s.homepage         = 'https://github.com/Kosoku/KSOToken'
   s.screenshots     = ['https://github.com/Kosoku/KSOToken/raw/master/screenshots/iOS-1.png','https://github.com/Kosoku/KSOToken/raw/master/screenshots/iOS-2.png']
-  s.license          = { :type => 'BSD', :file => 'license.txt' }
+  s.license          = { :type => 'Apache 2.0', :file => 'license.txt' }
   s.author           = { 'William Towe' => 'willbur1984@gmail.com' }
   s.source           = { :git => 'https://github.com/Kosoku/KSOToken.git', :tag => s.version.to_s }
 
