@@ -3,7 +3,7 @@
 //  KSOToken
 //
 //  Created by William Towe on 10/3/18.
-//  Copyright © 2018 Kosoku Interactive, LLC. All rights reserved.
+//  Copyright © 2020 Kosoku Interactive, LLC. All rights reserved.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.

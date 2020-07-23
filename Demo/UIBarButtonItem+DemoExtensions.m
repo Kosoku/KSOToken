@@ -3,7 +3,7 @@
 //  KSOToken
 //
 //  Created by William Towe on 8/29/17.
-//  Copyright © 2017 Kosoku Interactive, LLC. All rights reserved.
+//  Copyright © 2020 Kosoku Interactive, LLC. All rights reserved.
 //
 
 #import "UIBarButtonItem+DemoExtensions.h"
