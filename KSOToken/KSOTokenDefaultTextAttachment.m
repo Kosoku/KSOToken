@@ -54,6 +54,7 @@ static void *kObservingContext = &kObservingContext;
     [self removeObserver:self forKeyPath:@kstKeypath(self,tokenDisabledTextColor) context:kObservingContext];
     [self removeObserver:self forKeyPath:@kstKeypath(self,tokenDisabledBackgroundColor) context:kObservingContext];
     [self removeObserver:self forKeyPath:@kstKeypath(self,tokenCornerRadius) context:kObservingContext];
+    [self removeObserver:self forKeyPath:@kstKeypath(self,tokenEdgeInsets) context:kObservingContext];
 }
 
 - (UIImage *)imageForBounds:(CGRect)imageBounds textContainer:(NSTextContainer *)textContainer characterIndex:(NSUInteger)charIndex {
@@ -105,6 +106,7 @@ static void *kObservingContext = &kObservingContext;
     [self addObserver:self forKeyPath:@kstKeypath(self,tokenDisabledTextColor) options:0 context:kObservingContext];
     [self addObserver:self forKeyPath:@kstKeypath(self,tokenDisabledBackgroundColor) options:0 context:kObservingContext];
     [self addObserver:self forKeyPath:@kstKeypath(self,tokenCornerRadius) options:0 context:kObservingContext];
+    [self addObserver:self forKeyPath:@kstKeypath(self,tokenEdgeInsets) options:0 context:kObservingContext];
     
     [self _updateImages];
     
@@ -175,9 +177,9 @@ static void *kObservingContext = &kObservingContext;
 - (void)_updateImage:(BOOL)highlighted maxWidth:(CGFloat)maxWidth; {
     CGSize size = [self.text sizeWithAttributes:@{NSFontAttributeName: self.tokenFont}];
     CGRect rect = CGRectMake(0, 0, ceil(size.width), ceil(size.height));
-    CGFloat delta = 4.0;
     
-    rect.size.width += delta;
+    rect.size.width += self.tokenEdgeInsets.left + self.tokenEdgeInsets.right;
+    rect.size.height += self.tokenEdgeInsets.top + self.tokenEdgeInsets.bottom;
     
     if (CGRectGetWidth(rect) > maxWidth) {
         rect.size.width = maxWidth;
@@ -201,7 +203,7 @@ static void *kObservingContext = &kObservingContext;
     CGSize drawSize = [self.text sizeWithAttributes:@{NSFontAttributeName: drawFont}];
     
     if (drawSize.width > CGRectGetWidth(rect)) {
-        drawSize.width = CGRectGetWidth(rect) - delta;
+        drawSize.width = CGRectGetWidth(rect) - (self.tokenEdgeInsets.left + self.tokenEdgeInsets.right);
     }
     
     NSMutableParagraphStyle *style = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];

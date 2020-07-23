@@ -39,6 +39,7 @@
     [self setTokenHighlightedTextColor:tokenTextView.tintColor];
     [self setTokenHighlightedBackgroundColor:tokenTextView.textColor];
     [self setTokenCornerRadius:3.0];
+    self.tokenEdgeInsets = UIEdgeInsetsMake(0.0, 8.0, 0.0, 8.0);
     
     return self;
 }

@@ -81,6 +81,12 @@ NS_ASSUME_NONNULL_BEGIN
  The default is 0.0.
  */
 @property (assign,nonatomic) CGFloat tokenCornerRadius;
+/**
+ Set and get the edge insets used to draw tokens.
+ 
+ The default is UIEdgeInsets(0.0, 0.0, 0.0, 0.0).
+ */
+@property (assign,nonatomic) UIEdgeInsets tokenEdgeInsets;
 
 @end
 
