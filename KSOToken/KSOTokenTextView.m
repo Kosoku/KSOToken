@@ -418,11 +418,17 @@
     return cell;
 }
 #pragma mark UITableViewDelegate
-- (NSArray<UITableViewRowAction *> *)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if ([self.delegate respondsToSelector:@selector(tokenTextView:editActionsForCompletionModel:)]) {
-        return [self.delegate tokenTextView:self editActionsForCompletionModel:self.completionModels[indexPath.row]] ?: @[];
+- (UISwipeActionsConfiguration *)tableView:(UITableView *)tableView leadingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath {
+    if ([self.delegate respondsToSelector:@selector(tokenTextView:leadingSwipeActionsConfigurationForCompletionModel:)]) {
+        return [self.delegate tokenTextView:self leadingSwipeActionsConfigurationForCompletionModel:self.completionModels[indexPath.row]];
     }
-    return @[];
+    return nil;
+}
+- (UISwipeActionsConfiguration *)tableView:(UITableView *)tableView trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath {
+    if ([self.delegate respondsToSelector:@selector(tokenTextView:trailingSwipeActionsConfigurationForCompletionModel:)]) {
+        return [self.delegate tokenTextView:self trailingSwipeActionsConfigurationForCompletionModel:self.completionModels[indexPath.row]];
+    }
+    return nil;
 }
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
     if ([self.delegate respondsToSelector:@selector(tokenTextView:willDisplayCompletionTableViewCell:completionModel:)]) {

@@ -57,10 +57,6 @@
 
 @implementation ViewController
 
-- (BOOL)automaticallyAdjustsScrollViewInsets {
-    return NO;
-}
-
 - (NSString *)title {
     return @"Contacts";
 }
@@ -85,7 +81,10 @@
     [NSObject KDI_registerDynamicTypeObject:self.textView forTextStyle:UIFontTextStyleBody];
     
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-[view]-|" options:0 metrics:nil views:@{@"view": self.textView}]];
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[top]-[view]" options:0 metrics:nil views:@{@"view": self.textView, @"top": self.topLayoutGuide}]];
+    
+    [NSLayoutConstraint activateConstraints:@[
+        [self.textView.topAnchor constraintEqualToSystemSpacingBelowAnchor:self.view.safeAreaLayoutGuide.topAnchor multiplier:1.0]
+    ]];
     
     [self setContactStore:[[CNContactStore alloc] init]];
     

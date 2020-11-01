@@ -247,13 +247,21 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (BOOL)tokenTextViewShouldHideCompletionsTableViewForEmptyCompletionModels:(KSOTokenTextView *)tokenTextView;
 /**
- Return the desired edit actions for the provided completion model. If you return nil or an empty array (e.g. @[]) no actions will be displayed on swipe of the row. If this method is not implemented a nil return value is assumed.
+ Return the desired leading swipe actions configuration for the provided completion model. If you return nil no leading actions will be displayed on swipe of the row. If this method is not implemented a nil return value is assumed.
  
  @param tokenTextView The token text view that sent the message
- @param completionModel The completion model for which to return edit actions
- @return The edit actions or nil
+ @param completionModel The completion model for which to return the leading swipe actions configuration
+ @return The swipe actions configuration or nil
  */
-- (nullable NSArray<UITableViewRowAction *> *)tokenTextView:(KSOTokenTextView *)tokenTextView editActionsForCompletionModel:(id<KSOTokenCompletionModel>)completionModel;
+- (nullable UISwipeActionsConfiguration *)tokenTextView:(KSOTokenTextView *)tokenTextView leadingSwipeActionsConfigurationForCompletionModel:(id<KSOTokenCompletionModel>)completionModel;
+/**
+ Return the desired trailing swipe actions configuration for the provided completion model. If you return nil no trailing actions will be displayed on swipe of the row. If this method is not implemented a nil return value is assumed.
+ 
+ @param tokenTextView The token text view that sent the message
+ @param completionModel The completion model for which to return the trailing swipe actions configuration
+ @return The swipe actions configuration or nil
+ */
+- (nullable UISwipeActionsConfiguration *)tokenTextView:(KSOTokenTextView *)tokenTextView trailingSwipeActionsConfigurationForCompletionModel:(id<KSOTokenCompletionModel>)completionModel;
 /**
  Called when the tableView:willDisplayCell:forRowAtIndexPath: method is called on the managed completion table view. The delegate can use this to perform any last minute customizations on the cell before being displayed.
  
